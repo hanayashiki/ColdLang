@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="资源文件\doc">
+      <UniqueIdentifier>{483ac5b1-c2e3-481c-a91f-de4d9643a154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\syntax">
+      <UniqueIdentifier>{9a837c25-888d-4627-97ac-bd94f3b46dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\lexer">
+      <UniqueIdentifier>{08c72271-29d9-4577-a89f-536d61e96051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\config">
+      <UniqueIdentifier>{55089265-9b18-4518-91d2-564104b9be7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\object">
+      <UniqueIdentifier>{b2d4e46f-9de0-42f1-8e2f-85c4fe2448b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\cl_object">
+      <UniqueIdentifier>{44e77f65-a989-4473-b2b9-f185ca875ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\config">
+      <UniqueIdentifier>{02fcd077-3899-4c0f-9a65-70682a10132e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\config">
+      <UniqueIdentifier>{394cd111-a00d-4e3f-a9e8-a9bac0bdeaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\object">
+      <UniqueIdentifier>{27e08192-a2fe-4b4e-8e79-50c52064e420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Lexer">
+      <UniqueIdentifier>{f8ff1482-6cb4-4586-ad8d-4917dd463d0b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Lexer.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="CLObject.h">
+      <Filter>头文件\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>头文件\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>头文件\config</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleConfig.h">
+      <Filter>头文件\config</Filter>
+    </ClInclude>
+    <ClInclude Include="LexerConfig.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="coldlang.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CLObject.cpp">
+      <Filter>源文件\cl_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>源文件\config</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>源文件\object</Filter>
+    </ClCompile>
+    <ClCompile Include="LexerConfig.cpp">
+      <Filter>源文件\Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleConfig.cpp">
+      <Filter>源文件\object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lexer.json">
+      <Filter>资源文件\config</Filter>
+    </None>
+    <None Include="module.json">
+      <Filter>资源文件\config</Filter>
+    </None>
+  </ItemGroup>
+</Project>
