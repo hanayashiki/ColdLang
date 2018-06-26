@@ -3,7 +3,8 @@
 #include "Config.h"
 #include "ModuleConfig.h"
 #include <fstream>
-
+#include <iostream>
+#include <codecvt>
 
 Module::Module(const char *file_addr, ModuleConfig * config): config(config)
 {
@@ -21,24 +22,19 @@ void Module::init()
 	this->code = get_file_content(this->file_addr);
 }
 
-string Module::get_file_content(string file_addr) 
+wstring Module::get_file_content(string file_addr) 
 {
-	ifstream in(file_addr);
-	in.seekg(0, ios_base::end);
-	std::streamoff file_size = in.tellg();
-	if (file_size > config->max_code_length) {
-		// TODO
-	}
-	char *buf = new char[(int)file_size + 1];
-	cout << "code len: " << in.tellg() << endl;
-	in.seekg(ios_base::beg);
-	in.read(buf, file_size);
-	in.close();
+	std::ifstream f(file_addr);
+	std::wbuffer_convert<std::codecvt_utf8<wchar_t>> conv(f.rdbuf());
+	std::wistream wf(&conv);
 
-	buf[file_size] = '\0';
-	string code_content(buf);
-	// delete buf;
-	return code_content;
+	wstring code;
+	code.reserve(config->reserved_code_space);
+
+	for (wchar_t c; wf.get(c); ) {
+		code.push_back(c);
+	}
+	return code;
 }
 
 Module::~Module()

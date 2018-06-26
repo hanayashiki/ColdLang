@@ -1,3 +1,4 @@
 {
-  "max_code_length": 1000000
+  "max_code_length": 1000000,
+  "reserved_code_space": 128000
 }

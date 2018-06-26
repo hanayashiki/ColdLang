@@ -43,6 +43,12 @@
     <Filter Include="源文件\Lexer">
       <UniqueIdentifier>{f8ff1482-6cb4-4586-ad8d-4917dd463d0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\lexer\token">
+      <UniqueIdentifier>{fda1db42-c708-4574-bac7-409c795ba600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\namespace">
+      <UniqueIdentifier>{0885ea99-b0fa-464b-8832-26ed425717a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,8 +72,23 @@
     <ClInclude Include="ModuleConfig.h">
       <Filter>头文件\config</Filter>
     </ClInclude>
-    <ClInclude Include="LexerConfig.h">
-      <Filter>头文件\lexer</Filter>
+    <ClInclude Include="Token.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="Word.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="Delimiter.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="Integer.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="Float.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>头文件\lexer\token</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,11 +113,11 @@
     <ClCompile Include="ModuleConfig.cpp">
       <Filter>源文件\object</Filter>
     </ClCompile>
+    <ClCompile Include="Lexer.cpp">
+      <Filter>源文件\Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lexer.json">
-      <Filter>资源文件\config</Filter>
-    </None>
     <None Include="module.json">
       <Filter>资源文件\config</Filter>
     </None>

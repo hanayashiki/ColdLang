@@ -6,5 +6,6 @@ public:
 	~ModuleConfig();
 
 	int max_code_length;
+	int reserved_code_space;
 };
 

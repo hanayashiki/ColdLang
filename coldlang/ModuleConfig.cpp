@@ -7,6 +7,7 @@
 ModuleConfig::ModuleConfig(string config_addr) : Config(config_addr)
 {
 	this->max_code_length = this->getIntConfig("/max_code_length");
+	this->reserved_code_space = this->getIntConfig("/reserved_code_space");
 }
 
 
