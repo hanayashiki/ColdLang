@@ -162,7 +162,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="TestResizableBuffer.cpp" />
+    <ClCompile Include="TestToken.cpp" />
+    <ClCompile Include="TestTrie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\coldlang\coldlang.vcxproj">

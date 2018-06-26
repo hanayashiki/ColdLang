@@ -90,6 +90,15 @@
     <ClInclude Include="String.h">
       <Filter>头文件\lexer\token</Filter>
     </ClInclude>
+    <ClInclude Include="UnexpectedCharacterException.h">
+      <Filter>头文件\lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="ResizableBuffer.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Trie.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
