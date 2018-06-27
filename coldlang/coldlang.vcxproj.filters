@@ -99,6 +99,9 @@
     <ClInclude Include="Trie.h">
       <Filter>头文件\lexer</Filter>
     </ClInclude>
+    <ClInclude Include="KeywordTrie.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -11,7 +11,7 @@ namespace unittest
 	{
 	public:
 
-		TEST_METHOD(add_sequence)
+		TEST_METHOD(AddSequence)
 		{
 			Trie<TrieNode<wchar_t, 26>, wchar_t, 10> trie(L'a');
 			trie.add_sequence(L"abcd", 4, 0);

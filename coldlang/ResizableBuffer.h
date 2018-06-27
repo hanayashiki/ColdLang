@@ -31,6 +31,9 @@ public:
 		push(NULL);
 		return buf;
 	}
+	int get_ptr() {
+		return ptr;
+	}
 	void free_buf() {
 		buf = NULL;
 		delete(buf);

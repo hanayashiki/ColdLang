@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CppUnitTest.h"
 
 #include "../coldlang/stdafx.h"
@@ -6,11 +6,11 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unittest
-{		
+{
 	TEST_CLASS(TestToken)
 	{
 	public:
-		
+
 		TEST_METHOD(TestTokenOnString)
 		{
 			wchar_t* test_string = new wchar_t[100];

@@ -19,9 +19,9 @@ struct TrieNode
 	};
 };
 
-// T: the type of the sequence, such as char/wchar_t
+// T: the type of the TrieNode
+// S: the type of the sequence, such as char/wchar_t
 // M: the total count of units of the sequences
-// N: the count of kinds of T 
 template<typename T, typename S, int M>
 class Trie {
 private:
@@ -32,7 +32,13 @@ private:
 public:
 	Trie(S base): base_(base) {
 		trie_node_[0] = T(0);
-		root_ = &trie_node_[0];
+		root_ = &(trie_node_[0]);
+		trie_node_pointer_ = 1;
+	}
+
+	Trie() : base_(0) {
+		trie_node_[0] = T(0);
+		root_ = &(trie_node_[0]);
 		trie_node_pointer_ = 1;
 	}
 
@@ -43,6 +49,8 @@ public:
 		T* node = root_;
 		for (int i = 0; i < length; i++) {
 			if (node->next_[sequence[i] - base_] == NULL) { // node does not exist
+				//wcout << sequence[i] << endl;
+				// wcout << L"unset leaf: " << (node - root_) << endl;
 				node->is_leaf_ = false;
 				node->next_[sequence[i] - base_] = &trie_node_[trie_node_pointer_];
 				trie_node_[trie_node_pointer_++].value_ = sequence[i];
@@ -59,6 +67,9 @@ public:
 			return -1;
 		}
 		for (int i = 0; i < length; i++) {
+			if (sequence[i] - base_ < 0 || sequence[i] - base_ >= sizeof(trie_node_[0].next_) / sizeof(trie_node_[0].next_[0])) {
+				return -1;
+			}
 			if (node->next_[sequence[i] - base_] == NULL) { // node does not exist
 				return -1;
 			}

@@ -151,6 +151,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="Integer.h" />
+    <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleConfig.h" />
