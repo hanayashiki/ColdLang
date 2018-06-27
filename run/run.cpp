@@ -11,17 +11,24 @@
 
 #include <fcntl.h>
 #include <io.h>
+#include <Windows.h>
 
-int main()
+#define CRTDBG_MAP_ALLOC    
+#include <stdlib.h>    
+#include <crtdbg.h> 
+
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+#define new DBG_NEW
+#endif 
+#endif  // _DEBUG
+
+void test_func_parse1()
 {
-
-	const char* file_name = "./test1.cld";
-	Module module(file_name, new ModuleConfig("../coldlang/module.json"));
-	//
-	_setmode(_fileno(stdout), _O_WTEXT);
-
 	wstring code = L"fn class	struct\n"
-		L"use if while for return	task\n";
+		L"use if while for return	task clas f "
+		"c88	ccccccccccccccccccasdwasdwdsaggadgegwqfsdvfzb__99852__   _qqq\n";
 	Word::WordType ans[] = {
 		Word::keyword_fn,
 		Word::keyword_class,
@@ -31,15 +38,73 @@ int main()
 		Word::keyword_while,
 		Word::keyword_for,
 		Word::keyword_return,
-		Word::keyword_task
+		Word::keyword_task,
+		Word::identifier,
+		Word::identifier,
+		Word::identifier,
+		Word::identifier
 	};
-	Lexer lexer(&code);
+	Lexer* lexer = new Lexer(&code);
 	for (int i = 0; i < sizeof(ans) / sizeof(ans[0]); i++) {
-		Word* word = (Word*)(lexer.parse_next_token());
-
+		Word* word = (Word*)(lexer->parse_next_token());
+		delete(word);
+		//Assert::IsTrue(word->get_type() == ans[i]);
 	}
 
+	code = L"\'abcdefg\'";
+	delete lexer;
+	lexer = new Lexer(&code);
+	String* str = (String *)(lexer->parse_next_token());
+	//Assert::AreEqual(L"abcdefg", str->get_value());
+	wcout << str->get_value() << endl;
+	wcout << "\\abcd" << endl;
+	wcout << L"\'\\\\abcd\'" << endl;
+	delete str;
+	delete lexer;
+}
+
+void test_func_parse2()
+{
+	Lexer * lexer;
+	wstring code;
+	String * str;
+
+	code = L"\'\\u0004e60\\u8fd1\\u5e73\'";
+	wcout << code << endl;
+	lexer = new Lexer(&code);
+	str = (String *)(lexer->parse_next_token());
+	str->get_value();
+	wcout << "unicode is: [" << str->get_value() << "]" << endl;
+	delete(lexer);
+	delete(str);
+
+	code = L"\'\\u4e60\\u8fd1\\u5e73\'";
+	wcout << code << endl;
+	lexer = new Lexer(&code);
+	str = (String *)(lexer->parse_next_token());
+	wcout << str->get_value() << endl;
+	delete(lexer);
+	delete(str);
+
+	code = L"\'\\u10900\'";
+	wcout << code << endl;
+	lexer = new Lexer(&code);
+	str = (String *)(lexer->parse_next_token());
+	wcout << str->get_value() << endl;
+	delete(lexer);
+	delete(str);
+}
+
+
+int main()
+{
+	_setmode(_fileno(stdout), _O_WTEXT);
+
+	//_CrtSetBreakAlloc(204);
+	test_func_parse2();
+	_CrtDumpMemoryLeaks();
 	getchar();
+	
 	return 0;
 }
 

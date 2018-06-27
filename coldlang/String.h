@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
+class Token;
+
 class String : public Token {
 private:
 	wchar_t* value;
@@ -16,7 +18,7 @@ public:
 		return this->value;
 	}
 	~String() {
-		cout << "String is deleted";
+		wcout << "String is deleted" << endl;
 		delete(value);
 	}
 };

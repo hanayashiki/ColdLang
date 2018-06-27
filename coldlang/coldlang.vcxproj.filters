@@ -102,6 +102,12 @@
     <ClInclude Include="KeywordTrie.h">
       <Filter>头文件\lexer</Filter>
     </ClInclude>
+    <ClInclude Include="StringParser.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegerParser.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +132,12 @@
       <Filter>源文件\object</Filter>
     </ClCompile>
     <ClCompile Include="Lexer.cpp">
+      <Filter>源文件\Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="StringParser.cpp">
+      <Filter>源文件\Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="IntegerParser.cpp">
       <Filter>源文件\Lexer</Filter>
     </ClCompile>
   </ItemGroup>

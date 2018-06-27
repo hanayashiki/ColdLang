@@ -47,6 +47,7 @@ public:
 			return;
 		}
 		T* node = root_;
+		assert(root_ == &(trie_node_[0]));
 		for (int i = 0; i < length; i++) {
 			if (node->next_[sequence[i] - base_] == NULL) { // node does not exist
 				//wcout << sequence[i] << endl;

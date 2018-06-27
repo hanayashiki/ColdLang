@@ -25,7 +25,7 @@ void Module::init()
 wstring Module::get_file_content(string file_addr) 
 {
 	std::ifstream f(file_addr);
-	std::wbuffer_convert<std::codecvt_utf8<wchar_t>> conv(f.rdbuf());
+	std::wbuffer_convert<std::codecvt_utf8_utf16<wchar_t>> conv(f.rdbuf());
 	std::wistream wf(&conv);
 
 	wstring code;
