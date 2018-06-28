@@ -169,12 +169,84 @@ namespace unittest
 			delete(lexer);
 			delete(delimiter);
 
-			code = L"+";
+			code = L"+a";
 			lexer = new Lexer(&code);
 			delimiter = (Delimiter *)(lexer->parse_next_token());
-			Assert::IsTrue(Delimiter::increment == delimiter->get_type());
+			Assert::IsTrue(Delimiter::add == delimiter->get_type());
 			delete(lexer);
 			delete(delimiter);
+
+			code = L"--";
+			lexer = new Lexer(&code);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::decrement == delimiter->get_type());
+			delete(lexer);
+			delete(delimiter);
+
+			code = L"-=";
+			lexer = new Lexer(&code);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::sub_assign == delimiter->get_type());
+			delete(lexer);
+			delete(delimiter);
+
+			code = L"-+		--";
+			lexer = new Lexer(&code);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::minus == delimiter->get_type());
+			delete(delimiter);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::add == delimiter->get_type());
+			delete(delimiter);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::decrement == delimiter->get_type());
+			delete(lexer);
+			delete(delimiter);
+		}
+
+		TEST_METHOD(ParseDelimiters) {
+			Lexer * lexer;
+			wstring code;
+			Delimiter* delimiter;
+
+			code = L"++	+=+---=	-	*=	*/=/%=	<	<=\n>	>=	==	=	!=&&||!,:+?";
+			lexer = new Lexer(&code);
+			Delimiter::DelimiterType answers[] = {
+				Delimiter::increment,
+				Delimiter::add_assign,
+				Delimiter::add,
+				Delimiter::decrement,
+				Delimiter::sub_assign,
+				Delimiter::minus,
+				Delimiter::mult_assign,
+				Delimiter::star,
+				Delimiter::div_assign,
+				Delimiter::divide,
+				Delimiter::mod_assign,
+				Delimiter::less,
+				Delimiter::less_equal,
+				Delimiter::greater,
+				Delimiter::greater_equal,
+				Delimiter::equal,
+				Delimiter::assign,
+				Delimiter::not_equal,
+				Delimiter::_and,
+				Delimiter::_or,
+				Delimiter::_not,
+				Delimiter::comma,
+				Delimiter::colon,
+				Delimiter::add,
+				Delimiter::question
+			};
+
+			for (int i = 0; i < sizeof(answers) / sizeof(answers[0]); i++) {
+				delimiter = (Delimiter *)(lexer->parse_next_token());
+				Assert::IsTrue(answers[i] == delimiter->get_type());
+				delete(delimiter);
+			}
+
+			delete(lexer);
+
 		}
 
 	};

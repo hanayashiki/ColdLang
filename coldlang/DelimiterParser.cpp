@@ -1,14 +1,5 @@
 #include "stdafx.h"
 
-DelimiterParser::DelimiterParser(Lexer* lexer) : lexer_(lexer) {
-	root = new DelimiterParseState();
-	root->add_state('+',
-		(new DelimiterParseState())->add_state('+',
-			new DelimiterParseState(Delimiter::increment)				// "++"
-		)->add_state('\0', new DelimiterParseState(Delimiter::add))		// "+"
-	);
-}
-
 Delimiter * DelimiterParser::parse() {
 	int line = lexer_->line_;
 	int col = lexer_->col_;
@@ -32,4 +23,92 @@ Delimiter * DelimiterParser::parse() {
 		state = next_state;
 	}
 	return NULL;
+}
+
+DelimiterParser::DelimiterParser(Lexer* lexer) : lexer_(lexer) {
+	root = new DelimiterParseState();
+	root->add_state('+',
+		((new DelimiterParseState())
+			->add_state('+',
+				new DelimiterParseState(Delimiter::increment))					// "++"
+			->add_state('=',
+				new DelimiterParseState(Delimiter::add_assign))					// "+="
+			)->add_state('\0', new DelimiterParseState(Delimiter::add))			// "+"
+	);
+
+	root->add_state('-',
+		((new DelimiterParseState())
+			->add_state('-',
+				new DelimiterParseState(Delimiter::decrement))					// "--"		
+			->add_state('=',
+				new DelimiterParseState(Delimiter::sub_assign))					// "-="
+			)->add_state('\0', new DelimiterParseState(Delimiter::minus))		// "-"
+	);
+
+	root->add_state('*',
+		((new DelimiterParseState())
+			->add_state('=',
+				new DelimiterParseState(Delimiter::mult_assign))				// "*="
+			)->add_state('\0', new DelimiterParseState(Delimiter::star))		// "*"
+	);
+
+	root->add_state('/',
+		((new DelimiterParseState())
+			->add_state('=',
+				new DelimiterParseState(Delimiter::div_assign))					// "/="
+			)->add_state('\0', new DelimiterParseState(Delimiter::divide))		// "/"
+	);
+
+	root->add_state('=',
+		((new DelimiterParseState())
+			->add_state('=', new DelimiterParseState(Delimiter::equal)))		// "=="
+		->add_state('\0', new DelimiterParseState(Delimiter::assign))			// "="
+	);
+
+	root->add_state('%',
+		((new DelimiterParseState())
+			->add_state('=', new DelimiterParseState(Delimiter::mod_assign)))	// "%="
+		->add_state('\0', new DelimiterParseState(Delimiter::mod))				// "%"
+	);
+
+	root->add_state('<',
+		((new DelimiterParseState())
+			->add_state('=', new DelimiterParseState(Delimiter::less_equal)))	// "<"
+		->add_state('\0', new DelimiterParseState(Delimiter::less))				// "<="
+	);
+
+	root->add_state('>',
+		((new DelimiterParseState())
+			->add_state('=', new DelimiterParseState(Delimiter::greater_equal)))	// ">"
+		->add_state('\0', new DelimiterParseState(Delimiter::greater))				// ">="
+	);
+
+	root->add_state('!',
+		((new DelimiterParseState())
+			->add_state('=', new DelimiterParseState(Delimiter::not_equal)))	// "!="
+		->add_state('\0', new DelimiterParseState(Delimiter::_not))				// "!"
+	);
+
+	root->add_state('&',
+		((new DelimiterParseState())
+			->add_state('&', new DelimiterParseState(Delimiter::_and)))			// "&&"
+	);
+
+	root->add_state('|',
+		((new DelimiterParseState())
+			->add_state('|', new DelimiterParseState(Delimiter::_or)))			// "||"
+	);
+
+	root->add_state(',',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::comma)))		// ","
+	);
+
+	root->add_state(':',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::colon)))		// ":"
+	);
+
+	root->add_state('?',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::question)))		// "?"
+	);
+
 }

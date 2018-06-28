@@ -11,12 +11,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest\unitte
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Clr|x64 = Clr|x64
+		Clr|x86 = Clr|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Clr|x64.ActiveCfg = Clr|x64
+		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Clr|x64.Build.0 = Clr|x64
+		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Clr|x86.ActiveCfg = Clr|Win32
+		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Clr|x86.Build.0 = Clr|Win32
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Debug|x64.ActiveCfg = Debug|x64
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Debug|x64.Build.0 = Debug|x64
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Debug|x86.ActiveCfg = Debug|Win32
@@ -25,6 +31,10 @@ Global
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Release|x64.Build.0 = Release|x64
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Release|x86.ActiveCfg = Release|Win32
 		{3543DC2D-F2DA-4DF1-B465-9BFFE43354E3}.Release|x86.Build.0 = Release|Win32
+		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Clr|x64.ActiveCfg = Clr|x64
+		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Clr|x64.Build.0 = Clr|x64
+		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Clr|x86.ActiveCfg = Clr|Win32
+		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Clr|x86.Build.0 = Clr|Win32
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Debug|x64.ActiveCfg = Debug|x64
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Debug|x64.Build.0 = Debug|x64
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Debug|x86.ActiveCfg = Debug|Win32
@@ -33,6 +43,10 @@ Global
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Release|x64.Build.0 = Release|x64
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Release|x86.ActiveCfg = Release|Win32
 		{8605F9EE-AA61-48DB-9D4F-606F3086ABF3}.Release|x86.Build.0 = Release|Win32
+		{9D535357-2089-4961-9938-C77EAA48ADCE}.Clr|x64.ActiveCfg = Clr|x64
+		{9D535357-2089-4961-9938-C77EAA48ADCE}.Clr|x64.Build.0 = Clr|x64
+		{9D535357-2089-4961-9938-C77EAA48ADCE}.Clr|x86.ActiveCfg = Clr|Win32
+		{9D535357-2089-4961-9938-C77EAA48ADCE}.Clr|x86.Build.0 = Clr|Win32
 		{9D535357-2089-4961-9938-C77EAA48ADCE}.Debug|x64.ActiveCfg = Debug|x64
 		{9D535357-2089-4961-9938-C77EAA48ADCE}.Debug|x64.Build.0 = Debug|x64
 		{9D535357-2089-4961-9938-C77EAA48ADCE}.Debug|x86.ActiveCfg = Debug|Win32

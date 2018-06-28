@@ -100,14 +100,43 @@ void test_func_3() {
 	wstring code;
 	Delimiter* delimiter;
 
-	code = L"+";
+	code = L"++	+=+---=	-	*=	*/=/%=	<	<=\n>	>=	==	=	!=&&||!,:+?";
 	lexer = new Lexer(&code);
-	delimiter = (Delimiter *)(lexer->parse_next_token());
+	Delimiter::DelimiterType answers[] = {
+		Delimiter::increment,
+		Delimiter::add_assign,
+		Delimiter::add,
+		Delimiter::decrement,
+		Delimiter::sub_assign,
+		Delimiter::minus,
+		Delimiter::mult_assign,
+		Delimiter::star,
+		Delimiter::div_assign,
+		Delimiter::divide,
+		Delimiter::mod_assign,
+		Delimiter::less,
+		Delimiter::less_equal,
+		Delimiter::greater,
+		Delimiter::greater_equal,
+		Delimiter::equal,
+		Delimiter::assign,
+		Delimiter::not_equal,
+		Delimiter::_and,
+		Delimiter::_or,
+		Delimiter::_not,
+		Delimiter::comma,
+		Delimiter::colon,
+		Delimiter::add,
+		Delimiter::question
+	};
 
-	wcout << delimiter->get_type();
+	for (int i = 0; i < sizeof(answers) / sizeof(answers[0]); i++) {
+		delimiter = (Delimiter *)(lexer->parse_next_token());
+		wcout << "i = " << i << "," << answers[i] << "," << delimiter->get_type() << endl;
+		delete(delimiter);
+	}
 
 	delete(lexer);
-	delete(delimiter);
 }
 
 int main()

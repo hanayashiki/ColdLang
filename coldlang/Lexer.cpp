@@ -34,8 +34,9 @@ Token * Lexer::parse_next_token() {
 
 void Lexer::skip_blanks() {
 	auto peek = peek_char();
-	if (peek == L'\t' || peek == L' ' || peek == L'\n') {
-		peek = next_char();
+	while (peek == L'\t' || peek == L' ' || peek == L'\n') {
+		next_char();
+		peek = peek_char();
 	}
 }
 

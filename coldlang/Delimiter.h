@@ -19,6 +19,7 @@ public:
 		sub_assign,		// "-="
 		mult_assign,	// "*="
 		div_assign,		// "/="
+		mod_assign,		// "%="
 
 		less,			// "<"
 		less_equal,		// "<="

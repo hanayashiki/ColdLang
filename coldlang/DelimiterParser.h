@@ -13,6 +13,7 @@ public:
 		result_tag_ = Delimiter::unknown;
 	}
 	DelimiterParseState(Delimiter::DelimiterType result_tag) : result_tag_(result_tag) {
+		wcout << "result_tag_: " << result_tag_ << "added" << endl;
 		memset(ascii_to_state_, 0, sizeof(ascii_to_state_));
 	}
 	DelimiterParseState* add_state(char c, DelimiterParseState* s) {
@@ -33,12 +34,16 @@ public:
 			bad = false;
 		}
 		if (bad && ascii_to_state_[0] != NULL) {
+			//wcout << "default used" << endl;
+			bad = false;
 			move = false;
+			return ascii_to_state_[0];
 		}
 		else {
 			move = true;
 		}
 		if (bad == false) {
+			wcout << "next state result_tag_: " << ascii_to_state_[c]->result_tag_ << endl;
 			return ascii_to_state_[c];
 		}
 		else {
