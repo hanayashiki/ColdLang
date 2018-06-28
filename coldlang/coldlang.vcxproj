@@ -227,6 +227,7 @@
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="TreeUnit.h" />
     <ClInclude Include="Trie.h" />
     <ClInclude Include="UnexpectedCharacterException.h" />
     <ClInclude Include="utils.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="CLObject.cpp" />
     <ClCompile Include="coldlang.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="TreeUnit.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />
     <ClCompile Include="IntegerParser.cpp" />

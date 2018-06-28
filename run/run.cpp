@@ -139,12 +139,25 @@ void test_func_3() {
 	delete(lexer);
 }
 
+void test_func_4() {
+	int z = 1;
+	int & y = z;
+	int & x = y;
+	x++;
+	wcout << "z == 2 ?" << z << endl;
+
+	TreeBuilder build1({ Word::keyword_fn });
+	TreeBuilder build2({ Word::keyword_fn , &build1});
+}
+
+
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(204);
 	test_func_3();
+	test_func_4();
 	_CrtDumpMemoryLeaks();
 	getchar();
 	

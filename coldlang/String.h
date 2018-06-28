@@ -7,6 +7,9 @@ class String : public Token {
 private:
 	wchar_t* value;
 public:
+	enum StringType {
+		GeneralString
+	};
 	// @owns: raw_string, value
 	String(Module * module, wchar_t * raw_string, int line_index, int column_index, wchar_t * value) :
 		Token(module, raw_string, line_index, column_index), value(value) {

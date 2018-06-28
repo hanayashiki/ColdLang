@@ -117,6 +117,9 @@
     <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TreeUnit.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="DelimiterParser.cpp">
       <Filter>源文件\lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeUnit.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
