@@ -4,6 +4,7 @@
 class Delimiter : public Token {
 public:
 	enum DelimiterType {
+		unknown,
 		increment,		// "++"
 		decrement,		// "--"
 
@@ -28,21 +29,22 @@ public:
 
 		_and,			// "&&"
 		_or,			// "||"
+		_not,			// "!"
 
-		single_quote,	// "\'"
-		double_quote,	// "\""
+		comma,			// ","
+		colon,			// ":"
+		question		// "?"
 
-		comma			// ","
 	};
 private:
 	DelimiterType type;
 public:
 	// @owns: raw_string
-	Delimiter(wchar_t * raw_string, int line_index, int column_index, DelimiterType type) :
-		Token(raw_string, line_index, column_index), type(type) {
+	Delimiter(Module* _module, wchar_t * raw_string, int line_index, int column_index, DelimiterType type) :
+		Token(_module, raw_string, line_index, column_index), type(type) {
 	}
 	wstring to_string() {
-		return wstring(this->get_raw_string);
+		return wstring(this->get_raw_string());
 	}
 	DelimiterType get_type() {
 		return type;

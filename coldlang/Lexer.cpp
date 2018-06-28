@@ -27,7 +27,7 @@ Token * Lexer::parse_next_token() {
 		return parse_next_string();
 	}
 	else {
-		return NULL;
+		return delimiter_parser_.parse();
 	}
 
 }

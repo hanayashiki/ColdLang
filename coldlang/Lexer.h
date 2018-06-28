@@ -14,6 +14,7 @@ private:
 
 	IntegerParser integer_parser_;
 	StringParser string_parser_;
+	DelimiterParser delimiter_parser_;
 
 	unsigned int code_pointer_;
 	void skip_blanks();
@@ -22,21 +23,23 @@ private:
 public:
 	// @requires: use new, or direct constructor
 	Lexer(Module* _module) :
-		module_(_module), 
+		module_(_module),
 		code_(&module_->code),
 		integer_parser_(IntegerParser(this)),
-		string_parser_(StringParser(this))
+		string_parser_(StringParser(this)),
+		delimiter_parser_(DelimiterParser(this))
 	{
 		line_ = 1;
 		col_ = 1;
 		code_pointer_ = 0;
 	};
 	// @requires: use new, or direct constructor
-	Lexer(std::wstring* code) : 
+	Lexer(std::wstring* code) :
 		module_(NULL),
 		code_(code),
 		integer_parser_(IntegerParser(this)),
-		string_parser_(StringParser(this))
+		string_parser_(StringParser(this)),
+		delimiter_parser_(DelimiterParser(this))
 	{
 		line_ = 1;
 		col_ = 1;
@@ -52,6 +55,7 @@ public:
 
 	friend class StringParser;
 	friend class IntegerParser;
+	friend class DelimiterParser;
 
 	~Lexer() {
 		for (auto t : token_list) {

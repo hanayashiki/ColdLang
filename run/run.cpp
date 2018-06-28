@@ -95,16 +95,31 @@ void test_func_parse2()
 	delete(str);
 }
 
+void test_func_3() {
+	Lexer * lexer;
+	wstring code;
+	Delimiter* delimiter;
+
+	code = L"+";
+	lexer = new Lexer(&code);
+	delimiter = (Delimiter *)(lexer->parse_next_token());
+
+	wcout << delimiter->get_type();
+
+	delete(lexer);
+	delete(delimiter);
+}
 
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(204);
-	test_func_parse2();
+	test_func_3();
 	_CrtDumpMemoryLeaks();
 	getchar();
 	
 	return 0;
+
 }
 

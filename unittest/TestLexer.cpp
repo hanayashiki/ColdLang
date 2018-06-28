@@ -157,5 +157,25 @@ namespace unittest
 			delete(str);
 		}
 
+		TEST_METHOD(ParseDelimiter) {
+			Lexer * lexer;
+			wstring code;
+			Delimiter* delimiter;
+
+			code = L"++";
+			lexer = new Lexer(&code);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::increment == delimiter->get_type());
+			delete(lexer);
+			delete(delimiter);
+
+			code = L"+";
+			lexer = new Lexer(&code);
+			delimiter = (Delimiter *)(lexer->parse_next_token());
+			Assert::IsTrue(Delimiter::increment == delimiter->get_type());
+			delete(lexer);
+			delete(delimiter);
+		}
+
 	};
 }

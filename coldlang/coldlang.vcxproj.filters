@@ -40,14 +40,14 @@
     <Filter Include="源文件\object">
       <UniqueIdentifier>{27e08192-a2fe-4b4e-8e79-50c52064e420}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Lexer">
-      <UniqueIdentifier>{f8ff1482-6cb4-4586-ad8d-4917dd463d0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\lexer\token">
       <UniqueIdentifier>{fda1db42-c708-4574-bac7-409c795ba600}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\namespace">
       <UniqueIdentifier>{0885ea99-b0fa-464b-8832-26ed425717a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\lexer">
+      <UniqueIdentifier>{f8ff1482-6cb4-4586-ad8d-4917dd463d0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,12 @@
     <ClInclude Include="IntegerParser.h">
       <Filter>头文件\lexer</Filter>
     </ClInclude>
+    <ClInclude Include="Syntax.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="DelimiterParser.h">
+      <Filter>头文件\lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,19 +132,22 @@
       <Filter>源文件\object</Filter>
     </ClCompile>
     <ClCompile Include="LexerConfig.cpp">
-      <Filter>源文件\Lexer</Filter>
+      <Filter>源文件\lexer</Filter>
     </ClCompile>
     <ClCompile Include="ModuleConfig.cpp">
       <Filter>源文件\object</Filter>
     </ClCompile>
     <ClCompile Include="Lexer.cpp">
-      <Filter>源文件\Lexer</Filter>
+      <Filter>源文件\lexer</Filter>
     </ClCompile>
     <ClCompile Include="StringParser.cpp">
-      <Filter>源文件\Lexer</Filter>
+      <Filter>源文件\lexer</Filter>
     </ClCompile>
     <ClCompile Include="IntegerParser.cpp">
-      <Filter>源文件\Lexer</Filter>
+      <Filter>源文件\lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="DelimiterParser.cpp">
+      <Filter>源文件\lexer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
