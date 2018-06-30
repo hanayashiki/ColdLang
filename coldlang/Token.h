@@ -30,6 +30,7 @@ public:
 	virtual std::wstring to_string() {
 		return wstring(raw_string_);
 	}
+
 	// @gives up: raw_string
 	~Token() {
 		delete(raw_string_);

@@ -49,6 +49,9 @@
     <Filter Include="源文件\lexer">
       <UniqueIdentifier>{f8ff1482-6cb4-4586-ad8d-4917dd463d0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\syntax">
+      <UniqueIdentifier>{72cbc5f1-74de-48b3-bd7b-96b9c5978471}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -108,16 +111,25 @@
     <ClInclude Include="IntegerParser.h">
       <Filter>头文件\lexer</Filter>
     </ClInclude>
-    <ClInclude Include="Syntax.h">
-      <Filter>头文件\syntax</Filter>
-    </ClInclude>
     <ClInclude Include="DelimiterParser.h">
       <Filter>头文件\lexer</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TreeUnit.h">
+    <ClInclude Include="TreeBuilderNode.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="Syntax.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutils.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeMeta.h">
+      <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
       <Filter>头文件\syntax</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,8 +167,20 @@
     <ClCompile Include="DelimiterParser.cpp">
       <Filter>源文件\lexer</Filter>
     </ClCompile>
-    <ClCompile Include="TreeUnit.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="TreeBuilder.cpp">
+      <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="Syntax.cpp">
+      <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutils.cpp">
+      <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeMeta.cpp">
+      <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>源文件\syntax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

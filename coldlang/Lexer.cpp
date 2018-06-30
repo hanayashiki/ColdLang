@@ -2,26 +2,47 @@
 #include "Lexer.h"
 #include <cctype>
 
+// @lends: Token* of current pos
 Token* Lexer::next_token() {
-	assert(false);
-	return NULL;
+	//wcout << "token_pointer_ = " << token_pointer_ << endl;
+	//wcout << "token_list_.size() - 1 = " << (token_list_.size() - 1) << endl;
+	if (int(token_pointer_) > int(token_list_.size() - 1)) {
+		// wcout << "pushed" << endl;
+		token_list_.push_back(parse_next_token());
+	}
+	return token_list_.at(token_pointer_++);
 }
 
+// @lends: Token* of current pos
 Token* Lexer::prev_token() {
-	assert(false);
-	return NULL;
+	assert(token_pointer_ >= 1);
+	return token_list_.at(token_pointer_--);
+}
+
+// @lends: Token* of (current pos + offset)
+Token* Lexer::peek_token(unsigned int offset)
+{
+	// TODO: exception
+	//wcout << "token_list_.size() - 1 = " << int(token_list_.size()) - 1 << endl;
+	//wcout << "test number: " << 123 << endl;
+	while (int(token_pointer_ + offset) > int(token_list_.size()) - 1)
+	{
+
+		token_list_.push_back(parse_next_token());
+	}
+	return token_list_.at(token_pointer_ + offset);
 }
 
 Token * Lexer::parse_next_token() {
 	skip_blanks();
-	auto peek = peek_char();
-	wcout << "peek: " << peek << endl;
+	const auto peek = peek_char();
+	// wcout << "peek: " << peek << endl;
 	if (isalpha(peek) || peek == L'_')
 	{
 		return parse_next_word();
 	} else if (isdigit(peek))
 	{
-		return NULL;
+		return nullptr;
 	}
 	else if (peek == '\'') {
 		return parse_next_string();
@@ -103,11 +124,11 @@ Token * Lexer::parse_next_string() {
 	ResizableBuffer<wchar_t> raw_string_buf(1024);
 	wchar_t peek = next_char();
 	raw_string_buf.push(peek);
-	wcout << "parse_next_string peek: " << peek << endl;
+	//wcout << "parse_next_string peek: " << peek << endl;
 
 	wchar_t* escaped = string_parser_.parse(raw_string_buf, '\'');
 	peek = peek_char();
-	wcout << "parse_next_string peek: " << peek << endl;
+	//wcout << "parse_next_string peek: " << peek << endl;
 	if (peek == '\'') {
 		raw_string_buf.push(peek);
 		peek_char();

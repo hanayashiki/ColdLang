@@ -4,14 +4,13 @@
 #include "stdafx.h"
 #include "../coldlang/stdafx.h"
 
-#include <fstream>
 #include <iostream>
-#include <locale>
-#include <codecvt>
+
 
 #include <fcntl.h>
 #include <io.h>
 #include <Windows.h>
+#include <typeinfo>
 
 #define CRTDBG_MAP_ALLOC    
 #include <stdlib.h>    
@@ -140,14 +139,32 @@ void test_func_3() {
 }
 
 void test_func_4() {
-	int z = 1;
-	int & y = z;
-	int & x = y;
-	x++;
-	wcout << "z == 2 ?" << z << endl;
+	Lexer * lexer;
+	wstring code;
+	Token * token;
 
-	TreeBuilder build1({ Word::keyword_fn });
-	TreeBuilder build2({ Word::keyword_fn , &build1});
+	code = L"num1 / num2 + num3 + \'string\' ";
+	lexer = new Lexer(&code);
+	//Assert::IsTrue(typeid(lexer->peek_token(0)) == typeid(Word*));
+	token = lexer->peek_token(0);
+	wcout << token->get_raw_string() << endl;
+	wcout << typeid(*token).name();
+	lexer->next_token();
+	//Assert::IsTrue(typeid(lexer->peek_token(1)) == typeid(Word*))
+	token = lexer->peek_token(1);
+	wcout << typeid(*token).name();
+	lexer->next_token();
+	//Assert::IsTrue(typeid(lexer->peek_token(1)) == typeid(Word*));
+	token = lexer->peek_token(1);
+	wcout << typeid(*token).name();
+	//Assert::IsTrue(typeid(lexer->peek_token(3)) == typeid(String*));
+	token = lexer->peek_token(4);
+	wcout << typeid(*token).name();
+	wcout << token->get_raw_string();
+	lexer->prev_token();
+	//Assert::IsTrue(typeid(lexer->peek_token(3)) == typeid(Delimiter*));
+	token = lexer->peek_token(3);
+	wcout << typeid(*token).name();
 }
 
 
@@ -156,7 +173,6 @@ int main()
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(204);
-	test_func_3();
 	test_func_4();
 	_CrtDumpMemoryLeaks();
 	getchar();

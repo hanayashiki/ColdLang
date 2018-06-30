@@ -209,7 +209,7 @@ namespace unittest
 			wstring code;
 			Delimiter* delimiter;
 
-			code = L"++	+=+---=	-	*=	*/=/%=	<	<=\n>	>=	==	=	!=&&||!,:+?";
+			code = L"++	+=+---=	-	*=	*/=/%=	<	<=\n>	>=	==	=	!=&&||!,:+?()[]{}";
 			lexer = new Lexer(&code);
 			Delimiter::DelimiterType answers[] = {
 				Delimiter::increment,
@@ -236,7 +236,13 @@ namespace unittest
 				Delimiter::comma,
 				Delimiter::colon,
 				Delimiter::add,
-				Delimiter::question
+				Delimiter::question,
+				Delimiter::left_paren,
+				Delimiter::right_paren,
+				Delimiter::left_bracket,
+				Delimiter::right_bracket,
+				Delimiter::left_brace,
+				Delimiter::right_brace
 			};
 
 			for (int i = 0; i < sizeof(answers) / sizeof(answers[0]); i++) {
@@ -247,6 +253,25 @@ namespace unittest
 
 			delete(lexer);
 
+		}
+
+		TEST_METHOD(TestLexerMovement)
+		{
+			Lexer * lexer;
+			wstring code;
+
+			code = L"num1 / num2 + num3 + \'string\' ";
+			lexer = new Lexer(&code);
+			Assert::IsTrue(typeid(*(lexer->peek_token(0))) == typeid(Word));
+			lexer->next_token();
+			Assert::IsTrue(typeid(*(lexer->peek_token(1))) == typeid(Word));
+			lexer->next_token();
+			Assert::IsTrue(typeid(*(lexer->peek_token(0))) == typeid(Word));
+			Assert::IsTrue(typeid(*(lexer->peek_token(4))) == typeid(String));
+			lexer->prev_token();
+			Assert::IsTrue(typeid(*(lexer->peek_token(2))) == typeid(Delimiter));
+			lexer->next_token();
+			Assert::IsTrue(typeid(*(lexer->peek_token(1))) == typeid(Delimiter));
 		}
 
 	};

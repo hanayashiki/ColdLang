@@ -8,7 +8,10 @@ private:
 	int col_;
 
 	const std::wstring * code_;
-	std::vector<Token*> token_list;
+
+	std::vector<Token*> token_list_;
+	unsigned int token_pointer_;
+
 	Module* module_;
 	KeywordTrie keyword_trie_;
 
@@ -27,11 +30,13 @@ public:
 		code_(&module_->code),
 		integer_parser_(IntegerParser(this)),
 		string_parser_(StringParser(this)),
-		delimiter_parser_(DelimiterParser(this))
+		delimiter_parser_(DelimiterParser(this)),
+		token_list_(std::vector<Token*>())
 	{
 		line_ = 1;
 		col_ = 1;
 		code_pointer_ = 0;
+		token_pointer_ = 0;
 	};
 	// @requires: use new, or direct constructor
 	Lexer(std::wstring* code) :
@@ -39,16 +44,20 @@ public:
 		code_(code),
 		integer_parser_(IntegerParser(this)),
 		string_parser_(StringParser(this)),
-		delimiter_parser_(DelimiterParser(this))
+		delimiter_parser_(DelimiterParser(this)),
+		token_list_(std::vector<Token*>())
 	{
 		line_ = 1;
 		col_ = 1;
 		code_pointer_ = 0;
+		token_pointer_ = 0;
 	};
 	// @lends: Token* result
 	Token * next_token();
 	// @lends: Token* result
 	Token * prev_token();
+	// @lends: 
+	Token * peek_token(unsigned int offset);
 	Token * parse_next_token();
 	Token * parse_next_word();
 	Token * parse_next_string();
@@ -58,7 +67,7 @@ public:
 	friend class DelimiterParser;
 
 	~Lexer() {
-		for (auto t : token_list) {
+		for (auto t : token_list_) {
 			delete(t);
 		}
 	}

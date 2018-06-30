@@ -21,7 +21,7 @@ public:
 		return this->value;
 	}
 	~String() {
-		wcout << "String is deleted" << endl;
+		//wcout << "String is deleted" << endl;
 		delete(value);
 	}
 };

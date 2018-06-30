@@ -25,7 +25,7 @@ public:
 	//	\v			to \v
 	//	\t			to \t
 	//	\f			to \f
-	//	\u(x{1,8})	to unicode£¬ \u \U \x \X supported
+	//	\u(x{1,8})	to unicodeï¿½ï¿½ \u \U \x \X supported
 	//	
 	wchar_t* parse(ResizableBuffer<wchar_t> & raw_buf, wchar_t delimiter = '\'');
 

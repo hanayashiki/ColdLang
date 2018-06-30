@@ -45,7 +45,7 @@ int64_t IntegerParser::parseInt(IntegerFormat format, int min_length, int digit_
 			}
 		}
 		if (legal) {
-			wcout << "IntegerParser::parseInt as legal: " << peek << endl;
+			// wcout << "IntegerParser::parseInt as legal: " << peek << endl;
 			got_int = true;
 			lexer_->next_char();
 		}

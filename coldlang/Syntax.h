@@ -1,17 +1,12 @@
 #pragma once
 #include "stdafx.h"
-#include "TreeUnit.h"
 
-class TreeUnit;
-
-class TreeNode {
-
-};
-
-class TreeBuilder : public TreeNode {
+class Syntax
+{
+private:
+	Lexer * lexer_;
+	TreeMeta * tree_meta_;
 public:
-	TreeBuilder(std::initializer_list<TreeUnit> init_list) {
-		
-	}
-};
+	Syntax(Lexer * lexer_, TreeMeta * tree_meta);
 
+};

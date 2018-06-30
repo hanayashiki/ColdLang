@@ -33,4 +33,5 @@ public:
 	WordType get_type() {
 		return type;
 	}
+
 };

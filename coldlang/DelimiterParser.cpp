@@ -111,4 +111,27 @@ DelimiterParser::DelimiterParser(Lexer* lexer) : lexer_(lexer) {
 		(new DelimiterParseState(DelimiterParseState(Delimiter::question)))		// "?"
 	);
 
+	root->add_state('(',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::left_paren)))	// "("
+	);
+
+	root->add_state(')',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::right_paren)))	// ")"
+	);
+
+	root->add_state('[',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::left_bracket)))	// "["
+	);
+
+	root->add_state(']',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::right_bracket)))	// "]"
+	);
+
+	root->add_state('{',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::left_brace)))	// "{"
+	);
+
+	root->add_state('}',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::right_brace)))	// "}"
+	);
 }

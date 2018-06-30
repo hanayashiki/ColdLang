@@ -35,7 +35,7 @@ public:
 		return ptr;
 	}
 	void free_buf() {
-		wcout << "free buf is called" << endl;
+		//wcout << "free buf is called" << endl;
 		buf = NULL;
 		delete(buf);
 	}
