@@ -24,6 +24,13 @@ public:
 			ptr++;
 		}
 	}
+	void push(const T t[], int count)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			push(t[i]);
+		}
+	}
 	T* get_buf() {
 		return buf;
 	}

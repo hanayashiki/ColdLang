@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Module.h"
+#include "Tutils.h"
 
 // @owns: raw_string
 class Token {
@@ -29,6 +30,11 @@ public:
 
 	virtual std::wstring to_string() {
 		return wstring(raw_string_);
+	}
+
+	virtual std::wstring to_xml()
+	{
+		return tutils::to_xml_single_tag(L"token");
 	}
 
 	// @gives up: raw_string

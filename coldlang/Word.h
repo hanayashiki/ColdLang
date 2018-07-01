@@ -27,6 +27,15 @@ public:
 	std::wstring to_string() {
 		return std::wstring(this->get_raw_string());
 	}
+	wstring to_xml()
+	{
+		if (type == identifier) {
+			return tutils::to_xml_quoted(L"word", to_string());
+		} else
+		{
+			return tutils::to_xml_quoted(L"keyword", to_string());
+		}
+	}
 	wchar_t* get_word() {
 		return this->get_raw_string();
 	}

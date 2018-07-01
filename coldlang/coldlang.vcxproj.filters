@@ -132,6 +132,9 @@
     <ClInclude Include="Tree.h">
       <Filter>头文件\syntax</Filter>
     </ClInclude>
+    <ClInclude Include="ColdLangFrontEnv.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -181,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeUnitBuilder.cpp">
+      <Filter>源文件\syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdLangFrontEnv.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,10 @@ public:
 	wstring to_string() {
 		return wstring(this->get_raw_string());
 	}
+	std::wstring to_xml()
+	{
+		return tutils::to_xml_quoted(L"delimiter", to_string());
+	}
 	DelimiterType get_type() {
 		return type;
 	}

@@ -214,6 +214,7 @@
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />
+    <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Lexer.h" />
@@ -241,10 +242,12 @@
     <ClCompile Include="CLObject.cpp" />
     <ClCompile Include="coldlang.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="ColdLangFrontEnv.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TreeMeta.cpp" />
     <ClCompile Include="TreeBuilder.cpp" />
+    <ClCompile Include="TreeUnitBuilder.cpp" />
     <ClCompile Include="Tutils.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />

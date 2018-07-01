@@ -167,13 +167,22 @@ void test_func_4() {
 	wcout << typeid(*token).name();
 }
 
+void test_func_5_parse()
+{	
+	wstring code = L"fuckshit(fuck(shit))";
+	ColdLangFrontEnv env(&code);
+	wcout << code << endl << endl;
+
+	Tree* tree = env.syntax->parse();
+	std::wcout << tree->to_xml();
+}
 
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(204);
-	test_func_4();
+	test_func_5_parse();
 	_CrtDumpMemoryLeaks();
 	getchar();
 	

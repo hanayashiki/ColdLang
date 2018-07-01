@@ -20,6 +20,15 @@ public:
 	wchar_t* get_value() {
 		return this->value;
 	}
+	StringType get_type()
+	{
+		// TODO: this is temporary
+		return GeneralString;
+	}
+	wstring to_xml()
+	{
+		return tutils::to_xml_quoted(L"string", to_string());
+	}
 	~String() {
 		//wcout << "String is deleted" << endl;
 		delete(value);

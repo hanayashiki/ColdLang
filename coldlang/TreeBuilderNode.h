@@ -22,19 +22,28 @@ public:
 	{
 		return name_;
 	}
+	const std::vector<TreeUnitBuilder> & get_peek_list() const 
+	{
+		return peek_list_;
+	}
+	const std::vector<TreeUnitBuilder> & get_component_list() const
+	{
+		return component_list_;
+	}
 };
 
 class TreeUnitBuilder : public TreeBuilderNode {
 public:
 	enum UnitType {
-		Name,
-		Word,
-		Delimiter,
-		Float,
-		Integer,
-		String,
-		Token,
-		TreeBuilder
+		u_unknown,
+		u_name,
+		u_word,
+		u_delimiter,
+		u_float,
+		u_integer,
+		u_string,
+		u_token,
+		u_t_builder
 	};
 private:
 	union Value
@@ -62,12 +71,15 @@ public:
 	void set_not(const bool & _not);
 	bool get_not() const;
 
+
+	UnitType get_unit_type_() const;
 	const char* get_name() const;
 	Word::WordType get_word_type() const;
 	Delimiter::DelimiterType get_delimiter_type() const;
-	String::StringType string_type() const;
+	String::StringType get_string_type() const;
 	const TreeBuilderNode* get_t_builder() const;
 
-	UnitType get_unit_type_() const;
+	bool is_good_token(Token* token) const;
+
 };
 

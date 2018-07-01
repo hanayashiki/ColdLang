@@ -37,10 +37,10 @@ Token * Lexer::parse_next_token() {
 	skip_blanks();
 	const auto peek = peek_char();
 	// wcout << "peek: " << peek << endl;
-	if (isalpha(peek) || peek == L'_')
+	if (iswalpha(peek) || peek == L'_')
 	{
 		return parse_next_word();
-	} else if (isdigit(peek))
+	} else if (iswdigit(peek))
 	{
 		return nullptr;
 	}
@@ -90,15 +90,14 @@ wchar_t Lexer::peek_char() {
 
 Token * Lexer::parse_next_word() {
 	ResizableBuffer<wchar_t> resizable_buffer(1024);
-	wchar_t peek = next_char();
+	wchar_t peek = peek_char();
 	int line = line_;
 	int col = col_;
-	if (isalpha(peek)) {
-		resizable_buffer.push(peek);
-		peek = next_char();
-		while (isalpha(peek) || isdigit(peek) || peek == L'_') {
+	if (iswalpha(peek)) {
+		while (iswalpha(peek) || iswdigit(peek) || peek == L'_') {
 			resizable_buffer.push(peek);
-			peek = next_char();
+			next_char();
+			peek = peek_char();
 		}
 		wchar_t* new_word = resizable_buffer.get_null_terminated_buf();
 		Word::WordType type = (Word::WordType)keyword_trie_.get_tag(new_word, resizable_buffer.get_ptr() - 1);
