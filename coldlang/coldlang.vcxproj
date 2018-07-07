@@ -233,10 +233,10 @@
     <ClInclude Include="Token.h" />
     <ClInclude Include="Trie.h" />
     <ClInclude Include="Tutils.h" />
-    <ClInclude Include="UnexpectedCharacterException.h" />
+    <ClInclude Include="TokenException.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Word.h" />
-    <ClInclude Include="IntegerParser.h" />
+    <ClInclude Include="NumberParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CLObject.cpp" />
@@ -251,7 +251,7 @@
     <ClCompile Include="Tutils.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />
-    <ClCompile Include="IntegerParser.cpp" />
+    <ClCompile Include="NumberParser.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="LexerConfig.cpp" />
     <ClCompile Include="Module.cpp" />

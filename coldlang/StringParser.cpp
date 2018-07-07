@@ -3,8 +3,10 @@
 wchar_t* StringParser::parse(ResizableBuffer<wchar_t> & raw_buf, wchar_t delimiter) {
 	ResizableBuffer<wchar_t> buf(1024);
 	wchar_t wc = lexer_->peek_char();
+	wcout << "StringParser::parse peek: " << wc << endl;
 	while (wc != delimiter) {
 		wc = lexer_->next_char();
+		wcout << "StringParser::parse peek: " << wc << endl;
 		raw_buf.push(wc);
 		if (wc == '\\') {
 			wc = lexer_->next_char();
@@ -38,13 +40,13 @@ wchar_t* StringParser::parse(ResizableBuffer<wchar_t> & raw_buf, wchar_t delimit
 				buf.push('\f');
 				break;
 			case 'u':
-				unicode_parser(buf, 4);
+				unicode_parser(buf, raw_buf, 4);
 				break;
 			case 'U':
-				unicode_parser(buf, 8);
+				unicode_parser(buf, raw_buf, 8);
 				break;
 			case 'x':
-				unicode_parser(buf, 2);
+				unicode_parser(buf, raw_buf, 2);
 				break;
 			default:
 				// TODO
@@ -66,8 +68,8 @@ wchar_t* StringParser::parse(ResizableBuffer<wchar_t> & raw_buf, wchar_t delimit
 }
 
 // unicode -> utf-16: https://zh.wikipedia.org/wiki/UTF-16
-void StringParser::unicode_parser(ResizableBuffer<wchar_t> & buf, int length) {
-	int64_t unicode = lexer_->integer_parser_.parseInt(IntegerParser::Hexadecimal, length, length);
+void StringParser::unicode_parser(ResizableBuffer<wchar_t> & buf, ResizableBuffer<wchar_t> & raw_buf, int length) {
+	int64_t unicode = lexer_->integer_parser_.parseInt(NumberParser::Hexadecimal, raw_buf, length, length);
 	if (unicode >= 0x0 && unicode <= 0xd7ff) {
 		buf.push((wchar_t)unicode);
 	}
@@ -78,9 +80,9 @@ void StringParser::unicode_parser(ResizableBuffer<wchar_t> & buf, int length) {
 		int64_t top10 = ((unicode - 0x10000) & (~0x3ff)) >> 10;
 		int64_t low10 = ((unicode - 0x10000) & 0x3ff);
 		buf.push((wchar_t)(top10 | 0xd800));
-		//wcout << hex << (top10 | 0xd800) << dec << endl; 
+		wcout << hex << (top10 | 0xd800) << dec << endl;
 		buf.push((wchar_t)(low10 | 0xdc00));
-		//wcout << hex << (low10 | 0xdc00) << dec << endl;
+		wcout << hex << (low10 | 0xdc00) << dec << endl;
 	}
 	else {
 		// TODO:
