@@ -35,7 +35,7 @@ public:
 		return buf;
 	}
 	T* get_null_terminated_buf() {
-		push(NULL);
+		push(nullptr);
 		return buf;
 	}
 	int get_ptr() {
@@ -43,7 +43,7 @@ public:
 	}
 	void free_buf() {
 		//wcout << "free buf is called" << endl;
-		buf = NULL;
 		delete(buf);
+		buf = nullptr;
 	}
 };

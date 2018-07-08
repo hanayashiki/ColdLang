@@ -11,5 +11,7 @@ public:
 	void add_builder(TreeBuilder*);
 	vector<TreeBuilder*> & get_tree_builders(char* name);
 	vector<TreeBuilder*> & get_tree_builders(string name);
+	void add_entity_defs();
+	void add_expr_defs();
 	~TreeMeta();
 };

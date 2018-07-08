@@ -168,24 +168,35 @@ void test_func_4() {
 }
 
 void test_func_5_parse()
-{	
-	wstring code = L"fuckshit(fuck(shit))";
-	ColdLangFrontEnv env(&code);
+{
+	wstring code = L"a().b.c().d";
+	auto env = new ColdLangFrontEnv(&code);
 	wcout << code << endl << endl;
 
-	Tree* tree = env.syntax->parse();
+	Tree* tree;
+	tree = env->syntax->parse();
 	std::wcout << tree->to_xml();
+	delete tree;
+	delete env;
+
+	code = L"obj1.x_1";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml();
+	delete tree;
+	delete env;
 }
 
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
-	//_CrtSetBreakAlloc(204);
+	//_CrtSetBreakAlloc(1256);
 	test_func_5_parse();
 	_CrtDumpMemoryLeaks();
 	getchar();
-	
+
 	return 0;
 
 }

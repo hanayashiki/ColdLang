@@ -71,6 +71,7 @@ public:
 	DelimiterParser(Lexer* lexer);
 	Delimiter * parse();
 	~DelimiterParser() {
+		wcout << "~DelimiterParser is called" << endl;
 		delete root;
 	}
 

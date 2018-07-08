@@ -32,6 +32,7 @@ public:
 		_or,			// "||"
 		_not,			// "!"
 
+		period,			// "."
 		comma,			// ","
 		colon,			// ":"
 		question,		// "?"

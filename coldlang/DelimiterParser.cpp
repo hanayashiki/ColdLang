@@ -17,6 +17,7 @@ Delimiter * DelimiterParser::parse() {
 			lexer_->next_char();
 		}
 		if (bad) {
+			buf_.free_buf();
 			break;
 			// TODO: throw something
 		}
@@ -97,6 +98,10 @@ DelimiterParser::DelimiterParser(Lexer* lexer) : lexer_(lexer) {
 	root->add_state('|',
 		((new DelimiterParseState())
 			->add_state('|', new DelimiterParseState(Delimiter::_or)))			// "||"
+	);
+
+	root->add_state('.',
+		(new DelimiterParseState(DelimiterParseState(Delimiter::period)))		// "."
 	);
 
 	root->add_state(',',

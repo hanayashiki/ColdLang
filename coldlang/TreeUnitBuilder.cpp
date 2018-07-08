@@ -13,6 +13,14 @@ TreeUnitBuilder::TreeUnitBuilder(const char* n) :
 	optional_(false),
 	not_(false)
 {
+	if (strcmp(n, "integer") == 0)
+	{
+		unit_type_ = u_integer;
+	}
+	else if (strcmp(n, "float") == 0)
+	{
+		unit_type_ = u_float;
+	}
 	value_.name = n;
 }
 
@@ -126,6 +134,14 @@ bool TreeUnitBuilder::is_good_token(Token* token) const
 		{
 			return get_string_type() == reinterpret_cast<String*>(token)->get_type();
 		}
+	}
+	if (typeid(*token) == typeid(Integer))
+	{
+		return get_unit_type_() == u_integer;
+	}
+	if (typeid(*token) == typeid(Float))
+	{
+		return get_unit_type_() == u_float;
 	}
 	// TODO:
 	// for numeric literals
