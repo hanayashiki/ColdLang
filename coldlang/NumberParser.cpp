@@ -103,7 +103,7 @@ Token* NumberParser::parseNumber() const
 			}
 			else if (peek == L'e' || peek == L'E')
 			{
-				state = Exponential;
+				state = ExponentialSign;
 				raw_buf->push(peek);
 				lexer_->next_char();
 			}
@@ -119,7 +119,7 @@ Token* NumberParser::parseNumber() const
 			}
 			else if (peek == L'e' || peek == L'E')
 			{
-				state = Exponential;
+				state = ExponentialSign;
 				raw_buf->push(peek);
 				lexer_->next_char();
 			}
@@ -129,13 +129,23 @@ Token* NumberParser::parseNumber() const
 				return new Float(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, float_val);
 			}
 			break;
+		case ExponentialSign:
+			if (iswdigit(peek) || peek == '+' || peek == '-') {
+				raw_buf->push(peek);
+				lexer_->next_char();
+				state = Exponential;
+			}
+			else
+			{
+				throw new NumberFormatException("illegal float exponential. ", nullptr);
+			}
+			break;
 		case Exponential:
 			if (iswdigit(peek)) {
 				raw_buf->push(peek);
 				lexer_->next_char();
 			}
-			else
-			{
+			else {
 				const double float_val = wcstod(raw_buf->get_null_terminated_buf(), nullptr);
 				return new Float(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, float_val);
 			}

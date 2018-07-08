@@ -274,5 +274,96 @@ namespace unittest
 			Assert::IsTrue(typeid(*(lexer->peek_token(1))) == typeid(Delimiter));
 		}
 
+		TEST_METHOD(ParseNumber)
+		{
+			Lexer * lexer;
+			wstring code;
+			Integer * integer;
+			Float * _float;
+
+			code = L"12345";
+			lexer = new Lexer(&code);
+			integer = (Integer *)(lexer->parse_next_token());
+			Assert::IsTrue(12345ULL == integer->get_value());
+			delete(lexer);
+			delete(integer);
+
+			code = L"1.2345";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1.2345, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"0.00000000001";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(0.00000000001, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1e10";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1e10, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1e+10";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1e+10, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1e-10";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1e-10, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1e0";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1e0, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1.";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1., _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"1.23e-10";
+			lexer = new Lexer(&code);
+			_float = (Float *)(lexer->parse_next_token());
+			Assert::AreEqual(1.23e-10, _float->get_value());
+			delete(lexer);
+			delete(_float);
+
+			code = L"0x12345";
+			lexer = new Lexer(&code);
+			integer = (Integer *)(lexer->parse_next_token());
+			Assert::AreEqual(0x12345ULL, integer->get_value());
+			delete(lexer);
+			delete(integer);
+
+			code = L"0b10101";
+			lexer = new Lexer(&code);
+			integer = (Integer *)(lexer->parse_next_token());
+			Assert::AreEqual(21ULL, integer->get_value());
+			delete(lexer);
+			delete(integer);
+
+			code = L"9223372036854775808";
+			lexer = new Lexer(&code);
+			integer = (Integer *)(lexer->parse_next_token());
+			Assert::IsTrue(9223372036854775808ULL == integer->get_value());
+			delete(lexer);
+			delete(integer);
+		}
 	};
 }

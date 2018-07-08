@@ -226,6 +226,9 @@
     <ClInclude Include="String.h" />
     <ClInclude Include="StringParser.h" />
     <ClInclude Include="Syntax.h" />
+    <Text Include="syntax_definition.md">
+      <FileType>Document</FileType>
+    </Text>
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TreeMeta.h" />
     <ClInclude Include="TreeBuilderNode.h" />

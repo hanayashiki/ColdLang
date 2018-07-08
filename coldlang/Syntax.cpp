@@ -3,23 +3,6 @@
 Syntax::Syntax(Lexer* lexer): lexer_(lexer)
 {
 	tree_meta_ = new TreeMeta();
-	// entity -> identifier
-	tree_meta_->add_builder(new TreeBuilder(
-		"entity",
-		{ Word::identifier, tutils::negative(Delimiter::left_paren) },
-		{ Word::identifier }
-	));
-	// entity -> function_call
-	tree_meta_->add_builder(new TreeBuilder(
-		"entity",
-		{ Word::identifier, Delimiter::left_paren, Delimiter::right_paren },
-		{ Word::identifier, Delimiter::left_paren, Delimiter::right_paren }
-	));
-	tree_meta_->add_builder(new TreeBuilder(
-		"entity",
-		{ Word::identifier, Delimiter::left_paren, Word::identifier },
-		{ Word::identifier, Delimiter::left_paren, "entity", Delimiter::right_paren }
-	));
 }
 
 Tree * Syntax::parse()

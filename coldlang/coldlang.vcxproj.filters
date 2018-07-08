@@ -197,4 +197,9 @@
       <Filter>资源文件\config</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="syntax_definition.md">
+      <Filter>资源文件\doc</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

@@ -9,7 +9,8 @@ private:
 	enum FloatState {
 		Whole,
 		Fraction,
-		Exponential
+		Exponential,
+		ExponentialSign
 	};
 public:
 	enum IntegerFormat {
