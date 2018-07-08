@@ -4,7 +4,7 @@
 
 entity are atoms in `expr`
 
-+ entity ->	atom | sub_entity
++ entity ->	atom sub_entity
 + sub_entity -> None | `.` entity
 + atom -> [identifier] | func_call | literal | func_def_and_optional_call
 + func_call -> identifier `(` comma_exprs `)` | identifier `()` | 
