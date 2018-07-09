@@ -22,7 +22,7 @@ different levels of priorities.
 + expr_3 -> expr_4 {(`==`|`!=`) expr_4}
 + expr_4 -> expr_5 {(`>=`|`<=`|`>`|`<`) expr_5}
 + expr_5 -> term {(`+`|`-`) term}
-+ term -> factor {(`*`|`/`) factor}
++ term -> factor {(`*`|`/`|`%`) factor}
 + factor -> entity | entity (`++`|`--`) | `+` entity | `-` entity | `(` expr `)`
 
 ## statement
