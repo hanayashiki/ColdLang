@@ -43,7 +43,8 @@ public:
 		u_integer,
 		u_string,
 		u_token,
-		u_t_builder
+		u_t_builder,
+		u_multi_units
 	};
 private:
 	union Value
@@ -53,6 +54,7 @@ private:
 		Delimiter::DelimiterType delimiter_type;
 		String::StringType string_type;
 		TreeBuilderNode* t_builder;
+		vector<TreeUnitBuilder> * multi_units;
 	};
 	UnitType unit_type_;
 	Value value_;
@@ -65,6 +67,9 @@ public:
 	TreeUnitBuilder(Delimiter::DelimiterType delimiter_type);
 	TreeUnitBuilder(String::StringType string_type);
 	TreeUnitBuilder(TreeBuilderNode * tb);
+	TreeUnitBuilder(initializer_list<TreeUnitBuilder> &);
+	TreeUnitBuilder(const TreeUnitBuilder & tb);
+	~TreeUnitBuilder();
 
 	void set_optional(const bool & optional);
 	bool get_optional() const;
@@ -78,8 +83,9 @@ public:
 	Delimiter::DelimiterType get_delimiter_type() const;
 	String::StringType get_string_type() const;
 	const TreeBuilderNode* get_t_builder() const;
+	const vector<TreeUnitBuilder>* get_multi_units() const;
 
 	bool is_good_token(Token* token) const;
-
+	
 };
 

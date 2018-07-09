@@ -38,8 +38,8 @@ public:
 	}
 
 	// @gives up: raw_string
-	~Token() {
-		delete(raw_string_);
+	virtual ~Token() {
+		delete raw_string_;
 	}
 
 };

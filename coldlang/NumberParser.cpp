@@ -64,7 +64,7 @@ uint64_t NumberParser::parseInt(IntegerFormat format, ResizableBuffer<wchar_t> &
 
 Token* NumberParser::parseNumber() const
 {
-	auto raw_buf = new ResizableBuffer<wchar_t>(10);
+	auto raw_buf = ResizableBuffer<wchar_t>(10);
 	FloatState state = Whole;
 	uint64_t uint_val = 0;
 	const uint64_t max_uint_val = 0x7FFFFFFFFFFFFFFFULL + 1ULL;
@@ -75,7 +75,7 @@ Token* NumberParser::parseNumber() const
 		switch (state) {
 		case Whole:
 			if (iswdigit(peek)) {
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				bool overflow = false;
 				// max_uint_val = 9,223,372,036,854,775,807
 				if (uint_val == max_uint_val / 10) {
@@ -90,7 +90,7 @@ Token* NumberParser::parseNumber() const
 				}
 				if (overflow)
 				{
-					Integer * token = new Integer(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, uint_val);
+					Integer * token = new Integer(lexer_->module_, raw_buf.get_null_terminated_buf(), line, col, uint_val);
 					throw new NumberFormatException("Integer token cannot be greater than 2**63 - 1", token);
 				}
 				uint_val = 10 * uint_val + (peek - '0');
@@ -98,40 +98,40 @@ Token* NumberParser::parseNumber() const
 			}
 			else if (peek == L'.') {
 				state = Fraction;
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 			}
 			else if (peek == L'e' || peek == L'E')
 			{
 				state = ExponentialSign;
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 			}
 			else
 			{
-				return new Integer(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, uint_val);
+				return new Integer(lexer_->module_, raw_buf.get_null_terminated_buf(), line, col, uint_val);
 			}
 			break;
 		case Fraction:
 			if (iswdigit(peek)) {
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 			}
 			else if (peek == L'e' || peek == L'E')
 			{
 				state = ExponentialSign;
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 			}
 			else
 			{
-				const double float_val = wcstod(raw_buf->get_null_terminated_buf(), nullptr);
-				return new Float(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, float_val);
+				const double float_val = wcstod(raw_buf.get_null_terminated_buf(), nullptr);
+				return new Float(lexer_->module_, raw_buf.get_null_terminated_buf(), line, col, float_val);
 			}
 			break;
 		case ExponentialSign:
 			if (iswdigit(peek) || peek == '+' || peek == '-') {
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 				state = Exponential;
 			}
@@ -142,12 +142,12 @@ Token* NumberParser::parseNumber() const
 			break;
 		case Exponential:
 			if (iswdigit(peek)) {
-				raw_buf->push(peek);
+				raw_buf.push(peek);
 				lexer_->next_char();
 			}
 			else {
-				const double float_val = wcstod(raw_buf->get_null_terminated_buf(), nullptr);
-				return new Float(lexer_->module_, raw_buf->get_null_terminated_buf(), line, col, float_val);
+				const double float_val = wcstod(raw_buf.get_null_terminated_buf(), nullptr);
+				return new Float(lexer_->module_, raw_buf.get_null_terminated_buf(), line, col, float_val);
 			}
 			break;
 		}

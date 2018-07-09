@@ -66,7 +66,8 @@ public:
 
 	~Lexer() {
 		for (auto t : token_list_) {
-			delete(t);
+			wcout << "deleting: " << (t != nullptr && t->get_raw_string() != nullptr ? t->get_raw_string() : L"unknown") << endl;
+			delete t;
 		}
 	}
 };

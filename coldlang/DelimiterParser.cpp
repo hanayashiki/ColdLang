@@ -23,7 +23,7 @@ Delimiter * DelimiterParser::parse() {
 		}
 		state = next_state;
 	}
-	return NULL;
+	return nullptr;
 }
 
 DelimiterParser::DelimiterParser(Lexer* lexer) : lexer_(lexer) {

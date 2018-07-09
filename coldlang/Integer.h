@@ -15,4 +15,8 @@ public:
 	uint64_t get_value() {
 		return this->value;
 	}
+	wstring to_xml()
+	{
+		return tutils::to_xml_quoted(L"int", to_string());
+	}
 };

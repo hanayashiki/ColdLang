@@ -134,7 +134,7 @@ Token * Lexer::parse_next_string() {
 	wcout << "parse_next_string peek: " << peek << endl;
 	if (peek == '\'') {
 		raw_string_buf.push(peek);
-		peek_char();
+		next_char();
 	}
 	else {
 		raw_string_buf.free_buf();

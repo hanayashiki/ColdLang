@@ -35,7 +35,7 @@ public:
 		return buf;
 	}
 	T* get_null_terminated_buf() {
-		push(nullptr);
+		push(NULL);
 		return buf;
 	}
 	int get_ptr() {

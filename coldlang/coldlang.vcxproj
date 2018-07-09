@@ -211,6 +211,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />

@@ -30,7 +30,6 @@ public:
 		return tutils::to_xml_quoted(L"string", to_string());
 	}
 	~String() {
-		//wcout << "String is deleted" << endl;
-		delete(value);
+		delete value;
 	}
 };

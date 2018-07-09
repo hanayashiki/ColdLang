@@ -56,6 +56,35 @@ TreeUnitBuilder::TreeUnitBuilder(TreeBuilderNode* tb) :
 	value_.t_builder = tb;
 }
 
+TreeUnitBuilder::TreeUnitBuilder(initializer_list<TreeUnitBuilder> & or_list) :
+	unit_type_(u_multi_units),
+	optional_(false),
+	not_(false)
+{
+	value_.multi_units = new vector<TreeUnitBuilder>(or_list);
+}
+
+TreeUnitBuilder::~TreeUnitBuilder()
+{
+	if (get_unit_type_() == u_multi_units)
+	{
+		// wcout << "u_multi_units is destoryed\n" << endl;
+		delete value_.multi_units;
+	}
+}
+
+TreeUnitBuilder::TreeUnitBuilder(const TreeUnitBuilder & tb)
+{
+	unit_type_ = tb.unit_type_;
+	value_ = tb.value_;
+	optional_ = tb.optional_;
+	not_ = tb.not_;
+	if (tb.get_unit_type_() == u_multi_units)
+	{
+		value_.multi_units = new vector<TreeUnitBuilder>(*tb.value_.multi_units);
+	}
+}
+
 void TreeUnitBuilder::set_optional(const bool & optional)
 {
 	optional_ = optional;
@@ -106,6 +135,12 @@ const TreeBuilderNode * TreeUnitBuilder::get_t_builder() const
 	return value_.t_builder;
 }
 
+const vector<TreeUnitBuilder>* TreeUnitBuilder::get_multi_units() const
+{
+	assert(unit_type_ == u_multi_units);
+	return value_.multi_units;
+}
+
 TreeUnitBuilder::UnitType TreeUnitBuilder::get_unit_type_() const
 {
 	return unit_type_;
@@ -143,8 +178,6 @@ bool TreeUnitBuilder::is_good_token(Token* token) const
 	{
 		return get_unit_type_() == u_float;
 	}
-	// TODO:
-	// for numeric literals
 	return false;
 }
 

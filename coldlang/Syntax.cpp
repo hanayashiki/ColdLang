@@ -1,23 +1,36 @@
 #include "stdafx.h"
+#include "BadSyntaxException.h"
 
 Syntax::Syntax(Lexer* lexer): lexer_(lexer)
 {
 	tree_meta_ = new TreeMeta();
+	bad_syntax_flag_ = false;
 }
 
 Tree * Syntax::parse()
 {
-	auto tree_builders = tree_meta_->get_tree_builders("entity");
+	auto tree_builders = tree_meta_->get_tree_builders("expr");
 	TreeNode * root = parse(tree_builders);
-	return new Tree(root);
+	Tree * tree = new Tree(root);
+	if (bad_syntax_flag_)
+	{
+		wcout << "Syntax exception caught.\n";
+		wcout << tree->to_xml();
+		assert(false);
+	}
+	return tree;
 }
 
 TreeNode* Syntax::parse(vector<TreeBuilder*> & tree_builders)
 {
 	// TODO:
 	// errors
-	const TreeBuilder * builder = select_tree_builder(tree_builders);
-	return parse(builder);
+	try {
+		const TreeBuilder * builder = select_tree_builder(tree_builders);
+		return parse(builder);
+	} catch (BadSyntaxException e) {
+		return nullptr;
+	}
 }
 
 TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
@@ -38,6 +51,7 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 		}
 		else if (component.get_unit_type_() == TreeUnitBuilder::u_name)
 		{
+			wcout << component.get_name() << endl;
 			TreeNode * node = parse(tree_meta_->get_tree_builders(component.get_name()));
 			result_node->set_child(index, node);
 		}
@@ -59,24 +73,33 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 	return result_node;
 }
 
-TreeBuilder * Syntax::select_tree_builder(vector<TreeBuilder*>& v) const
+TreeBuilder * Syntax::select_tree_builder(vector<TreeBuilder*>& v)
 {
 	for (auto builder : v)
 	{
-		bool mismatched = false;
-		int index = 0;
-		// std::wcout << "started: " << endl;
-		for (auto peek : builder->get_peek_list())
+		if (judge_peek_list(builder->get_peek_list()))
 		{
-			// TODO:
-			// exception
-			Token * peek_token = lexer_->peek_token(index);
-			//if (peek_token)
-			//	std::wcout << "peek: " << peek_token->to_xml();
-			//else
-			//	std::wcout << "peek: NULL" << endl;
+			return builder;
+		}
+	}
+	// TODO:
+	// exception
+	std::wcout << "Can not select tree builder for " << v[0]->get_name().c_str() <<  endl;
+	assert(false);
+	bad_syntax_flag_ = true;
+	throw BadSyntaxException("Bad syntax: we are expecting ...");
+	return nullptr;
+}
 
-			// this is temporary
+bool Syntax::judge_peek_list(const vector<TreeUnitBuilder>& peek_list)
+{
+	bool mismatched = false;
+	int index = 0;
+	// std::wcout << "started: " << endl;
+	for (auto peek : peek_list)
+	{
+		if (peek.get_unit_type_() != TreeUnitBuilder::u_multi_units) {
+			Token * peek_token = lexer_->peek_token(index);
 			if (peek.get_not() == true)
 			{
 				if (peek_token == nullptr)
@@ -99,17 +122,20 @@ TreeBuilder * Syntax::select_tree_builder(vector<TreeBuilder*>& v) const
 				}
 			}
 			index++;
-		}
-		if (mismatched == false)
+		} else
 		{
-			return builder;
+			for (auto or_peek : *peek.get_multi_units())
+			{
+				bool good = judge_peek_list({ or_peek });
+				if (good)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
-	// TODO:
-	// exception
-	std::wcout << "Can not select tree builder" << endl;
-	assert(false);
-	return nullptr;
+	return !mismatched;
 }
 
 Syntax::~Syntax()

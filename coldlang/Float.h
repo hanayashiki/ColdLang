@@ -15,4 +15,8 @@ public:
 	double get_value() {
 		return this->value;
 	}
+	wstring to_xml()
+	{
+		return tutils::to_xml_quoted(L"float", to_string());
+	}
 };

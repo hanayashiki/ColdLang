@@ -6,6 +6,26 @@ class TreeMeta
 {
 private:
 	std::unordered_map<string, std::vector<TreeBuilder*>> name_to_builder_;
+	const TreeUnitBuilder entity_peek_ = tutils::logical_or({
+		Word::identifier,
+		String::GeneralString,
+		"integer",
+		"float",
+		Word::keyword_fn,
+		Delimiter::left_paren
+	});
+	const TreeUnitBuilder expr_peek_ = tutils::logical_or({
+		Word::identifier,
+		String::GeneralString,
+		"integer",
+		"float",
+		Word::keyword_fn,
+		Delimiter::left_paren,
+		Delimiter::add,
+		Delimiter::minus
+	});
+
+
 public:
 	TreeMeta();
 	void add_builder(TreeBuilder*);
@@ -13,5 +33,7 @@ public:
 	vector<TreeBuilder*> & get_tree_builders(string name);
 	void add_entity_defs();
 	void add_expr_defs();
+	void add_statement_defs();
+	void add_func_defs();
 	~TreeMeta();
 };
