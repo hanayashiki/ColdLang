@@ -16,14 +16,14 @@ entity are atoms in `expr`
 `expr` defines right values, the name `expr_i` is used to define 
 different levels of priorities.
 
-+ expr -> expr_1 `?` expr_1 `:` expr_1
++ expr -> expr_1 `?` expr `:` expr
 + expr_1 -> expr_2 {`||` expr_2}
 + expr_2 -> expr_3 {`&&` expr_3}
 + expr_3 -> expr_4 {(`==`|`!=`) expr_4}
 + expr_4 -> expr_5 {(`>=`|`<=`|`>`|`<`) expr_5}
 + expr_5 -> term {(`+`|`-`) term}
 + term -> factor {(`*`|`/`) factor}
-+ factor -> entity | entity (`++`|`--`) | `+` entity | `-` entity
++ factor -> entity | entity (`++`|`--`) | `+` entity | `-` entity | `(` expr `)`
 
 ## statement
 
