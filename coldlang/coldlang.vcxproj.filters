@@ -52,6 +52,9 @@
     <Filter Include="源文件\syntax">
       <UniqueIdentifier>{72cbc5f1-74de-48b3-bd7b-96b9c5978471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\ir">
+      <UniqueIdentifier>{313d91e7-1d35-4699-bf8f-adbb896753e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -137,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="BadSyntaxException.h">
       <Filter>头文件\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="bytecode_def.h">
+      <Filter>头文件\ir</Filter>
+    </ClInclude>
+    <ClInclude Include="bytecode_operand_types.h">
+      <Filter>头文件\ir</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

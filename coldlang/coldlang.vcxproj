@@ -212,11 +212,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BadSyntaxException.h" />
+    <ClInclude Include="bytecode_operand_types.h" />
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Integer.h" />
+    <ClInclude Include="bytecode_def.h" />
     <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Module.h" />
