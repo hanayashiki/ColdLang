@@ -11,24 +11,24 @@ void Lexer::skip_blanks() {
 }
 
 // @lends: Token* of current pos
-Token* Lexer::next_token() {
+shared_ptr<Token> & Lexer::next_token() {
 	//wcout << "token_pointer_ = " << token_pointer_ << endl;
 	//wcout << "token_list_.size() - 1 = " << (token_list_.size() - 1) << endl;
 	if (int(token_pointer_) > int(token_list_.size() - 1)) {
 		// wcout << "pushed" << endl;
-		token_list_.push_back(parse_next_token());
+		token_list_.push_back(shared_ptr<Token>(parse_next_token()));
 	}
 	return token_list_.at(token_pointer_++);
 }
 
 // @lends: Token* of current pos
-Token* Lexer::prev_token() {
+shared_ptr<Token> & Lexer::prev_token() {
 	assert(token_pointer_ >= 1);
 	return token_list_.at(token_pointer_--);
 }
 
 // @lends: Token* of (current pos + offset)
-Token* Lexer::peek_token(unsigned int offset)
+shared_ptr<Token> & Lexer::peek_token(unsigned int offset)
 {
 	// TODO: exception
 	//wcout << "token_list_.size() - 1 = " << int(token_list_.size()) - 1 << endl;
@@ -36,7 +36,7 @@ Token* Lexer::peek_token(unsigned int offset)
 	while (int(token_pointer_ + offset) > int(token_list_.size()) - 1)
 	{
 
-		token_list_.push_back(parse_next_token());
+		token_list_.push_back(shared_ptr<Token>(parse_next_token()));
 	}
 	return token_list_.at(token_pointer_ + offset);
 }

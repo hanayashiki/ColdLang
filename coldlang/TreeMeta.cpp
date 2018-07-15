@@ -237,13 +237,15 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"entity_tail_op",
 		{ Delimiter::increment },
-		{ Delimiter::increment }
+		{ Delimiter::increment },
+		"entity_tail_op_increment"
 	));
 
 	add_builder(new TreeBuilder(
 		"entity_tail_op",
 		{ Delimiter::decrement },
-		{ Delimiter::decrement }
+		{ Delimiter::decrement },
+		"entity_tail_op_decrement"
 	));
 
 	add_builder(new TreeBuilder(
@@ -400,7 +402,8 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"atom",
 		{ Word::identifier, tutils::negative(Delimiter::left_paren) },
-		{ Word::identifier }
+		{ Word::identifier },
+		"atom_identifier"
 	));
 
 	// atom -> func_call
@@ -450,7 +453,8 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"entity",
 		{ tutils::logical_or({ Word::identifier, Word::keyword_fn, Delimiter::left_paren }) },
-		{ "atom", "sub_entity" }
+		{ "atom", "sub_entity" },
+		"entity_atom_sub_entity"
 	));
 
 	// sub_entity -> `.` entity

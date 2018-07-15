@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "KeywordTrie.h"
+#include <memory>
 
 class Lexer {
 private:
@@ -8,7 +9,7 @@ private:
 	int col_;
 
 	const std::wstring * code_;
-	std::vector<Token*> token_list_;
+	std::vector<shared_ptr<Token>> token_list_;
 	unsigned int token_pointer_;
 
 	Module* module_;
@@ -50,11 +51,11 @@ public:
 		token_pointer_ = 0;
 	};
 	// @lends: Token* result
-	Token * next_token();
+	shared_ptr<Token> & next_token();
 	// @lends: Token* result
-	Token * prev_token();
+	shared_ptr<Token> & prev_token();
 	// @lends: Token* result
-	Token * peek_token(unsigned int offset);
+	shared_ptr<Token> & peek_token(unsigned int offset);
 	Token * parse_next_token();
 	Token * parse_next_word();
 	Token * parse_next_string();
@@ -63,11 +64,4 @@ public:
 	friend class StringParser;
 	friend class NumberParser;
 	friend class DelimiterParser;
-
-	~Lexer() {
-		for (auto t : token_list_) {
-			wcout << "deleting: " << (t != nullptr && t->get_raw_string() != nullptr ? t->get_raw_string() : L"unknown") << endl;
-			delete t;
-		}
-	}
 };

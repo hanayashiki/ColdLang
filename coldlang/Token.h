@@ -6,19 +6,19 @@
 // @owns: raw_string
 class Token {
 private:
-	wchar_t * raw_string_;
+	const wchar_t * raw_string_;
 	int line_index_;
 	int column_index_;
 	Module * module_;
 
 public:
 	// @owns: raw_string
-	Token(Module* module, wchar_t * raw_string, int line_index, int column_index) :
-		module_(module), raw_string_(raw_string), line_index_(line_index_), column_index_(column_index_) {
+	Token(Module* module, const wchar_t * raw_string, int line_index, int column_index) :
+		module_(module), raw_string_(raw_string), line_index_(line_index), column_index_(column_index) {
 		
 	}
 	// @lends: raw_string
-	wchar_t * get_raw_string() const {
+	const wchar_t * get_raw_string() const {
 		return raw_string_;
 	}
 	int get_line_index() const {

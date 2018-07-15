@@ -10,7 +10,7 @@ private:
 	bool bad_syntax_flag_;
 public:
 	Syntax(Lexer * lexer_);
-	Tree* parse();
+	Tree* parse(const char * root_name = "expr");
 	TreeNode* parse(vector<TreeBuilder*> & tree_builder);
 	TreeNode* parse(const TreeBuilder* tree_builder);
 	TreeBuilder* select_tree_builder(vector<TreeBuilder*> & v);

@@ -10,17 +10,23 @@ class TreeBuilderNode {
 class TreeBuilder : public TreeBuilderNode {
 private:
 	string name_;
+	string builder_name_;
 	std::vector<TreeUnitBuilder> peek_list_;
 	std::vector<TreeUnitBuilder> component_list_;
 public:
 	TreeBuilder(
-		string name,
+		const string && name,
 		const std::initializer_list<TreeUnitBuilder> peek_list,
-		const std::initializer_list<TreeUnitBuilder> component_list
+		const std::initializer_list<TreeUnitBuilder> component_list,
+		const string && builder_name = ""
 	);
 	string get_name() const
 	{
 		return name_;
+	}
+	string get_builder_name() const
+	{
+		return builder_name_;
 	}
 	const std::vector<TreeUnitBuilder> & get_peek_list() const 
 	{

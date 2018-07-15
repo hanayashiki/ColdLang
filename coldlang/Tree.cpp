@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-TreeNode::TreeNode(string name, int children_count):
-	name_(name), children_count_(children_count), 
+TreeNode::TreeNode(string name, string builder_name, int children_count):
+	name_(name), builder_name(builder_name), children_count_(children_count), 
 	children_(new Child[children_count])
 {}
 
-void TreeNode::set_child(int index, Token * terminal)
+void TreeNode::set_child(int index, shared_ptr<Token> & terminal)
 {
 	assert(index >= 0 && index < children_count_);
 	children_[index].type = Terminal;
@@ -17,6 +17,31 @@ void TreeNode::set_child(int index, TreeNode * non_terminal)
 	assert(index >= 0 && index < children_count_);
 	children_[index].type = NonTerminal;
 	children_[index].non_terminal = non_terminal;
+}
+
+shared_ptr<Token> & TreeNode::get_terminal(int index)
+{
+	assert(index >= 0 && index < children_count_);
+	assert(children_[index].type == Terminal);
+	return children_[index].terminal;
+}
+
+
+TreeNode * TreeNode::get_non_terminal(int index)
+{
+	assert(index >= 0 && index < children_count_);
+	assert(children_[index].type == NonTerminal);
+	return children_[index].non_terminal;
+}
+
+string TreeNode::get_builder_name()
+{
+	return builder_name;
+}
+
+int TreeNode::get_children_count_()
+{
+	return children_count_;
 }
 
 wstring TreeNode::to_xml(int indent, int indent_size, int max_char) const
@@ -61,6 +86,11 @@ TreeNode::~TreeNode()
 		{
 			delete children_[i].non_terminal;
 		}
+		if (children_[i].type == Terminal)
+		{
+			// wcout << "~TreeNode() token use count :" << children_[i].terminal.use_count() << endl;
+			children_[i].terminal.~shared_ptr();
+		}
 	}
 	delete[] children_;
 }
@@ -77,4 +107,9 @@ Tree::~Tree()
 wstring Tree::to_xml(int max_tag_char)
 {
 	return root_->to_xml(0, 3, max_tag_char);
+}
+
+TreeNode * Tree::get_root()
+{
+	return root_;
 }

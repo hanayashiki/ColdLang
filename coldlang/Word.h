@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Module.h"
 #include "Token.h"
+#include <memory>
 
 class Word : public Token {
 public:
@@ -21,8 +22,14 @@ private:
 	WordType type;
 public:
 	// @owns: raw_string
-	Word(Module* _module, wchar_t * raw_string, int line_index, int column_index, WordType type) :
+	Word(Module* _module, const wchar_t * raw_string, int line_index, int column_index, WordType type) :
 		Token(_module, raw_string, line_index, column_index), type(type) {
+	}
+	static shared_ptr<Word> mock(const wchar_t * raw_string)
+	{
+		wchar_t * copy = new wchar_t[wcslen(raw_string) + 1];
+		wcscpy_s(copy, wcslen(raw_string) + 1, raw_string);
+		return shared_ptr<Word>(new Word(nullptr, copy, 0, 0, identifier));
 	}
 	std::wstring to_string() {
 		return std::wstring(this->get_raw_string());
@@ -36,7 +43,7 @@ public:
 			return tutils::to_xml_quoted(L"keyword", to_string());
 		}
 	}
-	wchar_t* get_word() {
+	const wchar_t* get_word() {
 		return this->get_raw_string();
 	}
 	WordType get_type() {

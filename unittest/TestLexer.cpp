@@ -262,16 +262,16 @@ namespace unittest
 
 			code = L"num1 / num2 + num3 + \'string\' ";
 			lexer = new Lexer(&code);
-			Assert::IsTrue(typeid(*(lexer->peek_token(0))) == typeid(Word));
+			Assert::IsTrue(typeid(*(lexer->peek_token(0).get())) == typeid(Word));
 			lexer->next_token();
-			Assert::IsTrue(typeid(*(lexer->peek_token(1))) == typeid(Word));
+			Assert::IsTrue(typeid(*(lexer->peek_token(1).get())) == typeid(Word));
 			lexer->next_token();
-			Assert::IsTrue(typeid(*(lexer->peek_token(0))) == typeid(Word));
-			Assert::IsTrue(typeid(*(lexer->peek_token(4))) == typeid(String));
+			Assert::IsTrue(typeid(*(lexer->peek_token(0).get())) == typeid(Word));
+			Assert::IsTrue(typeid(*(lexer->peek_token(4).get())) == typeid(String));
 			lexer->prev_token();
-			Assert::IsTrue(typeid(*(lexer->peek_token(2))) == typeid(Delimiter));
+			Assert::IsTrue(typeid(*(lexer->peek_token(2).get())) == typeid(Delimiter));
 			lexer->next_token();
-			Assert::IsTrue(typeid(*(lexer->peek_token(1))) == typeid(Delimiter));
+			Assert::IsTrue(typeid(*(lexer->peek_token(1).get())) == typeid(Delimiter));
 		}
 
 		TEST_METHOD(ParseNumber)

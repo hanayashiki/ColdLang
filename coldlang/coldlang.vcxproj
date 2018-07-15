@@ -150,6 +150,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -212,15 +213,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BadSyntaxException.h" />
-    <ClInclude Include="bytecode_operand_types.h" />
+    <ClInclude Include="BytecodeBase.h" />
+    <ClInclude Include="BytecodeClass.h" />
+    <ClInclude Include="BytecodeDumper.h" />
+    <ClInclude Include="BytecodeEnum.h" />
+    <ClInclude Include="BytecodeGenerator.h" />
+    <ClInclude Include="BytecodeVirtualClass.h" />
+    <ClInclude Include="BytecodeOperandTypes.h" />
+    <ClInclude Include="BytecodeWriter.h" />
     <ClInclude Include="CLObject.h" />
+    <ClInclude Include="ColdLangBackend.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Integer.h" />
-    <ClInclude Include="bytecode_def.h" />
+    <ClInclude Include="BytecodeDef.h" />
+    <ClInclude Include="IRGenerator.h" />
     <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Lexer.h" />
+    <ClInclude Include="Literal.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleConfig.h" />
     <ClInclude Include="Delimiter.h" />
@@ -228,10 +239,13 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="StringParser.h" />
+    <ClInclude Include="Symbol.h" />
+    <ClInclude Include="SymbolTable.h" />
     <ClInclude Include="Syntax.h" />
     <Text Include="syntax_definition.md">
       <FileType>Document</FileType>
     </Text>
+    <ClInclude Include="TempTable.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TreeMeta.h" />
     <ClInclude Include="TreeBuilderNode.h" />
@@ -241,20 +255,29 @@
     <ClInclude Include="Tutils.h" />
     <ClInclude Include="TokenException.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="Variable.h" />
     <ClInclude Include="Word.h" />
     <ClInclude Include="NumberParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BytecodeClass.cpp" />
     <ClCompile Include="CLObject.cpp" />
     <ClCompile Include="coldlang.cpp" />
+    <ClCompile Include="ColdLangBackend.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ColdLangFrontEnv.cpp" />
+    <ClCompile Include="ir.cpp" />
+    <ClCompile Include="IRGenerator.cpp" />
+    <ClCompile Include="Symbol.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="Syntax.cpp" />
+    <ClCompile Include="TempTable.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TreeMeta.cpp" />
     <ClCompile Include="TreeBuilder.cpp" />
     <ClCompile Include="TreeUnitBuilder.cpp" />
     <ClCompile Include="Tutils.cpp" />
+    <ClCompile Include="Variable.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />
     <ClCompile Include="NumberParser.cpp" />

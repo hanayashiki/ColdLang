@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "../coldlang/stdafx.h"
+#include "../coldlang/ByteCodeClass.h"
 
 #include <iostream>
 
@@ -12,15 +13,16 @@
 #include <Windows.h>
 #include <typeinfo>
 
-#define CRTDBG_MAP_ALLOC    
-#include <stdlib.h>    
-#include <crtdbg.h> 
+#define CRTDBG_MAP_ALLOC  
+#include <stdlib.h>
+#include <crtdbg.h>
+#include "../coldlang/ColdLangBackend.h"
 
 #ifdef _DEBUG
 #ifndef DBG_NEW
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
 #define new DBG_NEW
-#endif 
+#endif
 #endif  // _DEBUG
 
 void test_func_parse1()
@@ -44,7 +46,8 @@ void test_func_parse1()
 		Word::identifier
 	};
 	Lexer* lexer = new Lexer(&code);
-	for (int i = 0; i < sizeof(ans) / sizeof(ans[0]); i++) {
+	for (int i = 0; i < sizeof(ans) / sizeof(ans[0]); i++)
+	{
 		Word* word = (Word*)(lexer->parse_next_token());
 		delete(word);
 		//Assert::IsTrue(word->get_type() == ans[i]);
@@ -64,9 +67,9 @@ void test_func_parse1()
 
 void test_func_parse2()
 {
-	Lexer * lexer;
+	Lexer* lexer;
 	wstring code;
-	String * str;
+	String* str;
 
 	code = L"\'\\u0004e60\\u8fd1\\u5e73\'";
 	wcout << code << endl;
@@ -94,8 +97,9 @@ void test_func_parse2()
 	delete(str);
 }
 
-void test_func_3() {
-	Lexer * lexer;
+void test_func_3()
+{
+	Lexer* lexer;
 	wstring code;
 	Delimiter* delimiter;
 
@@ -129,7 +133,8 @@ void test_func_3() {
 		Delimiter::question
 	};
 
-	for (int i = 0; i < sizeof(answers) / sizeof(answers[0]); i++) {
+	for (int i = 0; i < sizeof(answers) / sizeof(answers[0]); i++)
+	{
 		delimiter = (Delimiter *)(lexer->parse_next_token());
 		wcout << "i = " << i << "," << answers[i] << "," << delimiter->get_type() << endl;
 		delete(delimiter);
@@ -138,32 +143,33 @@ void test_func_3() {
 	delete(lexer);
 }
 
-void test_func_4() {
-	Lexer * lexer;
+void test_func_4()
+{
+	Lexer* lexer;
 	wstring code;
-	Token * token;
+	Token* token;
 
 	code = L"num1 / num2 + num3 + \'string\' ";
 	lexer = new Lexer(&code);
 	//Assert::IsTrue(typeid(lexer->peek_token(0)) == typeid(Word*));
-	token = lexer->peek_token(0);
+	token = lexer->peek_token(0).get();
 	wcout << token->get_raw_string() << endl;
 	wcout << typeid(*token).name();
 	lexer->next_token();
 	//Assert::IsTrue(typeid(lexer->peek_token(1)) == typeid(Word*))
-	token = lexer->peek_token(1);
+	token = lexer->peek_token(1).get();
 	wcout << typeid(*token).name();
 	lexer->next_token();
 	//Assert::IsTrue(typeid(lexer->peek_token(1)) == typeid(Word*));
-	token = lexer->peek_token(1);
+	token = lexer->peek_token(1).get();
 	wcout << typeid(*token).name();
 	//Assert::IsTrue(typeid(lexer->peek_token(3)) == typeid(String*));
-	token = lexer->peek_token(4);
+	token = lexer->peek_token(4).get();
 	wcout << typeid(*token).name();
 	wcout << token->get_raw_string();
 	lexer->prev_token();
 	//Assert::IsTrue(typeid(lexer->peek_token(3)) == typeid(Delimiter*));
-	token = lexer->peek_token(3);
+	token = lexer->peek_token(3).get();
 	wcout << typeid(*token).name();
 }
 
@@ -186,18 +192,180 @@ void test_func_5_parse()
 	std::wcout << tree->to_xml();
 	delete tree;
 	delete env;
+
+	code = L"a ? b : c ? d : e";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml();
+	delete tree;
+	delete env;
+
+	code = L"a ? b ? c : d : e";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml();
+	delete tree;
+	delete env;
+
+	code = L"a || b && c != 123";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+	delete tree;
+	delete env;
+
+	code = L"a == b != \'reset\'";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+
+	delete tree;
+	delete env;
+
+	code = L"a * b-- + +c / d++";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+
+	delete tree;
+	delete env;
+
+	code = L"1.1%2++ - (a % b) - 2";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+
+	delete tree;
+	delete env;
+}
+
+void test_func_6_parse_func_def()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+
+	code = L"fn a { return a }";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+
+	delete tree;
+	delete env;
+
+	code = L"fn a, b, cde {\n"
+		"a = a + 1\n"
+		"return 2 * a }"
+		"(\'习近平\', \'习远平\')";
+	wcout << code << endl;
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse();
+	std::wcout << tree->to_xml(8);
+
+	delete tree;
+	delete env;
+}
+
+void test_func_6_parse_simple()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+
+	code = L"a.b";
+	env = new ColdLangFrontEnv(&code);
+
+	tree = env->syntax->parse("entity");
+	std::wcout << tree->to_xml(100);
+
+	delete tree;
+	delete env;
+}
+
+void show_name(const char* n)
+{
+	wcout << n << endl;
+}
+
+void test_ir_marcos()
+{
+//#define SHOW_NAME(name, ...) \
+//	show_name(#name);
+//
+//	BYTECODE_LIST(SHOW_NAME)
+//
+//#undef SHOW_NAME
+
+	auto cadd = IR::BytecodeClass::LoadAttributeToAcc();
+	wcout << cadd.get_name() << endl;
+	wcout << cadd.get_id() << endl;
+
+	auto ccall = IR::BytecodeClass::CallFunc();
+	wcout << ccall.get_name() << endl;
+	wcout << ccall.get_id() << endl;
+
+	wcout << sizeof(int*) << endl;
+}
+
+void test_mem_alloc()
+{
+	char* big = new char[4 * 1024 * 1024];
+	getchar();
+	delete[]big;
+}
+
+void test_IR_simple()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a++";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("factor");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->add(new IR::OperandType::Variable(Word::mock(L"a")));
+	backend->ir_gen_->factor_reader(tree->get_root());
+
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a--";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("factor");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->add(new IR::OperandType::Variable(Word::mock(L"a")));
+	backend->ir_gen_->factor_reader(tree->get_root());
+
+
+	delete tree;
+	delete env;
+	delete backend;
 }
 
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
-	//_CrtSetBreakAlloc(1256);
-	test_func_5_parse();
+	//_CrtSetBreakAlloc(1453);
+	test_IR_simple();
 	_CrtDumpMemoryLeaks();
 	getchar();
 
 	return 0;
-
 }
-

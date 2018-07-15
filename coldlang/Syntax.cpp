@@ -7,9 +7,9 @@ Syntax::Syntax(Lexer* lexer): lexer_(lexer)
 	bad_syntax_flag_ = false;
 }
 
-Tree * Syntax::parse()
+Tree * Syntax::parse(const char * root_name)
 {
-	auto tree_builders = tree_meta_->get_tree_builders("expr");
+	auto tree_builders = tree_meta_->get_tree_builders(root_name);
 	TreeNode * root = parse(tree_builders);
 	Tree * tree = new Tree(root);
 	if (bad_syntax_flag_)
@@ -37,6 +37,7 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 {
 	TreeNode * result_node = new TreeNode(
 		tree_builder->get_name(),
+		tree_builder->get_builder_name(),
 		tree_builder->get_component_list().size()
 	);
 	int index = 0;
@@ -57,8 +58,8 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 		}
 		else
 		{
-			Token * peek_token = lexer_->peek_token(0);
-			if (component.is_good_token(peek_token))
+			shared_ptr<Token> peek_token = lexer_->peek_token(0);
+			if (component.is_good_token(peek_token.get()))
 			{
 				result_node->set_child(index, peek_token);
 				lexer_->next_token();
@@ -99,7 +100,7 @@ bool Syntax::judge_peek_list(const vector<TreeUnitBuilder>& peek_list)
 	for (auto peek : peek_list)
 	{
 		if (peek.get_unit_type_() != TreeUnitBuilder::u_multi_units) {
-			Token * peek_token = lexer_->peek_token(index);
+			Token * peek_token = lexer_->peek_token(index).get();
 			if (peek.get_not() == true)
 			{
 				if (peek_token == nullptr)
