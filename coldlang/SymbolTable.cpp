@@ -15,6 +15,14 @@ namespace IR{
 		symbol_id++;
 	}
 
+	void SymbolTable::mock(initializer_list<const wchar_t *> init_list)
+	{
+		for (auto name : init_list)
+		{
+			add(new IR::OperandType::Variable(Word::mock(name)));
+		}
+	}
+
 	OperandType::Symbol * IR::SymbolTable::get_by_name(const wchar_t * name)
 	{
 		auto iter = name_to_symbol_.find(name);

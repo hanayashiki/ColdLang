@@ -205,25 +205,29 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"term_tail",
 		{ Delimiter::star },
-		{ Delimiter::star, "term" }
+		{ Delimiter::star, "term" },
+		"term_tail_star"
 	));
 
 	add_builder(new TreeBuilder(
 		"term_tail",
 		{ Delimiter::divide },
-		{ Delimiter::divide, "term" }
+		{ Delimiter::divide, "term" },
+		"term_tail_divide"
 	));
 
 	add_builder(new TreeBuilder(
 		"term_tail",
 		{ Delimiter::mod },
-		{ Delimiter::mod, "term" }
+		{ Delimiter::mod, "term" },
+		"term_tail_mod"
 	));
 
 	add_builder(new TreeBuilder(
 		"term_tail",
 		{},
-		{}
+		{},
+		"term_tail_empty"
 	));
 
 	// factor -> entity | entity `++` | entity `--` | `+` entity | `-` entity

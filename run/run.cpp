@@ -358,12 +358,60 @@ void test_IR_simple()
 	delete backend;
 }
 
+void test_IR_mul()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a*b";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("term");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b" });
+	backend->ir_gen_->term_reader(tree->get_root(), nullptr, "");
+
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a--*b%c/d++*e";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("term");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e" });
+	backend->ir_gen_->term_reader(tree->get_root(), nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("term");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a" });
+	backend->ir_gen_->term_reader(tree->get_root(), nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(1453);
-	test_IR_simple();
+	test_IR_mul();
 	_CrtDumpMemoryLeaks();
 	getchar();
 

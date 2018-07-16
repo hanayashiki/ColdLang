@@ -90,5 +90,131 @@ namespace IR
 					+ L" " + target_->to_string();
 			}
 		};
+
+		class Mul : public VirtualMul
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class MulTwo : public VirtualMulTwo
+		{
+		private:
+			OperandType::Symbol * target_1_;
+			OperandType::Symbol * target_2_;
+		public:
+			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			{
+				target_1_ = s1;
+				target_2_ = s2;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_1_->to_string() + L" " + target_2_->to_string();
+			}
+		};
+
+		class Div : public VirtualDiv
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class DivTwo : public VirtualDivTwo
+		{
+		private:
+			OperandType::Symbol * target_1_;
+			OperandType::Symbol * target_2_;
+		public:
+			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			{
+				target_1_ = s1;
+				target_2_ = s2;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_1_->to_string() + L" " + target_2_->to_string();
+			}
+		};
+
+		class Mod : public VirtualMod
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class ModTwo : public VirtualModTwo
+		{
+		private:
+			OperandType::Symbol * target_1_;
+			OperandType::Symbol * target_2_;
+		public:
+			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			{
+				target_1_ = s1;
+				target_2_ = s2;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_1_->to_string() + L" " + target_2_->to_string();
+			}
+		};
 	}
 }

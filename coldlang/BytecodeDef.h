@@ -61,12 +61,18 @@ namespace IR
 	/* multiply with Acc */\
 	C(Mul, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	C(MulImm64, AccumulatorUse::ReadWrite, OperandType::Imm64*)\
+	/* binary multiply to Acc */\
+	C(MulTwo, AccumulatorUse::ReadWrite, OperandType::Symbol*, OperandType::Symbol*)\
 	/* divide with Acc */\
 	C(Div, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	C(DivImm64, AccumulatorUse::ReadWrite, OperandType::Imm64*)\
+	/* binary divide to Acc */\
+	C(DivTwo, AccumulatorUse::ReadWrite, OperandType::Symbol*, OperandType::Symbol*)\
 	/* mod with Acc */\
 	C(Mod, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	C(ModImm64, AccumulatorUse::ReadWrite, OperandType::Imm64*)\
+	/* binary mod to Acc */\
+	C(ModTwo, AccumulatorUse::ReadWrite, OperandType::Symbol*, OperandType::Symbol*)\
 	/* incremenmt arg0 */\
 	C(Inc, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	/* decrement arg0 */\
