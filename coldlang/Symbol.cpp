@@ -2,7 +2,7 @@
 
 namespace IR {
 	OperandType::Symbol::Symbol(shared_ptr<Token> && token, ValueType vt)
-		: token_(token), value_type_(vt)
+		: token_(token), value_type_(vt), is_temp_(false)
 	{
 	}
 
@@ -33,5 +33,13 @@ namespace IR {
 	wstring OperandType::Symbol::to_string()
 	{
 		return token_->to_string();
+	}
+	void OperandType::Symbol::set_temp(bool is_temp)
+	{
+		is_temp_ = is_temp;
+	}
+	bool OperandType::Symbol::is_temp()
+	{
+		return is_temp_;
 	}
 }

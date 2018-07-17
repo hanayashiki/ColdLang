@@ -216,5 +216,65 @@ namespace IR
 					+ L" " + target_1_->to_string() + L" " + target_2_->to_string();
 			}
 		};
+
+		class Add : public VirtualAdd
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class Sub : public VirtualSub
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class StoreAcc : public VirtualStoreAcc
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
 	}
 }

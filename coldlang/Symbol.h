@@ -17,6 +17,7 @@ namespace IR
 			shared_ptr<Token> token_;
 			size_t id_;
 			ValueType value_type_;
+			bool is_temp_;
 		public:
 			Symbol(shared_ptr<Token> && token_, ValueType vt = LValue);
 			shared_ptr<Token> & get_token();
@@ -25,6 +26,8 @@ namespace IR
 			ValueType get_value_type();
 			void set_id(size_t);
 			virtual wstring to_string();
+			void set_temp(bool is_temp);
+			bool is_temp();
 		};
 	}
 }

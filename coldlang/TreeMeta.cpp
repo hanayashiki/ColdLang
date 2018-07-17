@@ -179,19 +179,22 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_5_tail",
 		{ Delimiter::add },
-		{ Delimiter::add, "expr_5" }
+		{ Delimiter::add, "expr_5" },
+		"expr_5_tail_add"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_5_tail",
 		{ Delimiter::minus },
-		{ Delimiter::minus, "expr_5" }
+		{ Delimiter::minus, "expr_5" },
+		"expr_5_tail_minus"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_5_tail",
 		{},
-		{}
+		{},
+		"expr_5_tail_empty"
 	));
 
 	// term -> factor { (`*`|`/`|`%`) factor }
@@ -235,7 +238,8 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"factor",
 		{ entity_peek_ },
-		{ "entity", "entity_tail_op" }
+		{ "entity", "entity_tail_op" },
+		"entity_entity_tail_op"
 	));
 
 	add_builder(new TreeBuilder(

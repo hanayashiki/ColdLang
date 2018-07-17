@@ -4,7 +4,7 @@
 namespace IR {
 
 	TempTable::TempTable(SymbolTable * symbol_table)
-		: symbol_table_(symbol_table)
+		: symbol_table_(symbol_table), id_(0)
 	{
 	}
 
@@ -17,9 +17,10 @@ namespace IR {
 			free_temp_.pop_front();
 		} else
 		{
-			//ret = new OperandType::Variable();
+			ret = new_temp();
+			ret->set_temp(true);
 		}
-		return nullptr;
+		return ret;
 	}
 
 	void TempTable::revert(OperandType::Variable * temp)
@@ -29,8 +30,8 @@ namespace IR {
 
 	OperandType::Variable * TempTable::new_temp()
 	{
-		static int id = 0;
-		//return new OperandType::Variable()
-		return nullptr;
+		wstring new_temp_name = L"%t" + to_wstring(id_++);
+		symbol_table_->mock({ new_temp_name.c_str() });
+		return static_cast<OperandType::Variable*>(symbol_table_->get_by_name(new_temp_name.c_str()));
 	}
 }
