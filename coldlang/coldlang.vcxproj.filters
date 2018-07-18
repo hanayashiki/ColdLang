@@ -287,6 +287,9 @@
     <ClCompile Include="ColdLangBackend.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="IRBinaryGenerator.cpp">
+      <Filter>源文件\ir</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json">
@@ -296,6 +299,9 @@
   <ItemGroup>
     <Text Include="syntax_definition.md">
       <Filter>资源文件\doc</Filter>
+    </Text>
+    <Text Include="BinaryIRGeneratorGenerator.py">
+      <Filter>头文件\ir\symboltable</Filter>
     </Text>
   </ItemGroup>
 </Project>

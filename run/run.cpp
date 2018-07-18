@@ -491,6 +491,120 @@ void test_IR_add()
 	delete env;
 	delete backend;
 
+	code = L"a*b";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_5");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_IR_compare()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a<=b";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_4");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b" });
+	backend->ir_gen_->expr_4_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a*b>=c+d";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_4");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c", L"d" });
+	backend->ir_gen_->expr_4_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_IR_equal()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a*b != b-c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_3");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_3_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a<=b == b>c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_3");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_3_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_IR_and_or()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a && b || c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_1");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_1_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a && b || c <= a";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr_1");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend(tree);
+	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_1_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
 }
 
 int main()
@@ -498,7 +612,7 @@ int main()
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(6933);
-	test_IR_add();
+	test_IR_and_or();
 	_CrtDumpMemoryLeaks();
 	getchar();
 

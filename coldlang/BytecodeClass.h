@@ -276,5 +276,165 @@ namespace IR
 					+ L" " + target_->to_string();
 			}
 		};
+
+		class GreaterEqual : public VirtualGreaterEqual
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class GreaterThan : public VirtualGreaterThan
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class LessThan : public VirtualLessThan
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class LessEqual : public VirtualLessEqual
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class Equal : public VirtualEqual
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class NotEqual : public VirtualNotEqual
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class And : public VirtualAnd
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class Or : public VirtualOr
+		{
+		private:
+			OperandType::Symbol * target_;
+		public:
+			void init(OperandType::Symbol* s) override
+			{
+				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
 	}
 }

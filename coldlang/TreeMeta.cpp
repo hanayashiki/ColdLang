@@ -75,13 +75,15 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_1_tail",
 		{ Delimiter::_or },
-		{ Delimiter::_or, "expr_1" }
+		{ Delimiter::_or, "expr_1" },
+		"expr_1_tail_or"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_1_tail",
 		{ },
-		{ }
+		{ },
+		"expr_1_tail_empty"
 	));
 
 	// expr_2 -> expr_3 { `&&` expr_3 }
@@ -95,13 +97,15 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_2_tail",
 		{ Delimiter::_and },
-		{ Delimiter::_and, "expr_2" }
+		{ Delimiter::_and, "expr_2" },
+		"expr_2_tail_and"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_2_tail",
 		{},
-		{}
+		{},
+		"expr_2_tail_empty"
 	));
 
 	// expr_3 -> expr_4 { (`==`|`!=`) expr_4 }
@@ -115,19 +119,22 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_3_tail",
 		{ Delimiter::not_equal },
-		{ Delimiter::not_equal, "expr_3" }
+		{ Delimiter::not_equal, "expr_3" },
+		"not_equal_expr_3"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_3_tail",
 		{ Delimiter::equal },
-		{ Delimiter::equal, "expr_3" }
+		{ Delimiter::equal, "expr_3" },
+		"equal_expr_3"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_3_tail",
 		{},
-		{}
+		{},
+		"expr_3_tail_empty"
 	));
 
 	// expr_4 -> expr_5 { (`>=`|`>`|`<`|`<=`) expr_5 }
@@ -141,31 +148,36 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_4_tail",
 		{ Delimiter::greater_equal },
-		{ Delimiter::greater_equal, "expr_4" }
+		{ Delimiter::greater_equal, "expr_4" },
+		"greater_equal_expr_4"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_4_tail",
 		{ Delimiter::greater },
-		{ Delimiter::greater, "expr_4" }
+		{ Delimiter::greater, "expr_4" },
+		"greater_expr_4"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_4_tail",
 		{ Delimiter::less_equal },
-		{ Delimiter::less_equal, "expr_4" }
+		{ Delimiter::less_equal, "expr_4" },
+		"less_equal_expr_4"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_4_tail",
 		{ Delimiter::less },
-		{ Delimiter::less, "expr_4" }
+		{ Delimiter::less, "expr_4" },
+		"less_expr_4"
 	));
 
 	add_builder(new TreeBuilder(
 		"expr_4_tail",
 		{},
-		{}
+		{},
+		"expr_4_tail_empty"
 	));
 
 	// expr_5 -> term { (`+`|`-`) term }

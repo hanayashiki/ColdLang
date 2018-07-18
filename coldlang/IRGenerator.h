@@ -2,6 +2,13 @@
 #include "stdafx.h"
 #include "BytecodeWriter.h"
 
+#define EMIT(bytecode_name, writer, ...) \
+	{\
+		auto bytecode = IR::BytecodeClass::##bytecode_name();\
+		bytecode.init(__VA_ARGS__);\
+		writer->emit(bytecode);\
+	}
+
 namespace IR {
 	using namespace OperandType;
 	class IRGenerator
@@ -24,6 +31,16 @@ namespace IR {
 		Symbol * term_reader(TreeNode * tn, bool head, string && left_builder_name);
 		Symbol * expr_5_reader(TreeNode * tn, bool head, Symbol * left_symbol, string && left_builder_name);
 		void expr_5_tail_reader(TreeNode * tn, Symbol * target_symbol);
+
+		Symbol * expr_4_reader(TreeNode * tn, bool head, Symbol * left_symbol, string && left_builder_name);
+		void expr_4_tail_reader(TreeNode * tn, Symbol * target_symbol);
+		Symbol * expr_3_reader(TreeNode * tn, bool head, Symbol * left_symbol, string && left_builder_name);
+		void expr_3_tail_reader(TreeNode * tn, Symbol * target_symbol);
+		Symbol * expr_2_reader(TreeNode * tn, bool head, Symbol * left_symbol, string && left_builder_name);
+		void expr_2_tail_reader(TreeNode * tn, Symbol * target_symbol);
+		Symbol * expr_1_reader(TreeNode * tn, bool head, Symbol * left_symbol, string && left_builder_name);
+		void expr_1_tail_reader(TreeNode * tn, Symbol * target_symbol);
+
 		void term_tail_reader(TreeNode * tn);
 		void entity_tail_op_reader(TreeNode * tn, Symbol * target_symbol);
 	};

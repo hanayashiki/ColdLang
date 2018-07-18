@@ -48,15 +48,6 @@
 */
 
 
-
-#define EMIT(bytecode_name, writer, ...) \
-	{\
-		auto bytecode = IR::BytecodeClass::##bytecode_name();\
-		bytecode.init(__VA_ARGS__);\
-		writer->emit(bytecode);\
-	}
-
-
 namespace IR {
 	using namespace OperandType;
 	using namespace BytecodeClass;
@@ -152,7 +143,7 @@ namespace IR {
 		if (head)
 		{
 			Symbol * term = term_reader(tn->get_non_terminal(0), true, "");
-			if (tn->get_non_terminal(1)->get_builder_name() == "term_tail_empty")
+			if (tn->get_non_terminal(1)->get_builder_name() == "expr_5_tail_empty")
 			{
 				ret = term;
 				goto finish_side_effects;
@@ -214,7 +205,6 @@ namespace IR {
 			expr_5_reader(tn->get_non_terminal(1), false, target_symbol, tn->get_builder_name());
 		}
 	}
-
 
 	void IRGenerator::term_tail_reader(TreeNode * tn)
 	{
