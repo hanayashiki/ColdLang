@@ -42,4 +42,7 @@ namespace IR {
 	{
 		return is_temp_;
 	}
+	OperandType::Symbol::~Symbol()
+	{
+	}
 }

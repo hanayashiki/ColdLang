@@ -14,7 +14,7 @@ namespace IR
 		SymbolTable* symbol_table_;
 		OperandType::Variable* new_temp();
 	public:
-		explicit TempTable(SymbolTable* symbol_table);
+		explicit TempTable(SymbolTable* symbol_table_);
 		OperandType::Variable* lend();
 		void revert(OperandType::Variable*);
 	};

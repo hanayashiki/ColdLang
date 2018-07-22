@@ -38,4 +38,5 @@ different levels of priorities.
 define function, and opt to call it at once.
 
 + func_def_and_optional_call -> func_def | (None | `(` comma_exprs `)`)
-+ func_def -> `fn` comma_identifiers `{` statement_block `}`
++ func_def -> `fn` func_name comma_identifiers `{` statement_block `}`
++ func_name -> string | None

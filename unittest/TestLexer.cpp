@@ -90,7 +90,7 @@ namespace unittest
 		TEST_METHOD(ParseWord)
 		{
 			wstring code = L"fn class	struct\n"
-				L"use if while for return	task clas f "
+				L"use if while for ret	task clas f "
 				"c88	ccccccccccccccccccasdwasdwdsaggadgegwqfsdvfzb__99852__   _qqq\n";
 			Word::WordType ans[] = {
 				Word::keyword_fn,

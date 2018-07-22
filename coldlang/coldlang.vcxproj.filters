@@ -15,9 +15,6 @@
     <Filter Include="头文件\lexer">
       <UniqueIdentifier>{08c72271-29d9-4577-a89f-536d61e96051}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\object">
-      <UniqueIdentifier>{b2d4e46f-9de0-42f1-8e2f-85c4fe2448b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\cl_object">
       <UniqueIdentifier>{44e77f65-a989-4473-b2b9-f185ca875ca8}</UniqueIdentifier>
     </Filter>
@@ -26,9 +23,6 @@
     </Filter>
     <Filter Include="源文件\config">
       <UniqueIdentifier>{394cd111-a00d-4e3f-a9e8-a9bac0bdeaba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\object">
-      <UniqueIdentifier>{27e08192-a2fe-4b4e-8e79-50c52064e420}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\lexer\token">
       <UniqueIdentifier>{fda1db42-c708-4574-bac7-409c795ba600}</UniqueIdentifier>
@@ -44,12 +38,6 @@
     </Filter>
     <Filter Include="源文件\ir">
       <UniqueIdentifier>{0d34500b-2599-4b92-b2cc-fc6087523e45}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\ir\symboltable">
-      <UniqueIdentifier>{0885ea99-b0fa-464b-8832-26ed425717a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\ir\symbol_table">
-      <UniqueIdentifier>{9a47af84-a910-42ab-bf2b-c073108687ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\ir\bytecode">
       <UniqueIdentifier>{2772b667-ceb6-4a99-9f42-5c001d437344}</UniqueIdentifier>
@@ -73,6 +61,21 @@
     <Filter Include="源文件\ir\bytecode">
       <UniqueIdentifier>{2b58396d-a97e-4cb4-88cb-e1a8b55b2a6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\ir\irgen">
+      <UniqueIdentifier>{e17e03c0-81a9-45f3-9920-6e6db2866973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ir\irgen">
+      <UniqueIdentifier>{9a9e175c-f345-4e54-ae54-32755956d76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ir\irgen\resource">
+      <UniqueIdentifier>{04d12464-e72d-427b-abe3-19af08ac43c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ir\object">
+      <UniqueIdentifier>{b2d4e46f-9de0-42f1-8e2f-85c4fe2448b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ir\object">
+      <UniqueIdentifier>{27e08192-a2fe-4b4e-8e79-50c52064e420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -85,10 +88,10 @@
       <Filter>头文件\lexer</Filter>
     </ClInclude>
     <ClInclude Include="CLObject.h">
-      <Filter>头文件\object</Filter>
+      <Filter>头文件\ir\object</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
-      <Filter>头文件\object</Filter>
+      <Filter>头文件\ir\object</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>头文件\config</Filter>
@@ -159,9 +162,6 @@
     <ClInclude Include="BadSyntaxException.h">
       <Filter>头文件\syntax</Filter>
     </ClInclude>
-    <ClInclude Include="SymbolTable.h">
-      <Filter>头文件\ir\symboltable</Filter>
-    </ClInclude>
     <ClInclude Include="BytecodeClass.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
@@ -189,23 +189,41 @@
     <ClInclude Include="Symbol.h">
       <Filter>头文件\ir\operands</Filter>
     </ClInclude>
-    <ClInclude Include="IRGenerator.h">
-      <Filter>头文件\ir</Filter>
-    </ClInclude>
     <ClInclude Include="BytecodeWriter.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
     <ClInclude Include="BytecodeBase.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
-    <ClInclude Include="TempTable.h">
-      <Filter>头文件\ir</Filter>
-    </ClInclude>
     <ClInclude Include="BytecodeDumper.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
     <ClInclude Include="ColdLangBackend.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>头文件\ir\operands</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignTarget.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="IRGenerator.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolException.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="TempTable.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTable.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>头文件\ir\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,13 +240,13 @@
       <Filter>源文件\config</Filter>
     </ClCompile>
     <ClCompile Include="Module.cpp">
-      <Filter>源文件\object</Filter>
+      <Filter>源文件\ir\object</Filter>
     </ClCompile>
     <ClCompile Include="LexerConfig.cpp">
       <Filter>源文件\lexer</Filter>
     </ClCompile>
     <ClCompile Include="ModuleConfig.cpp">
-      <Filter>源文件\object</Filter>
+      <Filter>源文件\ir\object</Filter>
     </ClCompile>
     <ClCompile Include="Lexer.cpp">
       <Filter>源文件\lexer</Filter>
@@ -263,32 +281,41 @@
     <ClCompile Include="NumberParser.cpp">
       <Filter>源文件\lexer</Filter>
     </ClCompile>
-    <ClCompile Include="ir.cpp">
-      <Filter>源文件\syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="SymbolTable.cpp">
-      <Filter>源文件\ir\symbol_table</Filter>
-    </ClCompile>
-    <ClCompile Include="Variable.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Symbol.cpp">
       <Filter>源文件\ir\operands</Filter>
     </ClCompile>
     <ClCompile Include="BytecodeClass.cpp">
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
-    <ClCompile Include="IRGenerator.cpp">
-      <Filter>源文件\ir</Filter>
-    </ClCompile>
-    <ClCompile Include="TempTable.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ColdLangBackend.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>源文件\ir\operands</Filter>
+    </ClCompile>
     <ClCompile Include="IRBinaryGenerator.cpp">
-      <Filter>源文件\ir</Filter>
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="IRFunctionGenerator.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="IRGenerator.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>源文件\ir\operands</Filter>
+    </ClCompile>
+    <ClCompile Include="Variable.cpp">
+      <Filter>源文件\ir\operands</Filter>
+    </ClCompile>
+    <ClCompile Include="TempTable.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTable.cpp">
+      <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,7 +328,7 @@
       <Filter>资源文件\doc</Filter>
     </Text>
     <Text Include="BinaryIRGeneratorGenerator.py">
-      <Filter>头文件\ir\symboltable</Filter>
+      <Filter>头文件\ir\irgen\resource</Filter>
     </Text>
   </ItemGroup>
 </Project>

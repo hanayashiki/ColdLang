@@ -52,7 +52,7 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 		}
 		else if (component.get_unit_type_() == TreeUnitBuilder::u_name)
 		{
-			wcout << component.get_name() << endl;
+			// wcout << component.get_name() << endl;
 			TreeNode * node = parse(tree_meta_->get_tree_builders(component.get_name()));
 			result_node->set_child(index, node);
 		}

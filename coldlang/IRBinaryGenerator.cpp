@@ -35,10 +35,7 @@ namespace IR {
 		}
 		else
 		{
-			if (left_symbol == nullptr) {
-				left_symbol = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, left_symbol);
-			}
+			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_5 = expr_5_reader(tn->get_non_terminal(0), true, nullptr, "");
 			if (expr_5 == nullptr)
 			{
@@ -100,10 +97,7 @@ namespace IR {
 		}
 		else
 		{
-			if (left_symbol == nullptr) {
-				left_symbol = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, left_symbol);
-			}
+			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_4 = expr_4_reader(tn->get_non_terminal(0), true, nullptr, "");
 			if (expr_4 == nullptr)
 			{
@@ -161,10 +155,7 @@ namespace IR {
 		}
 		else
 		{
-			if (left_symbol == nullptr) {
-				left_symbol = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, left_symbol);
-			}
+			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_3 = expr_3_reader(tn->get_non_terminal(0), true, nullptr, "");
 			if (expr_3 == nullptr)
 			{
@@ -220,10 +211,7 @@ namespace IR {
 		}
 		else
 		{
-			if (left_symbol == nullptr) {
-				left_symbol = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, left_symbol);
-			}
+			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_2 = expr_2_reader(tn->get_non_terminal(0), true, nullptr, "");
 			if (expr_2 == nullptr)
 			{

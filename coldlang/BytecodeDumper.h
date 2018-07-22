@@ -7,10 +7,14 @@ namespace IR
 	class BytecodeDumper : public BytecodeWriter
 	{
 	public:
-		virtual void emit(BytecodeClass::BytecodeBase& bytecode) override
+		void emit(BytecodeClass::BytecodeBase & bytecode) override
 		{
 			// todo
 			wcout << bytecode.to_string() << endl;
+		}
+		void bind(OperandType::Label & label) override
+		{
+			wcout << label.to_string() + L":" << endl;
 		}
 	};
 }

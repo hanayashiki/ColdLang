@@ -7,8 +7,6 @@ namespace IR
 	{
 		class Imm64 {
 		};
-		class Label {
-		};
 		class Index {
 		};
 	}

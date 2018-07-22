@@ -28,6 +28,7 @@ namespace IR
 			virtual wstring to_string();
 			void set_temp(bool is_temp);
 			bool is_temp();
+			~Symbol();
 		};
 	}
 }

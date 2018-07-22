@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "Symbol.h"
 
 namespace IR
 {
@@ -7,9 +8,8 @@ namespace IR
 	{
 		class Variable : public Symbol
 		{
-		private:
-			shared_ptr<Token> token_;
 		public:
+			Variable(shared_ptr<Token> & token);
 			Variable(shared_ptr<Token> && token);
 			const wchar_t * get_name();
 		};

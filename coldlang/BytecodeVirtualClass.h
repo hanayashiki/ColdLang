@@ -3,6 +3,7 @@
 #include "BytecodeEnum.h"
 #include "BytecodeBase.h"
 #include "Symbol.h"
+#include "Label.h"
 
 namespace IR
 {

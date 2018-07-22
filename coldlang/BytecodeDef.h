@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "BytecodeOperandTypes.h"
+#include "Function.h"
 
 namespace IR
 {
@@ -20,10 +21,14 @@ namespace IR
 #define BYTECODE_LIST(C)\
 	/* call function arg0 with pushed parameters, with return value overwriting Acc */\
 	C(CallFunc, AccumulatorUse::Write, OperandType::Index*)\
+	/* return accumulator */\
+	C(RetAcc, AccumulatorUse::Read)\
 	/* push function parameter */\
 	C(PushParamImm64, AccumulatorUse::None, OperandType::Imm64*)\
 	C(PushParamSymbol, AccumulatorUse::None, OperandType::Symbol*)\
 	C(PushParamAcc, AccumulatorUse::Read)\
+	/* jump to arg0 */\
+	C(Jump, AccumulatorUse::None, OperandType::Label*)\
 	/* jump to arg0 if Acc is true */\
 	C(JumpOnTrue, AccumulatorUse::Read, OperandType::Label*)\
 	/* jump to arg1 if Acc is false */\
@@ -81,6 +86,8 @@ namespace IR
 	C(Neg, AccumulatorUse::ReadWrite)\
 	/* load symbol to accumulator */\
 	C(LoadSymbolToAcc, AccumulatorUse::Write, OperandType::Symbol*)\
+	/* load func def to accumulator */\
+	C(LoadFunctionToAcc, AccumulatorUse::Write, Function*)\
 	/* visit attribute arg1 of arg0 and load it to accumulator */\
 	C(LoadAttributeToAcc, AccumulatorUse::Write, OperandType::Symbol*, OperandType::Index*)\
 	/* store Acc to arg0 */\

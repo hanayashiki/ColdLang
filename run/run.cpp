@@ -28,7 +28,7 @@
 void test_func_parse1()
 {
 	wstring code = L"fn class	struct\n"
-		L"use if while for return	task clas f "
+		L"use if while for ret	task clas f "
 		"c88	ccccccccccccccccccasdwasdwdsaggadgegwqfsdvfzb__99852__   _qqq\n";
 	Word::WordType ans[] = {
 		Word::keyword_fn,
@@ -251,7 +251,7 @@ void test_func_6_parse_func_def()
 	Tree* tree;
 	ColdLangFrontEnv* env;
 
-	code = L"fn a { return a }";
+	code = L"fn a { ret a }";
 	env = new ColdLangFrontEnv(&code);
 
 	tree = env->syntax->parse();
@@ -262,7 +262,7 @@ void test_func_6_parse_func_def()
 
 	code = L"fn a, b, cde {\n"
 		"a = a + 1\n"
-		"return 2 * a }"
+		"ret 2 * a }"
 		"(\'习近平\', \'习远平\')";
 	wcout << code << endl;
 	env = new ColdLangFrontEnv(&code);
@@ -334,8 +334,8 @@ void test_IR_simple()
 	tree = env->syntax->parse("factor");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->add(new IR::OperandType::Variable(Word::mock(L"a")));
+	backend = new ColdLangBackend();
+	backend->symbol_table_->add(new IR::OperandType::Variable(Word::mock(L"a")));
 	//backend->ir_gen_->factor_reader(tree->get_root());
 
 
@@ -348,8 +348,8 @@ void test_IR_simple()
 	tree = env->syntax->parse("factor");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->add(new IR::OperandType::Variable(Word::mock(L"a")));
+	backend = new ColdLangBackend();
+	backend->symbol_table_->add(new IR::OperandType::Variable(Word::mock(L"a")));
 	//backend->ir_gen_->factor_reader(tree->get_root());
 
 
@@ -370,8 +370,8 @@ void test_IR_mul()
 	tree = env->syntax->parse("term");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b" });
 	backend->ir_gen_->term_reader(tree->get_root(), true, "");
 
 
@@ -384,8 +384,8 @@ void test_IR_mul()
 	tree = env->syntax->parse("term");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e" });
 	backend->ir_gen_->term_reader(tree->get_root(), true, "");
 
 	delete tree;
@@ -397,8 +397,8 @@ void test_IR_mul()
 	tree = env->syntax->parse("term");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a" });
 	backend->ir_gen_->term_reader(tree->get_root(), true, "");
 
 	delete tree;
@@ -418,8 +418,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -431,8 +431,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -444,8 +444,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -457,8 +457,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -470,8 +470,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -483,8 +483,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -496,8 +496,8 @@ void test_IR_add()
 	tree = env->syntax->parse("expr_5");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g" });
 	backend->ir_gen_->expr_5_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -517,8 +517,8 @@ void test_IR_compare()
 	tree = env->syntax->parse("expr_4");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b" });
 	backend->ir_gen_->expr_4_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -530,8 +530,8 @@ void test_IR_compare()
 	tree = env->syntax->parse("expr_4");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c", L"d" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d" });
 	backend->ir_gen_->expr_4_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -551,8 +551,8 @@ void test_IR_equal()
 	tree = env->syntax->parse("expr_3");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->expr_3_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -564,8 +564,8 @@ void test_IR_equal()
 	tree = env->syntax->parse("expr_3");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->expr_3_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -585,8 +585,8 @@ void test_IR_and_or()
 	tree = env->syntax->parse("expr_1");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->expr_1_reader(tree->get_root(), true, nullptr, "");
 
 	delete tree;
@@ -598,9 +598,202 @@ void test_IR_and_or()
 	tree = env->syntax->parse("expr_1");
 	std::wcout << tree->to_xml(100);
 
-	backend = new ColdLangBackend(tree);
-	backend->symbol_table->mock({ L"a", L"b", L"c" });
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->expr_1_reader(tree->get_root(), true, nullptr, "");
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_IR_expr()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a*b*c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a ? b + c : c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a * b ? b + c : c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->expr_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"a * b * c ? e ? f : g : h";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("expr");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c", L"d", L"e", L"f", L"g", L"h" });
+	backend->ir_gen_->expr_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_IR_statement()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a = b + c";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+}
+
+void test_IR_statement_block()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a = b + c\n"
+			"u = b\n"
+			"h = a * u";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+}
+
+void test_func_def()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a, b, c, d, e123";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("comma_identifiers");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->ir_gen_->comma_identifiers_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"func = fn a, b, c { a = b + c }";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->ir_gen_->statement_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"f = fn param1, param2 { a = a + b   param1 = param2++    } + fn param3 { a = param3 ++ }";
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"f = fn param1 { func = fn param2 { a = a + b } }";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"f = fn param1 { func = fn { } }";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"f = fn x { ret fn y { ret x+y } }";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_reader(tree->get_root());
 
 	delete tree;
 	delete env;
@@ -611,8 +804,8 @@ int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
-	//_CrtSetBreakAlloc(6933);
-	test_IR_and_or();
+	//_CrtSetBreakAlloc(2093);
+	test_func_def();
 	_CrtDumpMemoryLeaks();
 	getchar();
 

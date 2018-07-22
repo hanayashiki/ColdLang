@@ -22,7 +22,7 @@ public:
 		trie.add_sequence(L"if", 2, Word::keyword_if);
 		trie.add_sequence(L"while", 5, Word::keyword_while);
 		trie.add_sequence(L"for", 3, Word::keyword_for);
-		trie.add_sequence(L"return", 6, Word::keyword_return);
+		trie.add_sequence(L"ret", 3, Word::keyword_return);
 		trie.add_sequence(L"task", 4, Word::keyword_task);
 	}
 

@@ -38,6 +38,7 @@ namespace IR
 	public:
 		SymbolTable(SymbolTable * parent = nullptr);
 		void add(OperandType::Variable* symbol);
+		bool define(OperandType::Variable* symbol);
 		void mock(initializer_list<const wchar_t *> init_list);
 		OperandType::Symbol * get_by_name(const wchar_t*);
 		OperandType::Symbol * get_by_id(size_t id);

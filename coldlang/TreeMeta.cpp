@@ -61,7 +61,8 @@ void TreeMeta::add_expr_defs()
 	add_builder(new TreeBuilder(
 		"expr_tail",
 		{ },
-		{ }
+		{ },
+		"expr_tail_empty"
 	));
 
 	// expr_1 -> expr_2 { `||` expr_2 }
@@ -295,7 +296,8 @@ void TreeMeta::add_statement_defs()
 	add_builder(new TreeBuilder(
 		"statement",
 		{ entity_peek_ },
-		{ "entity", "statement_right" }
+		{ "entity", "statement_right" },
+		"statement_entity_statement_right"
 	));
 
 	add_builder(new TreeBuilder(
@@ -307,37 +309,36 @@ void TreeMeta::add_statement_defs()
 	add_builder(new TreeBuilder(
 		"statement",
 		{ Word::keyword_return },
-		{ Word::keyword_return, "expr" }
+		{ Word::keyword_return, "expr" },
+		"statement_keyword_return_expr"
 	));
 
 	add_builder(new TreeBuilder(
 		"statement_block",
-		{ entity_peek_ },
-		{ "statement", "statement_block_tail" }
+		{ statement_peek_ },
+		{ "statement", "statement_block_tail" },
+		"statement_block_statement_statement_block_tail"
 	));
 
 	add_builder(new TreeBuilder(
 		"statement_block",
-		{ Word::keyword_return },
-		{ "statement", "statement_block_tail" }
+		{ },
+		{ },
+		"statement_block_empty"
 	));
 
 	add_builder(new TreeBuilder(
 		"statement_block_tail",
-		{ entity_peek_ },
-		{ "statement_block" }
-	));
-
-	add_builder(new TreeBuilder(
-		"statement_block_tail",
-		{ Word::keyword_return },
-		{ "statement_block" }
+		{ statement_peek_ },
+		{ "statement_block" },
+		"statement_block_tail_statement_block"
 	));
 
 	add_builder(new TreeBuilder(
 		"statement_block_tail",
 		{},
-		{}
+		{},
+		"statement_block_empty"
 	));
 }
 
@@ -352,19 +353,22 @@ void TreeMeta::add_func_defs()
 	add_builder(new TreeBuilder(
 		"comma_identifiers",
 		{ Word::identifier },
-		{ Word::identifier, "comma_identifiers_tail" }
+		{ Word::identifier, "comma_identifiers_tail" },
+		"comma_identifiers_identifier_comma_identifiers_tail"
 	));
 
 	add_builder(new TreeBuilder(
 		"comma_identifiers",
 		{ },
-		{ }
+		{ },
+		"comma_identifiers_empty"
 	));
 
 	add_builder(new TreeBuilder(
 		"comma_identifiers_tail",
 		{ Delimiter::comma },
-		{ Delimiter::comma, "comma_identifiers" }
+		{ Delimiter::comma, "comma_identifiers" },
+		"comma_identifier_tail_comma_comma_identifiers"
 	));
 
 	add_builder(new TreeBuilder(
@@ -382,13 +386,15 @@ void TreeMeta::add_func_defs()
 	add_builder(new TreeBuilder(
 		"optional_call",
 		{ Delimiter::left_paren },
-		{ Delimiter::left_paren, "comma_exprs", Delimiter::right_paren }
+		{ Delimiter::left_paren, "comma_exprs", Delimiter::right_paren },
+		"optional_call_left_paren_comma_exprs_right_paren"
 	));
 
 	add_builder(new TreeBuilder(
 		"optional_call",
 		{},
-		{}
+		{},
+		"optional_call_empty"
 	));
 
 	add_builder(new TreeBuilder(
@@ -444,7 +450,8 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"atom",
 		{ Word::keyword_fn },
-		{ "func_def_and_optional_call" }
+		{ "func_def_and_optional_call" },
+		"atom_func_def_and_optional_call"
 	));
 
 

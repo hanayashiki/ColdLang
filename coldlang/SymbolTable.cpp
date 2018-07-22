@@ -15,6 +15,18 @@ namespace IR{
 		symbol_id++;
 	}
 
+	bool SymbolTable::define(OperandType::Variable * symbol)
+	{
+		if (name_to_symbol_.find(symbol->get_name()) != name_to_symbol_.end())
+		{
+			return false;
+		} else
+		{
+			add(symbol);
+			return true;
+		}
+	}
+
 	void SymbolTable::mock(initializer_list<const wchar_t *> init_list)
 	{
 		for (auto name : init_list)
@@ -26,7 +38,14 @@ namespace IR{
 	OperandType::Symbol * IR::SymbolTable::get_by_name(const wchar_t * name)
 	{
 		auto iter = name_to_symbol_.find(name);
-		return iter->second;
+		if (iter != name_to_symbol_.end()) 
+		{
+			return iter->second;
+		} 
+		else
+		{
+			return nullptr;
+		}
 	}
 
 	OperandType::Symbol* SymbolTable::get_by_id(size_t id)

@@ -212,6 +212,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AssignTarget.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BytecodeBase.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -226,10 +227,13 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="FunctionTable.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="BytecodeDef.h" />
     <ClInclude Include="IRGenerator.h" />
     <ClInclude Include="KeywordTrie.h" />
+    <ClInclude Include="Label.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Literal.h" />
     <ClInclude Include="Module.h" />
@@ -240,6 +244,7 @@
     <ClInclude Include="String.h" />
     <ClInclude Include="StringParser.h" />
     <ClInclude Include="Symbol.h" />
+    <ClInclude Include="SymbolException.h" />
     <ClInclude Include="SymbolTable.h" />
     <ClInclude Include="Syntax.h" />
     <Text Include="BinaryIRGeneratorGenerator.py" />
@@ -267,9 +272,12 @@
     <ClCompile Include="ColdLangBackend.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ColdLangFrontEnv.cpp" />
-    <ClCompile Include="ir.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="FunctionTable.cpp" />
     <ClCompile Include="IRBinaryGenerator.cpp" />
+    <ClCompile Include="IRFunctionGenerator.cpp" />
     <ClCompile Include="IRGenerator.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="Syntax.cpp" />

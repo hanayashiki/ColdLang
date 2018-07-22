@@ -3,8 +3,8 @@
 
 namespace IR {
 
-	TempTable::TempTable(SymbolTable * symbol_table)
-		: symbol_table_(symbol_table), id_(0)
+	TempTable::TempTable(SymbolTable * symbol_table_)
+		: symbol_table_(symbol_table_), id_(0)
 	{
 	}
 

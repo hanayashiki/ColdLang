@@ -24,6 +24,15 @@ private:
 		Delimiter::add,
 		Delimiter::minus
 	});
+	const TreeUnitBuilder statement_peek_ = tutils::logical_or({
+		Word::identifier,
+		Word::keyword_return,
+		String::GeneralString,
+		"integer",
+		"float",
+		Word::keyword_fn,
+		Delimiter::left_paren,
+	});
 
 
 public:

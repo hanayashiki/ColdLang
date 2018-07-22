@@ -5,31 +5,52 @@ namespace IR
 {
 	namespace BytecodeClass
 	{
+		using namespace OperandType;
 		class LoadAttributeToAcc : public VirtualLoadAttributeToAcc
 		{
 		public:
-			void init(OperandType::Symbol*, OperandType::Index*) override
+			void init(Symbol* symbol, Index* index) override
 			{
 				wcout << "fuck you this is not implemented" << endl;
 			}
 			void dump_byte(char buf[]) override
 			{
-				
+
 			}
 		};
 
 		class LoadSymbolToAcc : public VirtualLoadSymbolToAcc
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* t) override
+			void init(Symbol* t) override
 			{
 				target_ = t;
 			}
 			void dump_byte(char buf[]) override
 			{
-				
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class LoadFunctionToAcc : public VirtualLoadFunctionToAcc
+		{
+		private:
+			Function * target_;
+		public:
+			void init(Function* t) override
+			{
+				target_ = t;
+			}
+			void dump_byte(char buf[]) override
+			{
+
 			}
 			wstring to_string() override
 			{
@@ -41,7 +62,7 @@ namespace IR
 		class CallFunc : public VirtualCallFunc
 		{
 		public:
-			void init(OperandType::Index*) override
+			void init(Index*) override
 			{
 				wcout << "fuck you this is not implemented" << endl;
 			}
@@ -51,12 +72,28 @@ namespace IR
 			}
 		};
 
+		class RetAcc : public VirtualRetAcc
+		{
+		public:
+			void init() override
+			{
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name());
+			}
+		};
+
 		class Inc : public VirtualInc
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -67,16 +104,16 @@ namespace IR
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
-				+ L" " + target_->to_string();
+					+ L" " + target_->to_string();
 			}
 		};
 
 		class Decre : public VirtualDecre
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -94,9 +131,9 @@ namespace IR
 		class Mul : public VirtualMul
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -114,10 +151,10 @@ namespace IR
 		class MulTwo : public VirtualMulTwo
 		{
 		private:
-			OperandType::Symbol * target_1_;
-			OperandType::Symbol * target_2_;
+			Symbol * target_1_;
+			Symbol * target_2_;
 		public:
-			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			void init(Symbol* s1, Symbol* s2) override
 			{
 				target_1_ = s1;
 				target_2_ = s2;
@@ -136,9 +173,9 @@ namespace IR
 		class Div : public VirtualDiv
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -156,10 +193,10 @@ namespace IR
 		class DivTwo : public VirtualDivTwo
 		{
 		private:
-			OperandType::Symbol * target_1_;
-			OperandType::Symbol * target_2_;
+			Symbol * target_1_;
+			Symbol * target_2_;
 		public:
-			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			void init(Symbol* s1, Symbol* s2) override
 			{
 				target_1_ = s1;
 				target_2_ = s2;
@@ -178,9 +215,9 @@ namespace IR
 		class Mod : public VirtualMod
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -198,10 +235,10 @@ namespace IR
 		class ModTwo : public VirtualModTwo
 		{
 		private:
-			OperandType::Symbol * target_1_;
-			OperandType::Symbol * target_2_;
+			Symbol * target_1_;
+			Symbol * target_2_;
 		public:
-			void init(OperandType::Symbol* s1, OperandType::Symbol* s2) override
+			void init(Symbol* s1, Symbol* s2) override
 			{
 				target_1_ = s1;
 				target_2_ = s2;
@@ -220,9 +257,9 @@ namespace IR
 		class Add : public VirtualAdd
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -240,9 +277,9 @@ namespace IR
 		class Sub : public VirtualSub
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -260,9 +297,9 @@ namespace IR
 		class StoreAcc : public VirtualStoreAcc
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -280,9 +317,9 @@ namespace IR
 		class GreaterEqual : public VirtualGreaterEqual
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -300,9 +337,9 @@ namespace IR
 		class GreaterThan : public VirtualGreaterThan
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -320,9 +357,9 @@ namespace IR
 		class LessThan : public VirtualLessThan
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -340,9 +377,9 @@ namespace IR
 		class LessEqual : public VirtualLessEqual
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -360,9 +397,9 @@ namespace IR
 		class Equal : public VirtualEqual
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -380,9 +417,9 @@ namespace IR
 		class NotEqual : public VirtualNotEqual
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -400,9 +437,9 @@ namespace IR
 		class And : public VirtualAnd
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
 			}
@@ -420,11 +457,71 @@ namespace IR
 		class Or : public VirtualOr
 		{
 		private:
-			OperandType::Symbol * target_;
+			Symbol * target_;
 		public:
-			void init(OperandType::Symbol* s) override
+			void init(Symbol* s) override
 			{
 				target_ = s;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class JumpOnTrue : public VirtualJumpOnTrue
+		{
+		private:
+			Label * target_;
+		public:
+			void init(Label* target) override
+			{
+				target_ = target;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class JumpOnFalse : public VirtualJumpOnFalse
+		{
+		private:
+			Label * target_;
+		public:
+			void init(Label * target) override
+			{
+				target_ = target;
+			}
+			void dump_byte(char buf[]) override
+			{
+
+			}
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class Jump : public VirtualJump
+		{
+		private:
+			Label * target_;
+		public:
+			void init(OperandType::Label* target) override
+			{
+				target_ = target;
 			}
 			void dump_byte(char buf[]) override
 			{
