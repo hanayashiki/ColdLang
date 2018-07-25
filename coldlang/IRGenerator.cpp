@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
+#include "RuntimeObject.h"
+#include "native_functions.h"
+#include "NativeSymbol.h"
+#include "NativeFunction.h"
+
 
 /* IR Generation Convention
 *
@@ -54,11 +59,31 @@ namespace IR {
 
 	IRGenerator::IRGenerator(SymbolTable * symbol_table,
 		FunctionTable * function_table,
+		LiteralTable * literal_table,
+		ConstantTable * constant_table,
 		BytecodeWriter * bytecode_writer)
-		: symbol_table_(symbol_table), bytecode_writer_(bytecode_writer),
+		: symbol_table_(symbol_table), 
 		function_table_(function_table),
-		temp_table_(new TempTable(symbol_table_))
+		constant_table_(constant_table),
+		literal_table_(literal_table),
+		temp_table_(new TempTable(symbol_table_)),
+		bytecode_writer_(bytecode_writer)
 	{
+		initialize_native_symbols();
+	}
+
+	void IRGenerator::initialize_native_symbols()
+	{
+		vector<tuple<const wchar_t*, void*>> native_functions;
+		decltype(native_functions)::value_type a;
+		Runtime::add_native_functions(native_functions);
+
+		for (auto t : native_functions)
+		{
+			NativeSymbol * native = new NativeFunction(std::get<0>(t), std::get<1>(t));
+			symbol_table_->add(native);
+		}
+		
 	}
 
 	Variable * IRGenerator::new_name(Token * token)
@@ -66,9 +91,9 @@ namespace IR {
 		return nullptr;
 	}
 
-	Variable * IRGenerator::look_up_name(Token * token)
+	Symbol * IRGenerator::look_up_name(Token * token)
 	{
-		return static_cast<Variable*>(
+		return static_cast<Symbol*>(
 			symbol_table_->get_by_name(static_cast<Word*>(token)->get_word())
 			);
 	}
@@ -119,8 +144,83 @@ namespace IR {
 		{
 			return func_def_and_optional_call_reader(tn->get_non_terminal(0));
 		}
+		if (tn->get_builder_name() == "atom_func_call")
+		{
+			auto func_symbol = look_up_name(tn->get_terminal(0).get());
+			vector<Symbol*> arguments = comma_exprs_reader(tn->get_non_terminal(2));
+			for (auto argument : arguments) {
+				if (dynamic_cast<Variable*>(argument))
+				{
+					EMIT(PushParamVariable, bytecode_writer_, dynamic_cast<Variable*>(argument));
+				} else if(dynamic_cast<Literal*>(argument)) 
+				{
+					EMIT(PushParamLiteral, bytecode_writer_, dynamic_cast<Literal*>(argument));
+				} else
+				{
+					assert(false);
+				}
+				if (argument->is_temp())
+				{
+					temp_table_->revert(static_cast<Variable*>(argument));
+				}
+			}
+			if (auto native_func = dynamic_cast<NativeFunction*>(func_symbol))
+			{
+				EMIT(CallNativeFunc, bytecode_writer_, native_func);
+			}
+			else {
+				EMIT(CallFunc, bytecode_writer_, func_symbol);
+			}
+			/* result in Acc */
+			return nullptr;
+		}
 		assert(false);
 		return nullptr;
+	}
+
+	vector<Symbol*> IRGenerator::comma_exprs_reader(TreeNode * tn)
+	{
+		vector<Symbol*> comma_exprs;
+		if (tn->get_builder_name() == "comma_exprs_empty")
+		{
+			return comma_exprs;
+		}
+		if (tn->get_builder_name() == "comma_exprs_expr_comma_exprs_tail")
+		{
+			TreeNode * tail;
+			while (true)
+			{
+				TreeNode * expr = tn->get_non_terminal(0);
+				Symbol * symbol = expr_reader(expr);
+				symbol = self_or_store(symbol);
+				comma_exprs.push_back(symbol);
+				tail = tn->get_non_terminal(1);
+				if (tail->get_builder_name() == "comma_exprs_tail_comma_comma_exprs")
+				{
+					tn = tail->get_non_terminal(1);
+					if (tn->get_builder_name() == "comma_exprs_empty")
+					{
+						// TODO: throw something properly
+						assert(false);
+					}
+				} else
+				{
+					break;
+				}
+			}
+			return comma_exprs;
+		}
+		assert(false);
+	}
+
+	template<typename RealTokenType>
+	Literal * IRGenerator::add_literal(shared_ptr<Token> & token, Runtime::RuntimeObject * rto)
+	{
+		shared_ptr<RealTokenType> integer = 
+			dynamic_pointer_cast<RealTokenType>(token);
+		Literal * constant_literal = new Literal(token, rto);
+		literal_table_->add(constant_literal);
+		return constant_literal;
 	}
 
 	Symbol* IRGenerator::entity_reader(TreeNode* tn, bool create)
@@ -129,6 +229,25 @@ namespace IR {
 		{
 			// TODO: for the chain
 			return atom_reader(tn->get_non_terminal(0), create);
+		}
+		if (tn->get_builder_name() == "entity_integer")
+		{
+			return add_literal<Integer>(tn->get_terminal(0), nullptr);
+		}
+		if (tn->get_builder_name() == "entity_general_string")
+		{
+			Runtime::StringObject * rto = new Runtime::StringObject;
+			auto token = tn->get_terminal(0);
+			String * string = static_cast<String*>(token.get());
+
+			rto->type = Runtime::StringObj;
+			rto->length = wcslen(string->get_value());
+			wchar_t * copied = new wchar_t[rto->length + 1];
+			wcscpy_s(copied, rto->length + 1, string->get_value());
+			rto->content = copied;
+			constant_table_->add(rto);
+
+			return add_literal<String>(tn->get_terminal(0), rto);
 		}
 		assert(false);
 		return nullptr;
@@ -269,9 +388,11 @@ namespace IR {
 		{
 			Symbol * entity = entity_reader(tn->get_non_terminal(0), true); // TODO: for keyed and named properties
 			TreeNode * statement_right = tn->get_non_terminal(1);
-			Symbol * expr = expr_reader(statement_right->get_non_terminal(1));
-			load_if_not_nullptr(expr);
-			EMIT(StoreAcc, bytecode_writer_, entity);
+			if (statement_right->get_builder_name() == "statement_right_assign_expr") {
+				Symbol * expr = expr_reader(statement_right->get_non_terminal(1));
+				load_if_not_nullptr(expr);
+				EMIT(StoreAcc, bytecode_writer_, entity);
+			}
 		}
 		if (tn->get_builder_name() == "statement_keyword_return_expr")
 		{

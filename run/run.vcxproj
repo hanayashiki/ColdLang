@@ -224,6 +224,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\asmjit\asmjit.vcxproj">
+      <Project>{27dcd1ba-14bd-40d1-833d-f58635061152}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\coldlang\coldlang.vcxproj">
       <Project>{3543dc2d-f2da-4df1-b465-9bffe43354e3}</Project>
       <Private>true</Private>

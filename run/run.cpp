@@ -25,6 +25,8 @@
 #endif
 #endif  // _DEBUG
 
+using namespace std;
+
 void test_func_parse1()
 {
 	wstring code = L"fn class	struct\n"
@@ -800,12 +802,82 @@ void test_func_def()
 	delete backend;
 }
 
+void test_func_call()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"f = fn x { ret fn y { ret x+y } }   a = f(fn {ret a})";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+
+	code = L"f = fn x { ret x }"
+			"g = fn y { ret y }"
+			"h = fn z, w {ret z + w}"
+			"a = h(f(a), g(b))"
+			"a = a*c*c + b";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_simple_run()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = L"a = native_puts('boy next door\\n')";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	Compile::Jit jit(backend->bytecode_reader_);
+	jit.Init();
+	jit.CompileOne();
+	jit.CompileOne();
+	Compile::Jit::Entrance entrance = jit.GetEntrance();
+	entrance();
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
 	//_CrtSetBreakAlloc(2093);
-	test_func_def();
+	test_simple_run();
 	_CrtDumpMemoryLeaks();
 	getchar();
 

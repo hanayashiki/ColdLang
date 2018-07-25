@@ -150,7 +150,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -212,19 +213,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AssignTarget.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BytecodeBase.h" />
+    <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
     <ClInclude Include="BytecodeDumper.h" />
     <ClInclude Include="BytecodeEnum.h" />
     <ClInclude Include="BytecodeGenerator.h" />
+    <ClInclude Include="BytecodeLength.h" />
+    <ClInclude Include="BytecodeReader.h" />
+    <ClInclude Include="BytecodeVectorReader.h" />
+    <ClInclude Include="BytecodeVectorWriter.h" />
     <ClInclude Include="BytecodeVirtualClass.h" />
     <ClInclude Include="BytecodeOperandTypes.h" />
     <ClInclude Include="BytecodeWriter.h" />
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="ColdLangBackend.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="ConstantTable.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Function.h" />
@@ -232,14 +238,20 @@
     <ClInclude Include="Integer.h" />
     <ClInclude Include="BytecodeDef.h" />
     <ClInclude Include="IRGenerator.h" />
+    <ClInclude Include="Jit.h" />
     <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Literal.h" />
+    <ClInclude Include="LiteralTable.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleConfig.h" />
     <ClInclude Include="Delimiter.h" />
+    <ClInclude Include="NativeFunction.h" />
+    <ClInclude Include="NativeSymbol.h" />
+    <ClInclude Include="native_functions.h" />
     <ClInclude Include="ResizableBuffer.h" />
+    <ClInclude Include="RuntimeObject.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="StringParser.h" />
@@ -267,17 +279,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BytecodeClass.cpp" />
+    <ClCompile Include="BytecodeLength.cpp" />
+    <ClCompile Include="BytecodeVectorReader.cpp" />
     <ClCompile Include="CLObject.cpp" />
     <ClCompile Include="coldlang.cpp" />
     <ClCompile Include="ColdLangBackend.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ColdLangFrontEnv.cpp" />
+    <ClCompile Include="ConstantTable.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="FunctionTable.cpp" />
     <ClCompile Include="IRBinaryGenerator.cpp" />
     <ClCompile Include="IRFunctionGenerator.cpp" />
-    <ClCompile Include="IRGenerator.cpp" />
+    <ClCompile Include="IRGenerator.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="Jit.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="LiteralTable.cpp" />
+    <ClCompile Include="native_functions.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">All</AssemblerOutput>
+    </ClCompile>
     <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="Syntax.cpp" />
@@ -307,6 +329,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\asmjit\asmjit.vcxproj">
+      <Project>{27dcd1ba-14bd-40d1-833d-f58635061152}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

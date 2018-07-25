@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "BytecodeOperandTypes.h"
-#include "Function.h"
+#include "NativeFunction.h"
 
 namespace IR
 {
@@ -20,12 +20,14 @@ namespace IR
 {
 #define BYTECODE_LIST(C)\
 	/* call function arg0 with pushed parameters, with return value overwriting Acc */\
-	C(CallFunc, AccumulatorUse::Write, OperandType::Index*)\
+	C(CallFunc, AccumulatorUse::Write , OperandType::Symbol*)\
+	/* call native function arg0 with pushed parameters, with return value overwriting Acc */\
+	C(CallNativeFunc, AccumulatorUse::Write, OperandType::NativeFunction*)\
 	/* return accumulator */\
 	C(RetAcc, AccumulatorUse::Read)\
 	/* push function parameter */\
-	C(PushParamImm64, AccumulatorUse::None, OperandType::Imm64*)\
-	C(PushParamSymbol, AccumulatorUse::None, OperandType::Symbol*)\
+	C(PushParamVariable, AccumulatorUse::None, OperandType::Variable*)\
+	C(PushParamLiteral, AccumulatorUse::None, OperandType::Literal*)\
 	C(PushParamAcc, AccumulatorUse::Read)\
 	/* jump to arg0 */\
 	C(Jump, AccumulatorUse::None, OperandType::Label*)\
@@ -87,7 +89,7 @@ namespace IR
 	/* load symbol to accumulator */\
 	C(LoadSymbolToAcc, AccumulatorUse::Write, OperandType::Symbol*)\
 	/* load func def to accumulator */\
-	C(LoadFunctionToAcc, AccumulatorUse::Write, Function*)\
+	C(LoadFunctionToAcc, AccumulatorUse::Write, OperandType::Literal*)\
 	/* visit attribute arg1 of arg0 and load it to accumulator */\
 	C(LoadAttributeToAcc, AccumulatorUse::Write, OperandType::Symbol*, OperandType::Index*)\
 	/* store Acc to arg0 */\

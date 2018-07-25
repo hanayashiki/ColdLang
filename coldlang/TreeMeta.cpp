@@ -303,7 +303,15 @@ void TreeMeta::add_statement_defs()
 	add_builder(new TreeBuilder(
 		"statement_right",
 		{ Delimiter::assign },
-		{ Delimiter::assign, "expr" }
+		{ Delimiter::assign, "expr" },
+		"statement_right_assign_expr"
+	));
+
+	add_builder(new TreeBuilder(
+		"statement_right",
+		{},
+		{},
+		"statement_right_empty"
 	));
 
 	add_builder(new TreeBuilder(
@@ -400,25 +408,29 @@ void TreeMeta::add_func_defs()
 	add_builder(new TreeBuilder(
 		"comma_exprs",
 		{ expr_peek_, "comma_exprs_tail" },
-		{ "expr", "comma_exprs_tail" }
+		{ "expr", "comma_exprs_tail" },
+		"comma_exprs_expr_comma_exprs_tail"
 	));
 
 	add_builder(new TreeBuilder(
 		"comma_exprs",
 		{},
-		{}
+		{},
+		"comma_exprs_empty"
 	));
 
 	add_builder(new TreeBuilder(
 		"comma_exprs_tail",
 		{ Delimiter::comma },
-		{ Delimiter::comma, "comma_exprs" }
+		{ Delimiter::comma, "comma_exprs" },
+		"comma_exprs_tail_comma_comma_exprs"
 	));
 
 	add_builder(new TreeBuilder(
 		"comma_exprs_tail",
 		{},
-		{}
+		{},
+		"comma_exprs_tail_empty"
 	));
 }
 
@@ -436,7 +448,8 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"atom",
 		{ Word::identifier, Delimiter::left_paren },
-		{ Word::identifier, Delimiter::left_paren, "comma_exprs", Delimiter::right_paren }
+		{ Word::identifier, Delimiter::left_paren, "comma_exprs", Delimiter::right_paren },
+		"atom_func_call"
 	));
 
 	// atom -> (expr)
@@ -459,14 +472,16 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"entity",
 		{ String::GeneralString },
-		{ String::GeneralString }
+		{ String::GeneralString },
+		"entity_general_string"
 	));
 
 	// entity -> atom -> integer
 	add_builder(new TreeBuilder(
 		"entity",
 		{ "integer" },
-		{ "integer" }
+		{ "integer" },
+		"entity_integer"
 	));
 
 	// entity -> atom -> float

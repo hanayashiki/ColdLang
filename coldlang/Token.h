@@ -9,11 +9,11 @@ private:
 	const wchar_t * raw_string_;
 	int line_index_;
 	int column_index_;
-	Module * module_;
+	IR::Module * module_;
 
 public:
 	// @owns: raw_string
-	Token(Module* module, const wchar_t * raw_string, int line_index, int column_index) :
+	Token(IR::Module* module, const wchar_t * raw_string, int line_index, int column_index) :
 		module_(module), raw_string_(raw_string), line_index_(line_index), column_index_(column_index) {
 		
 	}

@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest\unitte
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shell", "shell\shell.vcxproj", "{8763F71A-75FA-4FE0-BE78-73407F47A4F1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asmjit", "asmjit\asmjit.vcxproj", "{27DCD1BA-14BD-40D1-833D-F58635061152}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Clr|x64 = Clr|x64
@@ -69,6 +71,18 @@ Global
 		{8763F71A-75FA-4FE0-BE78-73407F47A4F1}.Release|x64.Build.0 = Release|x64
 		{8763F71A-75FA-4FE0-BE78-73407F47A4F1}.Release|x86.ActiveCfg = Release|Win32
 		{8763F71A-75FA-4FE0-BE78-73407F47A4F1}.Release|x86.Build.0 = Release|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Clr|x64.ActiveCfg = Release|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Clr|x64.Build.0 = Release|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Clr|x86.ActiveCfg = Release|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Clr|x86.Build.0 = Release|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Debug|x64.ActiveCfg = Debug|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Debug|x64.Build.0 = Debug|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Debug|x86.ActiveCfg = Debug|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Debug|x86.Build.0 = Debug|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Release|x64.ActiveCfg = Release|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Release|x64.Build.0 = Release|x64
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Release|x86.ActiveCfg = Release|Win32
+		{27DCD1BA-14BD-40D1-833D-F58635061152}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

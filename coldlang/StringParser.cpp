@@ -3,10 +3,10 @@
 wchar_t* StringParser::parse(ResizableBuffer<wchar_t> & raw_buf, wchar_t delimiter) {
 	ResizableBuffer<wchar_t> buf(1024);
 	wchar_t wc = lexer_->peek_char();
-	wcout << "StringParser::parse peek: " << wc << endl;
+	//wcout << "StringParser::parse peek: " << wc << endl;
 	while (wc != delimiter) {
 		wc = lexer_->next_char();
-		wcout << "StringParser::parse peek: " << wc << endl;
+		//wcout << "StringParser::parse peek: " << wc << endl;
 		raw_buf.push(wc);
 		if (wc == '\\') {
 			wc = lexer_->next_char();

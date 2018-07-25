@@ -4,6 +4,8 @@
 #include "BytecodeBase.h"
 #include "Symbol.h"
 #include "Label.h"
+#include "Literal.h"
+#include "BytecodeLength.h"
 
 namespace IR
 {
@@ -11,6 +13,9 @@ namespace IR
 	{
 #define CLASS_DEF(name, acc_use, ...)\
 	class Virtual##name : public BytecodeBase {\
+	protected:\
+		char byte_buf[100];\
+		size_t byte_len = 0;\
 	public:\
 		virtual void init(__VA_ARGS__) = 0;\
 		const char * get_name() {\
@@ -25,6 +30,12 @@ namespace IR
 		}\
 		virtual wstring to_string() {\
 			return tutils::ascii_string_to_wstring(get_name());\
+		}\
+		virtual void generate_byte(__VA_ARGS__) {\
+		}\
+		size_t dump_byte(char out_buf[]) {\
+			memcpy(out_buf, byte_buf, byte_len);\
+			return byte_len;\
 		}\
 	};
 

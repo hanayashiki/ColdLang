@@ -6,7 +6,7 @@ private:
 	uint64_t value;
 public:
 	// @owns: raw_string
-	Integer(Module* module, wchar_t * raw_string, int line_index, int column_index, uint64_t value) :
+	Integer(IR::Module* module, wchar_t * raw_string, int line_index, int column_index, uint64_t value) :
 		Token(module, raw_string, line_index, column_index), value(value) {
 	}
 	wstring to_string() {

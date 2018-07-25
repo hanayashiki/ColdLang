@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "RuntimeObject.h"
 
 namespace IR
 {
@@ -8,14 +9,14 @@ namespace IR
 		class Literal : public Symbol
 		{
 		private:
-			CLObject * object_;
+			Runtime::RuntimeObject * object_;
 		public:
-			Literal(shared_ptr<Token> & token, CLObject * object)
+			Literal(shared_ptr<Token> & token, Runtime::RuntimeObject * object)
 				:
 				object_(object), Symbol(std::move(token))
 			{
 			}
-			CLObject * get_object()
+			Runtime::RuntimeObject * get_object()
 			{
 				return object_;
 			}

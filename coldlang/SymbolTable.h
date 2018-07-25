@@ -1,10 +1,11 @@
 #pragma once
 #include "stdafx.h"
+#include "NativeSymbol.h"
 
 namespace IR
 {
 	template <class _Tp>
-	struct SymbolEqual : public binary_function<_Tp, _Tp, bool>
+	struct SymbolEqual
 	{
 		bool operator()(const _Tp& __x, const _Tp& __y) const
 		{
@@ -38,6 +39,8 @@ namespace IR
 	public:
 		SymbolTable(SymbolTable * parent = nullptr);
 		void add(OperandType::Variable* symbol);
+		void add(OperandType::NativeSymbol * native);
+		void add_symbol(const wchar_t * name, OperandType::Symbol * symbol);
 		bool define(OperandType::Variable* symbol);
 		void mock(initializer_list<const wchar_t *> init_list);
 		OperandType::Symbol * get_by_name(const wchar_t*);

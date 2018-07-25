@@ -12,7 +12,7 @@ private:
 	std::vector<shared_ptr<Token>> token_list_;
 	unsigned int token_pointer_;
 
-	Module* module_;
+	IR::Module* module_;
 	KeywordTrie keyword_trie_;
 
 	NumberParser integer_parser_;
@@ -25,7 +25,7 @@ private:
 	wchar_t peek_char(int offset = 0);
 public:
 	// @requires: use new, or direct constructor
-	Lexer(Module* _module) :
+	Lexer(IR::Module* _module) :
 		module_(_module),
 		code_(&module_->code),
 		integer_parser_(NumberParser(this)),

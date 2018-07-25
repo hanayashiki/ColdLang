@@ -22,7 +22,7 @@ private:
 	WordType type;
 public:
 	// @owns: raw_string
-	Word(Module* _module, const wchar_t * raw_string, int line_index, int column_index, WordType type) :
+	Word(IR::Module* _module, const wchar_t * raw_string, int line_index, int column_index, WordType type) :
 		Token(_module, raw_string, line_index, column_index), type(type) {
 	}
 	static shared_ptr<Word> mock(const wchar_t * raw_string)

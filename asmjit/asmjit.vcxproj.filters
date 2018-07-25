@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\base">
+      <UniqueIdentifier>{ada6c790-83b5-4376-b950-3a49aa3d7cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\x86">
+      <UniqueIdentifier>{cc85d622-a8cd-481a-807a-955e807369a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\base">
+      <UniqueIdentifier>{878f18f6-ed01-4601-b39e-c6344f6432e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\x86">
+      <UniqueIdentifier>{7d3960e7-b8fe-4bae-ab47-960cf145a772}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="arm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="asmjit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="asmjit_apibegin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="asmjit_apiend.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="asmjit_build.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="x86.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\arch.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\assembler.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\codebuilder.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\codecompiler.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\codeemitter.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\codeholder.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\constpool.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\cpuinfo.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\func.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\globals.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\inst.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\logging.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\misc_p.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\operand.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\osutils.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\regalloc_p.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\runtime.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\simdtypes.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\string.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\utils.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\vmem.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\zone.h">
+      <Filter>头文件\base</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86assembler.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86builder.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86compiler.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86emitter.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86globals.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86inst.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86instimpl_p.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86internal_p.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86logging_p.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86misc.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86operand.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\x86regalloc_p.h">
+      <Filter>头文件\x86</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86assembler.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86builder.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86compiler.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86inst.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86instimpl.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86internal.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86logging.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86operand.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86operand_regs.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\x86regalloc.cpp">
+      <Filter>源文件\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="base\arch.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\assembler.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\codebuilder.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\codecompiler.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\codeemitter.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\codeholder.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\constpool.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\cpuinfo.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\func.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\globals.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\inst.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\logging.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\operand.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\osutils.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\regalloc.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\runtime.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\string.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\utils.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\vmem.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\zone.cpp">
+      <Filter>源文件\base</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -7,7 +7,7 @@
 
 int Config::getIntConfig(string pointer)
 {
-	Value* value = Pointer(pointer.c_str()).Get(this->config_doc);
+	rapidjson::Value* value = rapidjson::Pointer(pointer.c_str()).Get(this->config_doc);
 	assert(value != NULL);
 	return value->GetInt();
 }
@@ -15,7 +15,7 @@ int Config::getIntConfig(string pointer)
 Config::Config(string config_addr) : config_addr(config_addr)
 {
 	ifstream ifs(config_addr);
-	IStreamWrapper isw(ifs);
+	rapidjson::IStreamWrapper isw(ifs);
 	config_doc.ParseStream(isw);
 }
 

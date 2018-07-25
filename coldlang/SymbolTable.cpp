@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "NativeSymbol.h"
 
 namespace IR{
 	size_t SymbolTable::symbol_id = 0;
@@ -9,9 +10,19 @@ namespace IR{
 
 	void SymbolTable::add(OperandType::Variable * variable)
 	{
-		name_to_symbol_.insert(std::make_pair(variable->get_name(), variable));
-		id_to_symbol_.insert(std::make_pair(variable->get_id(), variable));
-		variable->set_id(symbol_id);
+		add_symbol(variable->get_name(), variable);
+	}
+
+	void SymbolTable::add(OperandType::NativeSymbol * native)
+	{
+		add_symbol(native->get_name(), native);
+	}
+
+	void SymbolTable::add_symbol(const wchar_t* name, Symbol * symbol)
+	{
+		name_to_symbol_.insert(std::make_pair(name, symbol));
+		symbol->set_id(symbol_id);
+		id_to_symbol_.insert(std::make_pair(symbol->get_id(), symbol));
 		symbol_id++;
 	}
 

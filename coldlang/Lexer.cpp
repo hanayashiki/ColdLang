@@ -127,11 +127,11 @@ Token * Lexer::parse_next_string() {
 	ResizableBuffer<wchar_t> raw_string_buf(1024);
 	wchar_t peek = next_char();
 	raw_string_buf.push(peek);
-	wcout << "parse_next_string peek: " << peek << endl;
+	//wcout << "parse_next_string peek: " << peek << endl;
 
 	wchar_t* escaped = string_parser_.parse(raw_string_buf, '\'');
 	peek = peek_char();
-	wcout << "parse_next_string peek: " << peek << endl;
+	//wcout << "parse_next_string peek: " << peek << endl;
 	if (peek == '\'') {
 		raw_string_buf.push(peek);
 		next_char();

@@ -15,9 +15,6 @@
     <Filter Include="头文件\lexer">
       <UniqueIdentifier>{08c72271-29d9-4577-a89f-536d61e96051}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\cl_object">
-      <UniqueIdentifier>{44e77f65-a989-4473-b2b9-f185ca875ca8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\config">
       <UniqueIdentifier>{02fcd077-3899-4c0f-9a65-70682a10132e}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,21 @@
     </Filter>
     <Filter Include="源文件\ir\object">
       <UniqueIdentifier>{27e08192-a2fe-4b4e-8e79-50c52064e420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ir\cl_object">
+      <UniqueIdentifier>{44e77f65-a989-4473-b2b9-f185ca875ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\runtime">
+      <UniqueIdentifier>{12ecaed0-601f-4c52-b2e4-69a14fe403a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\runtime">
+      <UniqueIdentifier>{a3100b76-f5a2-4ddc-95bf-d27af89ff5f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\jit">
+      <UniqueIdentifier>{3d01a8bc-3c61-44f1-b62e-ee2fcaeae4b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\compile">
+      <UniqueIdentifier>{9212cb37-4c7a-473b-9042-7e55563e1f66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +216,6 @@
     <ClInclude Include="Label.h">
       <Filter>头文件\ir\operands</Filter>
     </ClInclude>
-    <ClInclude Include="AssignTarget.h">
-      <Filter>头文件\ir\irgen</Filter>
-    </ClInclude>
     <ClInclude Include="IRGenerator.h">
       <Filter>头文件\ir\irgen</Filter>
     </ClInclude>
@@ -222,6 +231,42 @@
     <ClInclude Include="SymbolTable.h">
       <Filter>头文件\ir\irgen</Filter>
     </ClInclude>
+    <ClInclude Include="LiteralTable.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantTable.h">
+      <Filter>头文件\ir\irgen</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeSymbol.h">
+      <Filter>头文件\ir\operands</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeFunction.h">
+      <Filter>头文件\ir\operands</Filter>
+    </ClInclude>
+    <ClInclude Include="native_functions.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeObject.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeReader.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeVectorReader.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeByteDump.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeVectorWriter.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeLength.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="Jit.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
     <ClInclude Include="Function.h">
       <Filter>头文件\ir\object</Filter>
     </ClInclude>
@@ -234,7 +279,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CLObject.cpp">
-      <Filter>源文件\cl_object</Filter>
+      <Filter>源文件\ir\cl_object</Filter>
     </ClCompile>
     <ClCompile Include="Config.cpp">
       <Filter>源文件\config</Filter>
@@ -305,9 +350,6 @@
     <ClCompile Include="SymbolTable.cpp">
       <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
-    <ClCompile Include="Function.cpp">
-      <Filter>源文件\ir\operands</Filter>
-    </ClCompile>
     <ClCompile Include="Variable.cpp">
       <Filter>源文件\ir\operands</Filter>
     </ClCompile>
@@ -316,6 +358,27 @@
     </ClCompile>
     <ClCompile Include="FunctionTable.cpp">
       <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="LiteralTable.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="native_functions.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="BytecodeVectorReader.cpp">
+      <Filter>源文件\ir\bytecode</Filter>
+    </ClCompile>
+    <ClCompile Include="BytecodeLength.cpp">
+      <Filter>源文件\ir\bytecode</Filter>
+    </ClCompile>
+    <ClCompile Include="Jit.cpp">
+      <Filter>源文件\jit</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>源文件\ir\cl_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

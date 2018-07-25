@@ -2,19 +2,16 @@
 #include "../include/rapidjson/filereadstream.h"
 #include "../include/rapidjson/document.h"
 
-using namespace rapidjson;
-using namespace std;
-
 class Config
 {
 private:
-	string config_addr;
-	string config_content;
+	std::string config_addr;
+	std::string config_content;
 protected:
-	Document config_doc;
-	int getIntConfig(string pointer);
+	rapidjson::Document config_doc;
+	int getIntConfig(std::string pointer);
 public:
-	Config(string config_addr);
+	Config(std::string config_addr);
 	~Config();
 };
 

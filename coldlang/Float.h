@@ -6,7 +6,7 @@ private:
 	double value;
 public:
 	// @owns: raw_string
-	Float(Module * module, wchar_t * raw_string, int line_index, int column_index, double value) :
+	Float(IR::Module * module, wchar_t * raw_string, int line_index, int column_index, double value) :
 		Token(module, raw_string, line_index, column_index), value(value) {
 	}
 	wstring to_string() {

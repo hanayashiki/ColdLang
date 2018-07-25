@@ -1,5 +1,8 @@
 #pragma once
 #include "stdafx.h"
+#include "NativeFunction.h"
+#include "BytecodeByteDump.h"
+#include "Literal.h"
 
 namespace IR
 {
@@ -13,10 +16,6 @@ namespace IR
 			{
 				wcout << "fuck you this is not implemented" << endl;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
 		};
 
 		class LoadSymbolToAcc : public VirtualLoadSymbolToAcc
@@ -28,10 +27,6 @@ namespace IR
 			{
 				target_ = t;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -42,15 +37,11 @@ namespace IR
 		class LoadFunctionToAcc : public VirtualLoadFunctionToAcc
 		{
 		private:
-			Function * target_;
+			Literal * target_;
 		public:
-			void init(Function* t) override
+			void init(Literal * t) override
 			{
 				target_ = t;
-			}
-			void dump_byte(char buf[]) override
-			{
-
 			}
 			wstring to_string() override
 			{
@@ -61,14 +52,83 @@ namespace IR
 
 		class CallFunc : public VirtualCallFunc
 		{
+		private:
+			Symbol * target_;
 		public:
-			void init(Index*) override
+			void init(Symbol* target) override
 			{
-				wcout << "fuck you this is not implemented" << endl;
+				target_ = target;
 			}
-			void dump_byte(char buf[]) override
+			wstring to_string() override
 			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
 
+		class CallNativeFunc : public VirtualCallNativeFunc
+		{
+		private:
+			NativeFunction * target_;
+		public:
+			void init(NativeFunction* target) override
+			{
+				target_ = target;
+			}
+
+			void generate_byte(NativeFunction* target) override
+			{
+				byte_len = ByteDump::dump_byte(byte_buf, EnumCallNativeFunc, target);
+			}
+			
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class PushParamVariable : public VirtualPushParamVariable
+		{
+		private:
+			Variable * target_;
+		public:
+			void init(Variable* target) override
+			{
+				target_ = target;
+			}
+
+			void generate_byte(Variable* target) override
+			{
+				byte_len = ByteDump::dump_byte(byte_buf, EnumPushParamVariable, target);
+			}
+
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
+			}
+		};
+
+		class PushParamLiteral : public VirtualPushParamLiteral
+		{
+		private:
+			Literal * target_;
+		public:
+			void init(Literal* target) override
+			{
+				target_ = target;
+			}
+
+			void generate_byte(Literal* target) override
+			{
+				byte_len = ByteDump::dump_byte(byte_buf, EnumPushParamLiteral, target);
+			}
+
+			wstring to_string() override
+			{
+				return tutils::ascii_string_to_wstring(get_name())
+					+ L" " + target_->to_string();
 			}
 		};
 
@@ -78,10 +138,7 @@ namespace IR
 			void init() override
 			{
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name());
@@ -97,10 +154,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -117,10 +171,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -137,10 +188,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -159,10 +207,7 @@ namespace IR
 				target_1_ = s1;
 				target_2_ = s2;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -179,10 +224,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -201,10 +243,7 @@ namespace IR
 				target_1_ = s1;
 				target_2_ = s2;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -221,10 +260,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -243,10 +279,7 @@ namespace IR
 				target_1_ = s1;
 				target_2_ = s2;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -263,10 +296,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -283,10 +313,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -303,10 +330,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -323,10 +347,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -343,10 +364,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -363,10 +381,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -383,10 +398,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -403,10 +415,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -423,10 +432,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -443,10 +449,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -463,10 +466,7 @@ namespace IR
 			{
 				target_ = s;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -483,10 +483,7 @@ namespace IR
 			{
 				target_ = target;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -503,10 +500,7 @@ namespace IR
 			{
 				target_ = target;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())
@@ -523,10 +517,7 @@ namespace IR
 			{
 				target_ = target;
 			}
-			void dump_byte(char buf[]) override
-			{
-
-			}
+			
 			wstring to_string() override
 			{
 				return tutils::ascii_string_to_wstring(get_name())

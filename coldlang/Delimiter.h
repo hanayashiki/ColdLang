@@ -53,7 +53,7 @@ private:
 	DelimiterType type;
 public:
 	// @owns: raw_string
-	Delimiter(Module* _module, wchar_t * raw_string, int line_index, int column_index, DelimiterType type) :
+	Delimiter(IR::Module* _module, wchar_t * raw_string, int line_index, int column_index, DelimiterType type) :
 		Token(_module, raw_string, line_index, column_index), type(type) {
 	}
 	wstring to_string() {

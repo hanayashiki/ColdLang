@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
-#include "AssignTarget.h"
 #include "Literal.h"
 
 
@@ -56,9 +55,11 @@ namespace IR {
 		vector<Variable*> param_list = comma_identifiers_reader(comma_identifiers);
 		Function * function = new Function(keyword_token, param_list);
 		function_table_->add(function);
+		Runtime::FunctionObject * function_object = new Runtime::FunctionObject;
+		function_object->meta = function;
 
-		Literal * func_literal = new Literal(keyword_token, function);
-		// TODO: deal with Literal
+		Literal * func_literal = new Literal(keyword_token, function_object);
+		literal_table_->add(func_literal);
 
 		side_effect_stack.top().push_back([=]()
 		{

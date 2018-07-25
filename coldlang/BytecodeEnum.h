@@ -7,7 +7,7 @@ namespace IR
 	{
 #define ENUM_LINE_DEF(name, ...) Enum##name, 
 
-	enum
+	enum BytecodeEnum
 	{
 		BYTECODE_LIST(ENUM_LINE_DEF)
 	};
