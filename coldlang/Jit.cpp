@@ -27,7 +27,7 @@ namespace Compile
 	void Jit::Init()
 	{
 		code.init(jit_runtime.getCodeInfo());
-		// code.setLogger(&logger);
+		code.setLogger(&logger);
 		compiler = new X86Compiler(&code);
 		compiler->addFunc(FuncSignature0<int>());
 	}
@@ -39,6 +39,7 @@ namespace Compile
 		size_t len;
 		bytecode_reader_->read_byte(buf, &len);
 		unsigned char code_id = buf[0];
+		wcout << "got len: " << len << endl;
 		switch (code_id)
 		{
 		case EnumPushParamLiteral:
@@ -65,21 +66,18 @@ namespace Compile
 		compiler->lea(vRegPtrToStack, stack);
 		compiler->mov(
 			x86::ptr(vRegPtrToStack, offsetof(PointerValue, type), 4),
-			imm(ValueType::PointerVal)
+			imm(ValueType::StringPointerVal)
 		);
-		//compiler->mov(
-		//	x86::ptr(vRegPtrToStack, offsetof(PointerValue, value), 8),
-		//	imm(reinterpret_cast<size_t>(object))
-		//);
+		X86Gp vRegTemp64 = compiler->newGpq();
 		compiler->mov(
-			x86::ptr(vRegPtrToStack, offsetof(PointerValue, value), 4),
-			imm(reinterpret_cast<size_t>(object) & 0xFFFFFFFF)
+			vRegTemp64,
+			imm(reinterpret_cast<size_t>(object))
 		);
 		compiler->mov(
-			x86::ptr(vRegPtrToStack, offsetof(PointerValue, value) + 4, 4),
-			imm((reinterpret_cast<size_t>(object) >> 32)  & 0xFFFFFFFF)
+			x86::ptr(vRegPtrToStack, offsetof(PointerValue, value), 8),
+			vRegTemp64
 		);
-
+		
 		args.push_back(vRegPtrToStack);
 
 	}
@@ -91,8 +89,6 @@ namespace Compile
 		CCFuncCall * call =
 			compiler->call(reinterpret_cast<uint64_t>(native_func->get_func_ptr()),
 				FuncSignature1<int, void *>());
-		// wcout << "native ptr: " << (long long int)(native_func->get_func_ptr()) << endl;
-		// wcout << "native addr: " << (long long int)(&native_puts) << endl;
 
 		call->setArg(0, args[0]);
 		call->setRet(0, args[0]);

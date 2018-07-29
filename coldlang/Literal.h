@@ -6,6 +6,7 @@ namespace IR
 {
 	namespace OperandType
 	{
+		/* Literal links to RuntimeObject that is directly used by cold-lang runtime */
 		class Literal : public Symbol
 		{
 		private:
@@ -24,6 +25,9 @@ namespace IR
 			{
 				return wstring(get_token()->get_raw_string())
 				+ L"@" + to_wstring(get_token()->get_line_index()) + wstring(L",") +  to_wstring(get_token()->get_column_index());
+			}
+			~Literal()
+			{
 			}
 		};
 	}

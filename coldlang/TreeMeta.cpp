@@ -291,7 +291,6 @@ void TreeMeta::add_expr_defs()
 
 void TreeMeta::add_statement_defs()
 {
-	// TODO : test the following
 
 	add_builder(new TreeBuilder(
 		"statement",
@@ -316,9 +315,16 @@ void TreeMeta::add_statement_defs()
 
 	add_builder(new TreeBuilder(
 		"statement",
+		{ Word::keyword_return_value },
+		{ Word::keyword_return_value, "expr" },
+		"statement_keyword_return_value_expr"
+	));
+
+	add_builder(new TreeBuilder(
+		"statement",
 		{ Word::keyword_return },
-		{ Word::keyword_return, "expr" },
-		"statement_keyword_return_expr"
+		{ tutils::isolate(Word::keyword_return) },
+		"statement_keyword_return_inline"
 	));
 
 	add_builder(new TreeBuilder(
@@ -482,6 +488,30 @@ void TreeMeta::add_entity_defs()
 		{ "integer" },
 		{ "integer" },
 		"entity_integer"
+	));
+
+	// entity -> atom -> true
+	add_builder(new TreeBuilder(
+		"entity",
+		{ Word::keyword_true },
+		{ Word::keyword_true },
+		"entity_true"
+	));
+
+	// entity -> atom -> false
+	add_builder(new TreeBuilder(
+		"entity",
+		{ Word::keyword_false },
+		{ Word::keyword_false },
+		"entity_false"
+	));
+
+	// entity -> atom -> none
+	add_builder(new TreeBuilder(
+		"entity",
+		{ Word::keyword_none },
+		{ Word::keyword_none },
+		"entity_none"
 	));
 
 	// entity -> atom -> float

@@ -34,7 +34,7 @@ namespace IR
 	/* jump to arg0 if Acc is true */\
 	C(JumpOnTrue, AccumulatorUse::Read, OperandType::Label*)\
 	/* jump to arg1 if Acc is false */\
-	C(JumpOnFalse, AccumulatorUse::Write, OperandType::Label*)\
+	C(JumpOnFalse, AccumulatorUse::Read, OperandType::Label*)\
 	/* logical or with Acc */\
 	C(Or, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	C(OrImm64, AccumulatorUse::ReadWrite, OperandType::Imm64*)\
@@ -86,16 +86,13 @@ namespace IR
 	C(Decre, AccumulatorUse::ReadWrite, OperandType::Symbol*)\
 	/* negate Acc, that is to multiply with -1 */\
 	C(Neg, AccumulatorUse::ReadWrite)\
-	/* load symbol to accumulator */\
-	C(LoadSymbolToAcc, AccumulatorUse::Write, OperandType::Symbol*)\
-	/* load func def to accumulator */\
-	C(LoadFunctionToAcc, AccumulatorUse::Write, OperandType::Literal*)\
+	/* load variable to accumulator */\
+	C(LoadVariableToAcc, AccumulatorUse::Write, OperandType::Variable*)\
+	/* load literal to accumulator */\
+	C(LoadLiteralToAcc, AccumulatorUse::Write, OperandType::Literal*)\
 	/* visit attribute arg1 of arg0 and load it to accumulator */\
 	C(LoadAttributeToAcc, AccumulatorUse::Write, OperandType::Symbol*, OperandType::Index*)\
 	/* store Acc to arg0 */\
-	C(LoadImm64ToAcc, AccumulatorUse::Read, OperandType::Imm64*)\
-	/* store Acc to arg0 */\
-	C(StoreAcc, AccumulatorUse::Read, OperandType::Symbol*)\
-
+	C(StoreAcc, AccumulatorUse::Read, OperandType::Symbol*)
 
 }

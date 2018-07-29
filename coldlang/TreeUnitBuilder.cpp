@@ -1,17 +1,13 @@
 #include "stdafx.h"
 
 TreeUnitBuilder::TreeUnitBuilder(): 
-	unit_type_(u_unknown),
-	optional_(false),
-	not_(false)
+	unit_type_(u_unknown)
 {	
 
 }
 
 TreeUnitBuilder::TreeUnitBuilder(const char* n) :
-	unit_type_(u_name),
-	optional_(false),
-	not_(false)
+	unit_type_(u_name)
 {
 	if (strcmp(n, "integer") == 0)
 	{
@@ -25,41 +21,31 @@ TreeUnitBuilder::TreeUnitBuilder(const char* n) :
 }
 
 TreeUnitBuilder::TreeUnitBuilder(Word::WordType word_type) :
-	unit_type_(u_word),
-	optional_(false),
-	not_(false)
+	unit_type_(u_word)
 {
 	value_.word_type = word_type;
 }
 
 TreeUnitBuilder::TreeUnitBuilder(Delimiter::DelimiterType delimiter_type) :
-	unit_type_(u_delimiter),
-	optional_(false),
-	not_(false)
+	unit_type_(u_delimiter)
 {
 	value_.delimiter_type = delimiter_type;
 }
 
 TreeUnitBuilder::TreeUnitBuilder(String::StringType string_type) :
-	unit_type_(u_string),
-	optional_(false),
-	not_(false)
+	unit_type_(u_string)
 {
 	value_.string_type = string_type;
 }
 
 TreeUnitBuilder::TreeUnitBuilder(TreeBuilderNode* tb) :
-	unit_type_(u_t_builder),
-	optional_(false),
-	not_(false)
+	unit_type_(u_t_builder)
 {
 	value_.t_builder = tb;
 }
 
 TreeUnitBuilder::TreeUnitBuilder(initializer_list<TreeUnitBuilder> & or_list) :
-	unit_type_(u_multi_units),
-	optional_(false),
-	not_(false)
+	unit_type_(u_multi_units)
 {
 	value_.multi_units = new vector<TreeUnitBuilder>(or_list);
 }
@@ -103,6 +89,16 @@ void TreeUnitBuilder::set_not(const bool & _not)
 bool TreeUnitBuilder::get_not() const
 {
 	return not_;
+}
+
+void TreeUnitBuilder::set_isolate(const bool & isolate)
+{
+	isolate_ = isolate;
+}
+
+bool TreeUnitBuilder::get_isolate() const
+{
+	return isolate_;
 }
 
 const char * TreeUnitBuilder::get_name() const

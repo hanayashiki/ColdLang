@@ -15,6 +15,14 @@ namespace IR
 		return id_++;
 	}
 
+	void FunctionTable::compile_all()
+	{
+		for (int i = 0; i < functions_.size(); i++)
+		{
+			functions_.at(i)->compile_to_bytecode();
+		}
+	}
+
 	FunctionTable::~FunctionTable()
 	{
 		for (auto func : functions_)

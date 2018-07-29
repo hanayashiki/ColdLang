@@ -7,9 +7,15 @@ namespace Runtime
 {
 	enum ValueType
 	{
-		IntegerVal = 1,
+		AnyVal = 1,
+		IntegerVal = 2,
 		FloatVal,
-		PointerVal
+		BooleanVal,
+		NoneVal,
+		StringPointerVal,
+		FunctionPointerVal,
+		ObjectPointerVal,
+		ErrorVal
 	};
 
 	enum ObjectType
@@ -21,16 +27,40 @@ namespace Runtime
 	struct RuntimeValue
 	{
 		ValueType type;
+		RuntimeValue(ValueType type) : type(type)
+		{	
+		}
 	};
 
 	struct IntegerValue : RuntimeValue
 	{
 		int64_t value;
+		IntegerValue(int64_t value) : value(value), RuntimeValue(IntegerVal)
+		{
+		}
 	};
 
 	struct FloatValue : RuntimeValue
 	{
 		double value;
+		FloatValue(double value) : value(value), RuntimeValue(FloatVal)
+		{
+		}
+	};
+
+	struct BooleanValue : RuntimeValue
+	{
+		bool value;
+		BooleanValue(bool value) : value(value), RuntimeValue(BooleanVal)
+		{
+		}
+	};
+
+	struct NoneValue : RuntimeValue
+	{
+		NoneValue() : RuntimeValue(NoneVal)
+		{
+		}
 	};
 
 	struct RuntimeObject;

@@ -16,7 +16,8 @@ shared_ptr<Token> & Lexer::next_token() {
 	//wcout << "token_list_.size() - 1 = " << (token_list_.size() - 1) << endl;
 	if (int(token_pointer_) > int(token_list_.size() - 1)) {
 		// wcout << "pushed" << endl;
-		token_list_.push_back(shared_ptr<Token>(parse_next_token()));
+		auto new_token = shared_ptr<Token>(parse_next_token());
+		token_list_.push_back(new_token);
 	}
 	return token_list_.at(token_pointer_++);
 }
@@ -44,22 +45,29 @@ shared_ptr<Token> & Lexer::peek_token(unsigned int offset)
 Token * Lexer::parse_next_token() {
 	skip_blanks();
 	const auto peek = peek_char();
+	Token * token;
 	// wcout << "peek: " << peek << endl;
 	if (iswalpha(peek) || peek == L'_')
 	{
-		return parse_next_word();
+		token = parse_next_word();
 	}
 	else if (iswdigit(peek))
 	{
-		return parse_next_number();
+		token = parse_next_number();
 	}
 	else if (peek == '\'') {
-		return parse_next_string();
+		token = parse_next_string();
 	}
 	else {
-		return delimiter_parser_.parse();
+		token = delimiter_parser_.parse();
 	}
-
+	if (new_line_)
+	{
+		token->set_at_line_head(true);
+		new_line_ = false;
+	}
+	if (token) wcout << token->get_raw_string() << " is head: " << token->get_at_line_head() << endl;
+	return token;
 }
 
 // reads current char, forwards the pointer 
@@ -68,6 +76,7 @@ wchar_t Lexer::next_char() {
 		if (code_->at(code_pointer_) == '\n') {
 			line_++;
 			col_ = 0;
+			new_line_ = true;
 		}
 		else {
 			col_++;

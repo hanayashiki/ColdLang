@@ -31,7 +31,7 @@ namespace IR
 			}
 			if (len > 0)
 			{
-				// wcout << "[" << BytecodeClass::ByteDump::mem_to_string(buf, len).c_str() << "]" << endl;
+				wcout << "[" << BytecodeClass::mem_to_string(buf, len).c_str() << "]" << endl;
 			}
 			if (next_writer)
 			{

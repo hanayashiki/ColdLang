@@ -1,24 +1,12 @@
 #pragma once
 #include "stdafx.h"
 #include "NativeFunction.h"
-
+#include "BytecodeArgumentDump.h"
 
 namespace IR
 {
 	namespace BytecodeClass
 	{
-
-		template<typename T>
-		struct get_one_length
-		{
-			const static size_t value = sizeof(T);
-		};
-
-		//template<OperandType::NativeFunction*>
-		//struct get_one_length
-		//{
-		//	static constexpr size_t value = sizeof(OperandType::NativeFunction*);
-		//};
 		template<typename... Args>
 		struct get_arg_length;
 

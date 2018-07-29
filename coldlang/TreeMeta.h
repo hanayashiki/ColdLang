@@ -20,6 +20,9 @@ private:
 		"integer",
 		"float",
 		Word::keyword_fn,
+		Word::keyword_true,
+		Word::keyword_false,
+		Word::keyword_none,
 		Delimiter::left_paren,
 		Delimiter::add,
 		Delimiter::minus
@@ -27,6 +30,7 @@ private:
 	const TreeUnitBuilder statement_peek_ = tutils::logical_or({
 		Word::identifier,
 		Word::keyword_return,
+		Word::keyword_return_value,
 		String::GeneralString,
 		"integer",
 		"float",

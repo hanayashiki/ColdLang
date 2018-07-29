@@ -46,6 +46,23 @@ namespace IR{
 		}
 	}
 
+	size_t SymbolTable::add_sub_symbol_table()
+	{
+		size_t id = sub_symbol_tables_.size();
+		sub_symbol_tables_.push_back(new SymbolTable(this));
+		return id;
+	}
+
+	SymbolTable * SymbolTable::get_sub_symbol_table(size_t id)
+	{
+		return sub_symbol_tables_.at(id);
+	}
+
+	SymbolTable * SymbolTable::get_parent_symbol_table()
+	{
+		return parent_;
+	}
+
 	OperandType::Symbol * IR::SymbolTable::get_by_name(const wchar_t * name)
 	{
 		auto iter = name_to_symbol_.find(name);
@@ -53,9 +70,11 @@ namespace IR{
 		{
 			return iter->second;
 		} 
-		else
-		{
+		else if (parent_ == nullptr) {
 			return nullptr;
+		} else
+		{
+			return parent_->get_by_name(name);
 		}
 	}
 
@@ -65,6 +84,22 @@ namespace IR{
 		return iter->second;
 	}
 
+	wstring SymbolTable::dump_to_string(size_t space_offset)
+	{
+		wstring ret;
+		for (auto pair : name_to_symbol_)
+		{
+			for (int i = 0; i < 4 * space_offset; i++) ret += L" ";
+			ret += pair.first;
+			ret += L"\n";
+		}
+		for (auto symbol_table : sub_symbol_tables_)
+		{
+			ret += symbol_table->dump_to_string(space_offset + 1);
+		}
+		return ret;
+	}
+
 	SymbolTable::~SymbolTable()
 	{
 		for (auto pair : name_to_symbol_)
@@ -72,7 +107,10 @@ namespace IR{
 			// wcout << "~SymbolTable token use count: " << pair.second->get_token().use_count() << endl;
 			delete pair.second;
 		}
-
+		for (auto symbol_table : sub_symbol_tables_)
+		{
+			delete symbol_table;
+		}
 	}
 
 }

@@ -6,9 +6,7 @@
 
 #define EMIT(bytecode_name, writer, ...) \
 	{\
-		auto bytecode = IR::BytecodeClass::##bytecode_name();\
-		bytecode.init(__VA_ARGS__);\
-		bytecode.generate_byte(__VA_ARGS__);\
+		IR::BytecodeClass::##bytecode_name bytecode(__VA_ARGS__);\
 		writer->emit(bytecode);\
 	}
 
@@ -32,6 +30,7 @@ namespace IR {
 		Symbol * look_up_name(Token * token);
 		Symbol * self_or_store(Symbol * symbol);
 		void load_if_not_nullptr(Symbol * symbol);
+		void load_variable_or_literal(Symbol * symbol);
 		template<typename RealTokenType>
 		Literal * add_literal(shared_ptr<Token> & token, Runtime::RuntimeObject * rto);
 	public:

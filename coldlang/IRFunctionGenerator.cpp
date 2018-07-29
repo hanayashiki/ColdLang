@@ -52,24 +52,39 @@ namespace IR {
 
 		TreeNode * statement_block = func_body->get_non_terminal(1);
 
+		/* create a new symbol_table */
+		size_t id = symbol_table_->add_sub_symbol_table();
+		symbol_table_ = symbol_table_->get_sub_symbol_table(id);
+		SymbolTable * my_table = symbol_table_;
+
 		vector<Variable*> param_list = comma_identifiers_reader(comma_identifiers);
 		Function * function = new Function(keyword_token, param_list);
 		function_table_->add(function);
 		Runtime::FunctionObject * function_object = new Runtime::FunctionObject;
+		constant_table_->add(function_object);
 		function_object->meta = function;
 
 		Literal * func_literal = new Literal(keyword_token, function_object);
 		literal_table_->add(func_literal);
 
-		side_effect_stack.top().push_back([=]()
+		symbol_table_ = symbol_table_->get_parent_symbol_table();
+
+		function->compile_to_bytecode = [=]()
 		{
 			wcout << endl;
 			wcout << "code for " << func_literal->to_string() << endl << endl;
 			wcout << "-----------------------------------------------------------" << endl << endl;
+			auto old_writer = bytecode_writer_;
+			auto old_table = symbol_table_;
+			symbol_table_ = my_table;
+			bytecode_writer_ = function->get_bytecode_writer();
 			statement_block_reader(statement_block);
+			symbol_table_ = old_table;
+			bytecode_writer_ = old_writer;
 			wcout << endl;
 			wcout << "-----------------------------------------------------------" << endl << endl;
-		});
+		};
+
 		// TODO: optional_caller
 		return func_literal;
 	}

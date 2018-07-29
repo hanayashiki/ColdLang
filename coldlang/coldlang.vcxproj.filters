@@ -270,6 +270,12 @@
     <ClInclude Include="Function.h">
       <Filter>头文件\ir\object</Filter>
     </ClInclude>
+    <ClInclude Include="BytecodeArgumentDump.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeCalc.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

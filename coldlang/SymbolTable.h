@@ -37,14 +37,21 @@ namespace IR
 		unordered_map<const wchar_t*, OperandType::Symbol*, SymbolHashFunc, SymbolEqual<const wchar_t*>> name_to_symbol_;
 		unordered_map<size_t, OperandType::Symbol*> id_to_symbol_;
 	public:
-		SymbolTable(SymbolTable * parent = nullptr);
+		explicit SymbolTable(SymbolTable * parent = nullptr);
 		void add(OperandType::Variable* symbol);
 		void add(OperandType::NativeSymbol * native);
 		void add_symbol(const wchar_t * name, OperandType::Symbol * symbol);
 		bool define(OperandType::Variable* symbol);
 		void mock(initializer_list<const wchar_t *> init_list);
+		
+		size_t add_sub_symbol_table();
+		SymbolTable* get_sub_symbol_table(size_t id);
+		SymbolTable* get_parent_symbol_table();
+
+
 		OperandType::Symbol * get_by_name(const wchar_t*);
 		OperandType::Symbol * get_by_id(size_t id);
+		wstring dump_to_string(size_t offset = 0);
 		~SymbolTable();
 	};
 }

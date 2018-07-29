@@ -43,7 +43,7 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, expr_5);
 				temp_table_->revert(static_cast<Variable*>(expr_5));
 			}
-			EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+			load_variable_or_literal(left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));
@@ -105,7 +105,7 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, expr_4);
 				temp_table_->revert(static_cast<Variable*>(expr_4));
 			}
-			EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+			load_variable_or_literal(left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));
@@ -163,7 +163,7 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, expr_3);
 				temp_table_->revert(static_cast<Variable*>(expr_3));
 			}
-			EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+			load_variable_or_literal(left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));
@@ -219,7 +219,7 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, expr_2);
 				temp_table_->revert(static_cast<Variable*>(expr_2));
 			}
-			EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+			load_variable_or_literal(left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));

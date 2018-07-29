@@ -17,6 +17,12 @@ namespace tutils
 		return TreeUnitBuilder(tubs);
 	}
 
+	TreeUnitBuilder isolate(TreeUnitBuilder tub)
+	{
+		tub.set_isolate(true);
+		return tub;
+	}
+
 	wstring ascii_string_to_wstring(const string str)
 	{
 		const auto result = new wchar_t[str.length() + 1];

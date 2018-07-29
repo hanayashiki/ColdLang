@@ -58,7 +58,7 @@ BinaryIRGeneratorTemplate = """\
                 EMIT(StoreAcc, bytecode_writer_, %(child_node_name)s);
                 temp_table_->revert(static_cast<Variable*>(%(child_node_name)s));
             }
-            EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+            load_variable_or_literal(left_symbol);
             if (left_symbol->is_temp())
             {
                 temp_table_->revert(static_cast<Variable*>(left_symbol));

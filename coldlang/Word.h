@@ -16,7 +16,11 @@ public:
 		keyword_while,
 		keyword_for,
 		keyword_return,
-		keyword_task
+		keyword_return_value,
+		keyword_task,
+		keyword_true,
+		keyword_false,
+		keyword_none
 	};
 private:
 	WordType type;

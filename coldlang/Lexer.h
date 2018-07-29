@@ -7,6 +7,7 @@ class Lexer {
 private:
 	int line_;
 	int col_;
+	bool new_line_;
 
 	const std::wstring * code_;
 	std::vector<shared_ptr<Token>> token_list_;

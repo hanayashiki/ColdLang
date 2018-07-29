@@ -12,6 +12,7 @@ namespace IR
 	public:
 		FunctionTable();
 		size_t add(Function* function);
+		void compile_all();
 		~FunctionTable();
 	};
 }

@@ -50,7 +50,7 @@ public:
 		u_string,
 		u_token,
 		u_t_builder,
-		u_multi_units
+		u_multi_units,
 	};
 private:
 	union Value
@@ -64,8 +64,9 @@ private:
 	};
 	UnitType unit_type_;
 	Value value_;
-	bool optional_;
-	bool not_;
+	bool optional_ = false;
+	bool not_ = false;
+	bool isolate_ = false;
 public:
 	TreeUnitBuilder();
 	TreeUnitBuilder(const char* n);
@@ -81,6 +82,8 @@ public:
 	bool get_optional() const;
 	void set_not(const bool & _not);
 	bool get_not() const;
+	void set_isolate(const bool & inline_);
+	bool get_isolate() const;
 
 
 	UnitType get_unit_type_() const;

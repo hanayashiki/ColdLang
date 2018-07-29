@@ -52,17 +52,22 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 		}
 		else if (component.get_unit_type_() == TreeUnitBuilder::u_name)
 		{
-			// wcout << component.get_name() << endl;
+			//wcout << component.get_name() << endl;
 			TreeNode * node = parse(tree_meta_->get_tree_builders(component.get_name()));
 			result_node->set_child(index, node);
 		}
 		else
 		{
 			shared_ptr<Token> peek_token = lexer_->peek_token(0);
+			wcout << tree_builder->get_name().c_str() << ": " << peek_token->get_raw_string() << endl;
 			if (component.is_good_token(peek_token.get()))
 			{
 				result_node->set_child(index, peek_token);
 				lexer_->next_token();
+				if (peek_token->get_at_line_head() && component.get_isolate())
+				{
+					assert(lexer_->peek_token(0)->get_at_line_head() == true || dynamic_cast<Delimiter*>(lexer_->peek_token(0).get()) != nullptr);
+				}
 			}
 			else
 			{

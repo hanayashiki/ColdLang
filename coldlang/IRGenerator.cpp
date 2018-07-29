@@ -111,7 +111,19 @@ namespace IR {
 	{
 		if (symbol != nullptr)
 		{
-			EMIT(LoadSymbolToAcc, bytecode_writer_, symbol);
+			load_variable_or_literal(symbol);
+		}
+	}
+
+	void IRGenerator::load_variable_or_literal(Symbol * symbol)
+	{
+		if (auto variable = dynamic_cast<Variable*>(symbol))
+		{
+			EMIT(LoadToAccVariable, bytecode_writer_, variable);
+		}
+		if (auto literal = dynamic_cast<Literal*>(symbol))
+		{
+			EMIT(LoadToAccLiteral, bytecode_writer_, literal);
 		}
 	}
 
@@ -173,6 +185,18 @@ namespace IR {
 			}
 			/* result in Acc */
 			return nullptr;
+		}
+		if (tn->get_builder_name() == "entity_true")
+		{
+			return literal_table_->get_true_constant();
+		}
+		if (tn->get_builder_name() == "entity_false")
+		{
+			return literal_table_->get_false_constant();
+		}
+		if (tn->get_builder_name() == "entity_none")
+		{
+			return literal_table_->get_none_constant();
 		}
 		assert(false);
 		return nullptr;
@@ -277,7 +301,7 @@ namespace IR {
 			}
 			else
 			{
-				EMIT(LoadSymbolToAcc, bytecode_writer_, factor);
+				load_variable_or_literal(factor);
 			}
 		}
 		else
@@ -339,7 +363,7 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, term);
 				temp_table_->revert(static_cast<Variable*>(term));
 			}
-			EMIT(LoadSymbolToAcc, bytecode_writer_, left_symbol);
+			load_variable_or_literal(left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));
@@ -394,12 +418,13 @@ namespace IR {
 				EMIT(StoreAcc, bytecode_writer_, entity);
 			}
 		}
-		if (tn->get_builder_name() == "statement_keyword_return_expr")
+		if (tn->get_builder_name() == "statement_keyword_return_value_expr")
 		{
 			Symbol * expr = expr_reader(tn->get_non_terminal(1));
 			load_if_not_nullptr(expr);
 			EMIT(RetAcc, bytecode_writer_);
 		}
+		
 
 		SideEffectList expr_side_effects = side_effect_stack.top();
 		side_effect_stack.pop();

@@ -11,7 +11,7 @@ class Trie;
 
 class KeywordTrie {
 private:
-	const static int TRIE_SIZE = 54;
+	const static int TRIE_SIZE = 100;
 	Trie<TrieNode<wchar_t, 26>, wchar_t, TRIE_SIZE> trie;
 public:
 	KeywordTrie(): trie(Trie<TrieNode<wchar_t, 26>, wchar_t, TRIE_SIZE>(L'a')) {
@@ -23,7 +23,11 @@ public:
 		trie.add_sequence(L"while", 5, Word::keyword_while);
 		trie.add_sequence(L"for", 3, Word::keyword_for);
 		trie.add_sequence(L"ret", 3, Word::keyword_return);
+		trie.add_sequence(L"retv", 4, Word::keyword_return_value);
 		trie.add_sequence(L"task", 4, Word::keyword_task);
+		trie.add_sequence(L"true", 4, Word::keyword_true);
+		trie.add_sequence(L"false", 5, Word::keyword_false);
+		trie.add_sequence(L"none", 4, Word::keyword_none);
 	}
 
 	int get_tag(wchar_t* wstr, int length) {
