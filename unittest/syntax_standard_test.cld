@@ -1,0 +1,53 @@
+/* entity */
+
+a.b.(a.b.c)
+
+fn a { retv x }(a, b, false, true, none)
+
+a = 'fuck you' // comment
+a = '中文'
+a = 1.
+a = 2.3333
+
+/* expression */
+a = 1 + 1 ? 2 : true ? x : y
+b = true && 2 > 1 && 8 >= 8 && 9 <= 10
+c = false || 3 < 4
+d = none != true
+a = true && false || none != a
+u = a++
+y = y--
+
+/* statement */
+
+func = fn x, y, z {
+    retv true
+    ret
+    if (x == z) {
+
+    } elif true {
+        x = y
+    } else {
+        z = y
+    }
+
+    if (y) {
+
+    }
+
+    if (u) {
+        retv none
+    } else {
+        u = u == u
+    }
+
+    while (true) {
+        while (false) {
+            if (a > b) {
+                native_puts(c++)
+            }
+            break
+        }
+    }
+} 
+

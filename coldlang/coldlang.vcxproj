@@ -204,6 +204,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,25 +219,23 @@
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
     <ClInclude Include="BytecodeDumper.h" />
-    <ClInclude Include="BytecodeEnum.h" />
     <ClInclude Include="BytecodeGenerator.h" />
     <ClInclude Include="BytecodeLength.h" />
     <ClInclude Include="BytecodeReader.h" />
     <ClInclude Include="BytecodeVectorReader.h" />
     <ClInclude Include="BytecodeVectorWriter.h" />
-    <ClInclude Include="BytecodeVirtualClass.h" />
     <ClInclude Include="BytecodeOperandTypes.h" />
     <ClInclude Include="BytecodeWriter.h" />
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="ColdLangBackend.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="ConstantTable.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="FunctionTable.h" />
     <ClInclude Include="Integer.h" />
-    <ClInclude Include="BytecodeDef.h" />
     <ClInclude Include="IRGenerator.h" />
     <ClInclude Include="Jit.h" />
     <ClInclude Include="KeywordTrie.h" />
@@ -272,6 +271,7 @@
     <ClInclude Include="Trie.h" />
     <ClInclude Include="Tutils.h" />
     <ClInclude Include="TokenException.h" />
+    <ClInclude Include="TypeCalc.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Word.h" />
@@ -294,6 +294,7 @@
     <ClCompile Include="IRGenerator.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="IRStatementGenerator.cpp" />
     <ClCompile Include="Jit.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LiteralTable.cpp" />
@@ -328,6 +329,7 @@
     <ClCompile Include="StringParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BytecodeClassGen.py" />
     <None Include="module.json" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ namespace IR
 		class BytecodeBase
 		{
 		public:
-			virtual size_t dump_byte(char []) = 0;
+			virtual size_t dump_byte(unsigned char []) = 0;
 			virtual wstring get_name() = 0;
 			virtual wstring to_string() = 0;
 			virtual ~BytecodeBase() {}

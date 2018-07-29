@@ -22,6 +22,7 @@ private:
 
 	unsigned int code_pointer_;
 	void skip_blanks();
+	void skip_comments();
 	wchar_t next_char();
 	wchar_t peek_char(int offset = 0);
 public:
@@ -37,6 +38,7 @@ public:
 		col_ = 1;
 		code_pointer_ = 0;
 		token_pointer_ = 0;
+		new_line_ = true;
 	};
 	// @requires: use new, or direct constructor
 	Lexer(std::wstring* code) :

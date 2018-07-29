@@ -20,7 +20,10 @@ public:
 		trie.add_sequence(L"struct", 6, Word::keyword_struct);
 		trie.add_sequence(L"use", 3, Word::keyword_use);
 		trie.add_sequence(L"if", 2, Word::keyword_if);
+		trie.add_sequence(L"else", 4, Word::keyword_else);
+		trie.add_sequence(L"elif", 4, Word::keyword_elif);
 		trie.add_sequence(L"while", 5, Word::keyword_while);
+		trie.add_sequence(L"break", 5, Word::keyword_break);
 		trie.add_sequence(L"for", 3, Word::keyword_for);
 		trie.add_sequence(L"ret", 3, Word::keyword_return);
 		trie.add_sequence(L"retv", 4, Word::keyword_return_value);

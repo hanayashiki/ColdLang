@@ -10,6 +10,41 @@ void Lexer::skip_blanks() {
 	}
 }
 
+void Lexer::skip_comments()
+{
+	auto peek = peek_char();
+	if (peek == L'/')
+	{
+		if (peek_char(1) == L'/')
+		{
+			next_char();
+			next_char(); // found '//'
+			auto peek = peek_char();
+			while (peek != L'\n') { // skip until '\n'
+				next_char();
+				peek = peek_char();
+			}
+		}
+		if (peek_char(1) == L'*')
+		{
+			next_char();
+			next_char(); // found '/*'
+			auto peek = peek_char();
+			auto last = L'0';
+			while (true) { 
+				if (last == L'*' && peek == L'/')
+				{
+					next_char();
+					break;
+				}
+				last = next_char();
+				peek = peek_char();
+			}
+		}
+	}
+
+}
+
 // @lends: Token* of current pos
 shared_ptr<Token> & Lexer::next_token() {
 	//wcout << "token_pointer_ = " << token_pointer_ << endl;
@@ -44,6 +79,8 @@ shared_ptr<Token> & Lexer::peek_token(unsigned int offset)
 
 Token * Lexer::parse_next_token() {
 	skip_blanks();
+	skip_comments();
+	skip_blanks();
 	const auto peek = peek_char();
 	Token * token;
 	// wcout << "peek: " << peek << endl;
@@ -61,12 +98,12 @@ Token * Lexer::parse_next_token() {
 	else {
 		token = delimiter_parser_.parse();
 	}
-	if (new_line_)
+	if (new_line_ && token != nullptr)
 	{
 		token->set_at_line_head(true);
 		new_line_ = false;
 	}
-	if (token) wcout << token->get_raw_string() << " is head: " << token->get_at_line_head() << endl;
+	// if (token) wcout << token->get_raw_string() << " is head: " << token->get_at_line_head() << endl;
 	return token;
 }
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BytecodeLength.h"
+#include "BytecodeClass.h"
 
 namespace IR
 {

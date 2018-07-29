@@ -88,6 +88,9 @@
     <Filter Include="头文件\compile">
       <UniqueIdentifier>{9212cb37-4c7a-473b-9042-7e55563e1f66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\ir\bytecode\resource">
+      <UniqueIdentifier>{5c769235-0ffe-41a3-87ad-8a5e46fa27ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -177,19 +180,10 @@
     <ClInclude Include="BytecodeClass.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
-    <ClInclude Include="BytecodeDef.h">
-      <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
-    <ClInclude Include="BytecodeEnum.h">
-      <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
     <ClInclude Include="BytecodeGenerator.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
     <ClInclude Include="BytecodeOperandTypes.h">
-      <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
-    <ClInclude Include="BytecodeVirtualClass.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
     <ClInclude Include="Variable.h">
@@ -270,8 +264,8 @@
     <ClInclude Include="Function.h">
       <Filter>头文件\ir\object</Filter>
     </ClInclude>
-    <ClInclude Include="BytecodeArgumentDump.h">
-      <Filter>头文件\ir\bytecode</Filter>
+    <ClInclude Include="Constant.h">
+      <Filter>头文件\ir\operands</Filter>
     </ClInclude>
     <ClInclude Include="TypeCalc.h">
       <Filter>头文件\runtime</Filter>
@@ -386,10 +380,16 @@
     <ClCompile Include="Function.cpp">
       <Filter>源文件\ir\cl_object</Filter>
     </ClCompile>
+    <ClCompile Include="IRStatementGenerator.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json">
       <Filter>资源文件\config</Filter>
+    </None>
+    <None Include="BytecodeClassGen.py">
+      <Filter>头文件\ir\bytecode\resource</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

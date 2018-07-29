@@ -11,10 +11,12 @@ struct TrieNode
 	TrieNode() {
 		is_leaf_ = true;
 		value_ = 0;
+		tag_ = -1;
 		memset(next_, 0, N * sizeof(TrieNode*));
 	}
 	TrieNode(T value) : value_(value) {
 		is_leaf_ = true;
+		tag_ = -1;
 		memset(next_, 0, N * sizeof(TrieNode*));
 	};
 };
@@ -52,7 +54,6 @@ public:
 			if (node->next_[sequence[i] - base_] == NULL) { // node does not exist
 				//wcout << sequence[i] << endl;
 				// wcout << L"unset leaf: " << (node - root_) << endl;
-				node->is_leaf_ = false;
 				node->next_[sequence[i] - base_] = &trie_node_[trie_node_pointer_];
 				trie_node_[trie_node_pointer_++].value_ = sequence[i];
 			}
@@ -76,11 +77,6 @@ public:
 			}
 			node = node->next_[sequence[i] - base_];
 		}
-		if (node->is_leaf_) {
-			return node->tag_;
-		}
-		else {
-			return -1;
-		}
+		return node->tag_;
 	}
 };

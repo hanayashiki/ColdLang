@@ -102,7 +102,7 @@ namespace IR {
 	{
 		if (symbol == nullptr) {
 			symbol = temp_table_->lend();
-			EMIT(StoreAcc, bytecode_writer_, symbol);
+			emit<StoreAcc>(bytecode_writer_, symbol);
 		}
 		return symbol;
 	}
@@ -111,19 +111,7 @@ namespace IR {
 	{
 		if (symbol != nullptr)
 		{
-			load_variable_or_literal(symbol);
-		}
-	}
-
-	void IRGenerator::load_variable_or_literal(Symbol * symbol)
-	{
-		if (auto variable = dynamic_cast<Variable*>(symbol))
-		{
-			EMIT(LoadToAccVariable, bytecode_writer_, variable);
-		}
-		if (auto literal = dynamic_cast<Literal*>(symbol))
-		{
-			EMIT(LoadToAccLiteral, bytecode_writer_, literal);
+			emit<LoadToAcc>(bytecode_writer_, symbol);
 		}
 	}
 
@@ -156,6 +144,37 @@ namespace IR {
 		{
 			return func_def_and_optional_call_reader(tn->get_non_terminal(0));
 		}
+		if (tn->get_builder_name() == "atom_true")
+		{
+			return literal_table_->get_true_constant();
+		}
+		if (tn->get_builder_name() == "atom_false")
+		{
+			return literal_table_->get_false_constant();
+		}
+		if (tn->get_builder_name() == "atom_none")
+		{
+			return literal_table_->get_none_constant();
+		}
+		if (tn->get_builder_name() == "atom_integer")
+		{
+			return add_literal<Integer>(tn->get_terminal(0), nullptr);
+		}
+		if (tn->get_builder_name() == "atom_general_string")
+		{
+			Runtime::StringObject * rto = new Runtime::StringObject;
+			auto token = tn->get_terminal(0);
+			String * string = static_cast<String*>(token.get());
+
+			rto->type = Runtime::StringObj;
+			rto->length = wcslen(string->get_value());
+			wchar_t * copied = new wchar_t[rto->length + 1];
+			wcscpy_s(copied, rto->length + 1, string->get_value());
+			rto->content = copied;
+			constant_table_->add(rto);
+
+			return add_literal<String>(tn->get_terminal(0), rto);
+		}
 		if (tn->get_builder_name() == "atom_func_call")
 		{
 			auto func_symbol = look_up_name(tn->get_terminal(0).get());
@@ -178,25 +197,17 @@ namespace IR {
 			}
 			if (auto native_func = dynamic_cast<NativeFunction*>(func_symbol))
 			{
-				EMIT(CallNativeFunc, bytecode_writer_, native_func);
+				EMIT(CallNative, bytecode_writer_, native_func);
 			}
-			else {
-				EMIT(CallFunc, bytecode_writer_, func_symbol);
+			else if (auto var = dynamic_cast<Variable*>(func_symbol)) {
+				EMIT(CallFunc, bytecode_writer_, var);
 			}
 			/* result in Acc */
 			return nullptr;
 		}
-		if (tn->get_builder_name() == "entity_true")
+		if (tn->get_builder_name() == "atom_expr")
 		{
-			return literal_table_->get_true_constant();
-		}
-		if (tn->get_builder_name() == "entity_false")
-		{
-			return literal_table_->get_false_constant();
-		}
-		if (tn->get_builder_name() == "entity_none")
-		{
-			return literal_table_->get_none_constant();
+			return expr_reader(tn->get_non_terminal(1));
 		}
 		assert(false);
 		return nullptr;
@@ -254,25 +265,6 @@ namespace IR {
 			// TODO: for the chain
 			return atom_reader(tn->get_non_terminal(0), create);
 		}
-		if (tn->get_builder_name() == "entity_integer")
-		{
-			return add_literal<Integer>(tn->get_terminal(0), nullptr);
-		}
-		if (tn->get_builder_name() == "entity_general_string")
-		{
-			Runtime::StringObject * rto = new Runtime::StringObject;
-			auto token = tn->get_terminal(0);
-			String * string = static_cast<String*>(token.get());
-
-			rto->type = Runtime::StringObj;
-			rto->length = wcslen(string->get_value());
-			wchar_t * copied = new wchar_t[rto->length + 1];
-			wcscpy_s(copied, rto->length + 1, string->get_value());
-			rto->content = copied;
-			constant_table_->add(rto);
-
-			return add_literal<String>(tn->get_terminal(0), rto);
-		}
 		assert(false);
 		return nullptr;
 	}
@@ -301,22 +293,22 @@ namespace IR {
 			}
 			else
 			{
-				load_variable_or_literal(factor);
+				emit<LoadToAcc>(bytecode_writer_, factor);
 			}
 		}
 		else
 		{
 			if (left_builder_name == "term_tail_star")
 			{
-				EMIT(Mul, bytecode_writer_, factor);
+				emit<Mul>(bytecode_writer_, factor);
 			}
 			else if (left_builder_name == "term_tail_divide")
 			{
-				EMIT(Div, bytecode_writer_, factor);
+				emit<Div>(bytecode_writer_, factor);
 			}
 			else if (left_builder_name == "term_tail_mod")
 			{
-				EMIT(Mod, bytecode_writer_, factor);
+				emit<Mod>(bytecode_writer_, factor);
 			}
 		}
 		term_tail_reader(tn->get_non_terminal(1));
@@ -339,10 +331,10 @@ namespace IR {
 			{
 				if (term == nullptr)
 				{
-					// will be overwrite, so we should store `Acc` somewhere
+					// will be overwritten, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					EMIT(StoreAcc, bytecode_writer_, temp);
+					emit<StoreAcc>(bytecode_writer_, temp);
 				}
 				else
 				{
@@ -354,24 +346,24 @@ namespace IR {
 		{
 			if (left_symbol == nullptr) {
 				left_symbol = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, left_symbol);
+				emit<StoreAcc>(bytecode_writer_, left_symbol);
 			}
 			Symbol * term = term_reader(tn->get_non_terminal(0), true, "");
 			if (term == nullptr)
 			{
 				term = temp_table_->lend();
-				EMIT(StoreAcc, bytecode_writer_, term);
+				emit<StoreAcc>(bytecode_writer_, term);
 				temp_table_->revert(static_cast<Variable*>(term));
 			}
-			load_variable_or_literal(left_symbol);
+			emit<LoadToAcc>(bytecode_writer_, left_symbol);
 			if (left_symbol->is_temp())
 			{
 				temp_table_->revert(static_cast<Variable*>(left_symbol));
 			}
 			if (left_builder_name == "expr_5_tail_add")
-				EMIT(Add, bytecode_writer_, term);
+				emit<Add>(bytecode_writer_, term);
 			if (left_builder_name == "expr_5_tail_minus")
-				EMIT(Sub, bytecode_writer_, term);
+				emit<Sub>(bytecode_writer_, term);
 		}
 		expr_5_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;
@@ -395,45 +387,12 @@ namespace IR {
 	{
 		if (tn->get_builder_name() == "entity_tail_op_increment")
 		{
-			side_effect_stack.top().push_back([=]() { EMIT(Inc, bytecode_writer_, target_symbol); });
+			side_effect_stack.top().push_back([=]() { EMIT(Inc, bytecode_writer_, dynamic_cast<Variable*>(target_symbol)); });
 		}
 		if (tn->get_builder_name() == "entity_tail_op_decrement")
 		{
-			auto bytecode = new Decre();
-			bytecode->init(target_symbol);
-			side_effect_stack.top().push_back([=]() { EMIT(Decre, bytecode_writer_, target_symbol); });
+			side_effect_stack.top().push_back([=]() { EMIT(Decre, bytecode_writer_, dynamic_cast<Variable*>(target_symbol)); });
 		}
-	}
-
-	Symbol * IRGenerator::statement_reader(TreeNode * tn)
-	{
-		side_effect_stack.push(SideEffectList());
-		if (tn->get_builder_name() == "statement_entity_statement_right")
-		{
-			Symbol * entity = entity_reader(tn->get_non_terminal(0), true); // TODO: for keyed and named properties
-			TreeNode * statement_right = tn->get_non_terminal(1);
-			if (statement_right->get_builder_name() == "statement_right_assign_expr") {
-				Symbol * expr = expr_reader(statement_right->get_non_terminal(1));
-				load_if_not_nullptr(expr);
-				EMIT(StoreAcc, bytecode_writer_, entity);
-			}
-		}
-		if (tn->get_builder_name() == "statement_keyword_return_value_expr")
-		{
-			Symbol * expr = expr_reader(tn->get_non_terminal(1));
-			load_if_not_nullptr(expr);
-			EMIT(RetAcc, bytecode_writer_);
-		}
-		
-
-		SideEffectList expr_side_effects = side_effect_stack.top();
-		side_effect_stack.pop();
-		for (const auto side_effect : expr_side_effects)
-		{
-			side_effect();
-		}
-		expr_side_effects.clear();
-		return nullptr;
 	}
 
 	void IRGenerator::statement_block_reader(TreeNode * tn)

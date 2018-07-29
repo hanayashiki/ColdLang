@@ -6,9 +6,10 @@
 
 #define EMIT(bytecode_name, writer, ...) \
 	{\
-		IR::BytecodeClass::##bytecode_name bytecode(__VA_ARGS__);\
+		IR::BytecodeClass::##bytecode_name bytecode = IR::BytecodeClass::##bytecode_name(__VA_ARGS__);\
 		writer->emit(bytecode);\
 	}
+
 
 namespace IR {
 	class AssignTarget;
@@ -24,13 +25,13 @@ namespace IR {
 		BytecodeWriter * bytecode_writer_;
 		typedef list<function<void()>> SideEffectList;
 		stack<SideEffectList> side_effect_stack;
+		stack<Label> loop_end_stack;
 
 		void initialize_native_symbols();
 		Variable * new_name(Token * token);
 		Symbol * look_up_name(Token * token);
 		Symbol * self_or_store(Symbol * symbol);
 		void load_if_not_nullptr(Symbol * symbol);
-		void load_variable_or_literal(Symbol * symbol);
 		template<typename RealTokenType>
 		Literal * add_literal(shared_ptr<Token> & token, Runtime::RuntimeObject * rto);
 	public:
@@ -59,6 +60,11 @@ namespace IR {
 		void entity_tail_op_reader(TreeNode * tn, Symbol * target_symbol);
 
 		Symbol * statement_reader(TreeNode * tn);
+		Symbol * if_reader(TreeNode * tn);
+		Symbol * while_reader(TreeNode * tn);
+		void break_loop();
+		Symbol * elif_reader(TreeNode * tn, Label * elif_next);
+		Symbol * else_reader(TreeNode * tn);
 		void statement_block_reader(TreeNode * tn);
 
 		vector<Variable*> comma_identifiers_reader(TreeNode * tn);

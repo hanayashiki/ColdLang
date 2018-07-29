@@ -22,7 +22,7 @@ namespace IR
 
 		virtual void emit(BytecodeClass::BytecodeBase & bytecode) override
 		{
-			char buf[100];
+			unsigned char buf[100];
 			size_t len = bytecode.dump_byte(buf);
 			assert(len < sizeof(buf));
 			for (int i = 0; i < len; i++)

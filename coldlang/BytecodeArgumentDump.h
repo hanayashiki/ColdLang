@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "NativeFunction.h"
 
 #define ARG_INFO(Type, size_expr, dump_block, retrieve_block) \
 	template<> \
@@ -7,7 +8,7 @@
 	{\
 		static constexpr size_t value = (size_expr);\
 	};\
-	static size_t dump_one_arg(char * buf, Type src) { dump_block return get_one_length<Type>::value;} \
+	static size_t dump_one_arg(unsigned char * buf, Type src) { dump_block return get_one_length<Type>::value;} \
 	template<>\
 	static Type retrieve_arg<Type>(char * buf) retrieve_block
 
@@ -63,6 +64,24 @@ namespace IR
 			},
 			{
 				return reinterpret_cast<Variable*>(buf);
+			}
+		)
+
+		ARG_INFO(Constant*, sizeof(Constant*),
+			{
+				memcpy(buf, &src, sizeof(src));
+			},
+			{
+				return reinterpret_cast<Constant*>(buf);
+			}
+		)
+
+		ARG_INFO(Label*, sizeof(Label*),
+			{
+				memcpy(buf, &src, sizeof(src));
+			},
+			{
+				return reinterpret_cast<Label*>(buf);
 			}
 		)
 

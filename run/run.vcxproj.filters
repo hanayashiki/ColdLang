@@ -33,9 +33,4 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="test1.cld">
-      <Filter>资源文件\test_codes</Filter>
-    </None>
-  </ItemGroup>
 </Project>

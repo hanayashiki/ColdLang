@@ -12,6 +12,9 @@ private:
 		"integer",
 		"float",
 		Word::keyword_fn,
+		Word::keyword_true,
+		Word::keyword_false,
+		Word::keyword_none,
 		Delimiter::left_paren
 	});
 	const TreeUnitBuilder expr_peek_ = tutils::logical_or({
@@ -29,8 +32,11 @@ private:
 	});
 	const TreeUnitBuilder statement_peek_ = tutils::logical_or({
 		Word::identifier,
+		Word::keyword_if,
 		Word::keyword_return,
 		Word::keyword_return_value,
+		Word::keyword_while,
+		Word::keyword_break,
 		String::GeneralString,
 		"integer",
 		"float",

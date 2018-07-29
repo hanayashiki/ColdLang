@@ -45,7 +45,7 @@ namespace Compile
 		case EnumPushParamLiteral:
 			CompilePushParamLiteral(buf);
 			break;
-		case EnumCallNativeFunc:
+		case EnumCallNative:
 			CompileCallNative(buf);
 			break;
 		default:

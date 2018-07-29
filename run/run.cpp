@@ -4,9 +4,10 @@
 #include "stdafx.h"
 #include "../coldlang/stdafx.h"
 #include "../coldlang/ByteCodeClass.h"
+#include <ctime>
 
 #include <iostream>
-
+#include <fstream>
 
 #include <fcntl.h>
 #include <io.h>
@@ -17,6 +18,7 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 #include "../coldlang/ColdLangBackend.h"
+#include <codecvt>
 
 #ifdef _DEBUG
 #ifndef DBG_NEW
@@ -30,7 +32,7 @@ using namespace std;
 void test_func_parse1()
 {
 	wstring code = L"fn class	struct\n"
-		L"use if while for ret	task clas f "
+		L"use if while for retv	task clas f "
 		"c88	ccccccccccccccccccasdwasdwdsaggadgegwqfsdvfzb__99852__   _qqq\n";
 	Word::WordType ans[] = {
 		Word::keyword_fn,
@@ -253,7 +255,7 @@ void test_func_6_parse_func_def()
 	Tree* tree;
 	ColdLangFrontEnv* env;
 
-	code = L"fn a { ret a }";
+	code = L"fn a { retv a }";
 	env = new ColdLangFrontEnv(&code);
 
 	tree = env->syntax->parse();
@@ -295,26 +297,6 @@ void test_func_6_parse_simple()
 void show_name(const char* n)
 {
 	wcout << n << endl;
-}
-
-void test_ir_marcos()
-{
-//#define SHOW_NAME(name, ...) \
-//	show_name(#name);
-//
-//	BYTECODE_LIST(SHOW_NAME)
-//
-//#undef SHOW_NAME
-
-	auto cadd = IR::BytecodeClass::LoadAttributeToAcc();
-	wcout << cadd.get_name() << endl;
-	wcout << cadd.get_id() << endl;
-
-	auto ccall = IR::BytecodeClass::CallFunc();
-	wcout << ccall.get_name() << endl;
-	wcout << ccall.get_id() << endl;
-
-	wcout << sizeof(int*) << endl;
 }
 
 void test_mem_alloc()
@@ -787,7 +769,7 @@ void test_func_def()
 	delete env;
 	delete backend;
 
-	code = L"f = fn x { ret fn y { ret x+y } }";
+	code = L"f = fn x { retv fn y { retv x+y } }";
 	wcout << endl << code << endl;
 	env = new ColdLangFrontEnv(&code);
 	tree = env->syntax->parse("statement");
@@ -809,7 +791,10 @@ void test_func_call()
 	ColdLangFrontEnv* env;
 	ColdLangBackend* backend;
 
-	code = L"f = fn x { ret fn y { ret x+y } }   a = f(fn {ret a})";
+	code = L"f = fn x {"
+					"retv fn y { retv x+y }"
+					" }"
+					" a = f(fn {retv a})";
 	wcout << endl << code << endl;
 	env = new ColdLangFrontEnv(&code);
 	tree = env->syntax->parse("statement_block");
@@ -818,15 +803,19 @@ void test_func_call()
 	backend = new ColdLangBackend();
 	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->statement_block_reader(tree->get_root());
+	backend->function_table_->compile_all();
+
+	wcout << "symbol dump: " << endl << "-------------------" << endl;
+	wcout << backend->symbol_table_->dump_to_string() << "-------------------" << endl;
 
 	delete tree;
 	delete env;
 	delete backend;
 
 
-	code = L"f = fn x { ret x }"
-			"g = fn y { ret y }"
-			"h = fn z, w {ret z + w}"
+	code = L"f = fn x { ret }"
+			"g = fn y { retv y }"
+			"h = fn z, w {retv z + w}"
 			"a = h(f(a), g(b))"
 			"a = a*c*c + b";
 	wcout << endl << code << endl;
@@ -837,6 +826,28 @@ void test_func_call()
 	backend = new ColdLangBackend();
 	backend->symbol_table_->mock({ L"a", L"b", L"c" });
 	backend->ir_gen_->statement_block_reader(tree->get_root());
+	wcout << "symbol dump: " << endl << "-------------------" << endl;
+	wcout << backend->symbol_table_->dump_to_string() << "-------------------" << endl;
+	backend->function_table_->compile_all();
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = L"f = fn x { retv x }"
+			"g = fn x { retv x }";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+	backend->function_table_->compile_all();
+
+	wcout << "symbol dump: " << endl << "-------------------" << endl;
+	wcout << backend->symbol_table_->dump_to_string() << "-------------------" << endl;
 
 	delete tree;
 	delete env;
@@ -872,12 +883,245 @@ void test_simple_run()
 	delete backend;
 }
 
+void test_simple_call()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = 
+		L"a = 1"
+		"func = fn x { retv x + 1 }"
+		"native_puts(func(a))";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code =
+		L"a = 1\n"
+		"func = fn x { x=x+1 ret }\n"
+		"native_puts(func(a))";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code =
+		L"a = 1\n"
+		"func = fn x {\n x=x+1 \nret\nx=x-1\n }"
+		"native_puts(func(a))";
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_if_parse()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+	ColdLangBackend* backend;
+
+	code = LR"LINES(
+		if a == 1 {
+			b = 1
+		} else {
+			b = 2
+		}
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = LR"LINES(
+		if a == 1 {
+			b = 1
+		}
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = LR"LINES(
+		if a == 1 {
+			b = 1
+		} elif c == b {
+	        b = 2
+	    }
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = LR"LINES(
+		if a == 1 {
+			b = 1
+		} elif c == b {
+	        b = 2
+	    } else {
+			b = 3
+		}
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = LR"LINES(
+		if a == 1 {
+			b = 1
+		} elif c == b {
+	        b = 2
+	    } elif true {
+			b = 3
+		} else {
+			b = 4
+		}
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+
+	code = LR"LINES(
+		/*
+	     * block comment
+		 */
+		if true { // line comment
+			b = 1
+		} elif c == b {
+	        b = 2
+	    } elif true {
+			b = 3
+		} else {
+			b = 4
+		}
+	)LINES";
+
+	wcout << endl << code << endl;
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	//std::wcout << tree->to_xml(100);
+
+	backend = new ColdLangBackend();
+	backend->symbol_table_->mock({ L"a", L"b", L"c" });
+	backend->ir_gen_->statement_block_reader(tree->get_root());
+
+	delete tree;
+	delete env;
+	delete backend;
+}
+
+void test_standard_syntax()
+{
+	wstring code;
+	Tree* tree;
+	ColdLangFrontEnv* env;
+
+	auto file_addr = "d:/coldlang/unittest/syntax_standard_test.cld";
+	std::ifstream f(file_addr);
+	std::wbuffer_convert<codecvt_utf8_utf16<wchar_t>> conv(f.rdbuf());
+	std::wistream wf(&conv);
+
+	for (wchar_t c; wf.get(c); ) {
+		code.push_back(c);
+	}
+
+	wcout << code;
+
+	auto t1 = clock();
+	env = new ColdLangFrontEnv(&code);
+	tree = env->syntax->parse("statement_block");
+	wcout << "parse used: " << clock() - t1 << "ms" << endl;
+	//std::wcout << tree->to_xml(100);
+
+
+	assert(env->lexer->peek_token(1).get() == nullptr);
+
+	delete tree;
+	delete env;
+}
+
 int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
-	//_CrtSetBreakAlloc(2093);
-	test_simple_run();
+	//_CrtSetBreakAlloc(13223);
+	test_standard_syntax();
 	_CrtDumpMemoryLeaks();
 	getchar();
 

@@ -354,6 +354,67 @@ void TreeMeta::add_statement_defs()
 		{},
 		"statement_block_empty"
 	));
+
+	add_builder(new TreeBuilder(
+		"statement",
+		{ Word::keyword_if },
+		{ Word::keyword_if, "expr",
+			Delimiter::left_brace, "statement_block", Delimiter::right_brace,
+			"optional_elif_list",
+			"optional_else"
+		},
+		"statement_keyword_if"
+	));
+
+	add_builder(new TreeBuilder(
+		"optional_elif_list",
+		{ Word::keyword_elif },
+		{ Word::keyword_elif, "expr",
+			Delimiter::left_brace, "statement_block", Delimiter::right_brace,
+			"optional_elif_list"
+		},
+		"optional_elif_list_elif"
+	));
+
+	add_builder(new TreeBuilder(
+		"optional_elif_list",
+		{},
+		{},
+		"optional_elif_list_empty"
+	));
+
+	add_builder(new TreeBuilder(
+		"optional_else",
+		{ Word::keyword_else },
+		{ Word::keyword_else,
+			Delimiter::left_brace, "statement_block", Delimiter::right_brace
+		},
+		"optional_else_else"
+	));
+
+	add_builder(new TreeBuilder(
+		"statement",
+		{ Word::keyword_while },
+		{ Word::keyword_while, "expr",
+			Delimiter::left_brace, 
+			"statement_block",
+			Delimiter::right_brace },
+		"statement_while"
+	));
+
+	add_builder(new TreeBuilder(
+		"statement",
+		{ Word::keyword_break },
+		{ tutils::isolate(Word::keyword_break) },
+		"statement_keyword_break"
+	));
+
+	add_builder(new TreeBuilder(
+		"optional_else",
+		{},
+		{},
+		"optional_else_empty"
+	));
 }
 
 void TreeMeta::add_func_defs()
@@ -450,6 +511,30 @@ void TreeMeta::add_entity_defs()
 		"atom_identifier"
 	));
 
+	// atom -> true
+	add_builder(new TreeBuilder(
+		"atom",
+		{ Word::keyword_true },
+		{ Word::keyword_true },
+		"atom_true"
+	));
+
+	// atom -> false
+	add_builder(new TreeBuilder(
+		"atom",
+		{ Word::keyword_false },
+		{ Word::keyword_false },
+		"atom_false"
+	));
+
+	// atom -> none
+	add_builder(new TreeBuilder(
+		"atom",
+		{ Word::keyword_none },
+		{ Word::keyword_none },
+		"atom_none"
+	));
+
 	// atom -> func_call
 	add_builder(new TreeBuilder(
 		"atom",
@@ -462,7 +547,8 @@ void TreeMeta::add_entity_defs()
 	add_builder(new TreeBuilder(
 		"atom",
 		{ Delimiter::left_paren },
-		{ Delimiter::left_paren, "expr", Delimiter::right_paren }
+		{ Delimiter::left_paren, "expr", Delimiter::right_paren },
+		"atom_expr"
 	));
 
 	// atom -> func_def_and_optional_call
@@ -473,58 +559,34 @@ void TreeMeta::add_entity_defs()
 		"atom_func_def_and_optional_call"
 	));
 
-
-	// entity -> atom -> string
+	// atom -> string
 	add_builder(new TreeBuilder(
-		"entity",
+		"atom",
 		{ String::GeneralString },
 		{ String::GeneralString },
-		"entity_general_string"
+		"atom_general_string"
 	));
 
-	// entity -> atom -> integer
+	// atom -> integer
 	add_builder(new TreeBuilder(
-		"entity",
+		"atom",
 		{ "integer" },
 		{ "integer" },
-		"entity_integer"
+		"atom_integer"
 	));
 
-	// entity -> atom -> true
+	// atom -> float
 	add_builder(new TreeBuilder(
-		"entity",
-		{ Word::keyword_true },
-		{ Word::keyword_true },
-		"entity_true"
-	));
-
-	// entity -> atom -> false
-	add_builder(new TreeBuilder(
-		"entity",
-		{ Word::keyword_false },
-		{ Word::keyword_false },
-		"entity_false"
-	));
-
-	// entity -> atom -> none
-	add_builder(new TreeBuilder(
-		"entity",
-		{ Word::keyword_none },
-		{ Word::keyword_none },
-		"entity_none"
-	));
-
-	// entity -> atom -> float
-	add_builder(new TreeBuilder(
-		"entity",
+		"atom",
 		{ "float" },
-		{ "float" }
+		{ "float" },
+		"atom_float"
 	));
 
 	// entity -> atom sub_entity
 	add_builder(new TreeBuilder(
 		"entity",
-		{ tutils::logical_or({ Word::identifier, Word::keyword_fn, Delimiter::left_paren }) },
+		{ entity_peek_ },
 		{ "atom", "sub_entity" },
 		"entity_atom_sub_entity"
 	));

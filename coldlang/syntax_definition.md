@@ -6,7 +6,7 @@ entity are atoms in `expr`
 
 + entity ->	atom sub_entity
 + sub_entity -> None | `.` entity
-+ atom -> [identifier] | func_call | literal | func_def_and_optional_call | `(` expr `)`
++ atom -> [identifier] | func_call | literal | func_def_and_optional_call | `(` expr `)` | `true` | `false` | `none`
 + func_call -> identifier `(` comma_exprs `)` | identifier `()` | 
 + literal -> [string] | [float] | [integer]
 + comma_exprs -> expr {, expr}
@@ -30,13 +30,18 @@ different levels of priorities.
 `statement` defines lines of statements. For simplicity of initial implement, there are no `if`, `while` and so on.
 
 + statement -> entity | entity `=` expression
-+ statement -> `return` expr
++ statement -> `retv` expr
++ statement -> `ret`
 + statement_block -> statement {'\n' statement_block}
++ statement -> `if` expr `{` statement_block `}` optional_elif_list optional_else
++ optional_elif_list -> `elif` expr `{` statement_block `}` optional_elif_list | empty
++ optional_else -> `else` `{` statement_block `}` | empty
++ statement -> `while` expr `{` statement_block `}`
++ statement -> `break`
 
 ## function
 
 define function, and opt to call it at once.
 
 + func_def_and_optional_call -> func_def | (None | `(` comma_exprs `)`)
-+ func_def -> `fn` func_name comma_identifiers `{` statement_block `}`
-+ func_name -> string | None
++ func_def -> `fn` comma_identifiers `{` statement_block `}`
