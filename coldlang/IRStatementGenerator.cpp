@@ -52,6 +52,10 @@ namespace IR {
 		{
 			break_loop();
 		}
+		else if (tn->get_builder_name() == "statement_keyword_continue")
+		{
+			continue_loop();
+		}
 		else
 		{
 			assert(false);
@@ -189,10 +193,12 @@ namespace IR {
 		bytecode_writer_->bind(condition);
 		Symbol * expr_result = expr_reader(expr);
 		load_if_not_nullptr(expr_result);
-		EMIT(JumpOnFalse, bytecode_writer_, &while_end);
+		EMIT(JumpOnFalse, bytecode_writer_, &while_end)
+		loop_start_stack.push(condition);
 		loop_end_stack.push(while_end);
 		statement_block_reader(statement_block);
 		loop_end_stack.pop();
+		loop_start_stack.pop();
 		EMIT(Jump, bytecode_writer_, &condition);
 		bytecode_writer_->bind(while_end);
 		return nullptr;
@@ -207,6 +213,18 @@ namespace IR {
 		} else
 		{
 			EMIT(Jump, bytecode_writer_, &loop_end_stack.top());
+		}
+	}
+	void IRGenerator::continue_loop()
+	{
+		if (loop_end_stack.size() == 0)
+		{
+			// todo: throw properly
+			assert(false);
+		}
+		else
+		{
+			EMIT(Jump, bytecode_writer_, &loop_start_stack.top());
 		}
 	}
 }

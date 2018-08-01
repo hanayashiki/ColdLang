@@ -37,6 +37,7 @@ private:
 		Word::keyword_return_value,
 		Word::keyword_while,
 		Word::keyword_break,
+		Word::keyword_continue,
 		String::GeneralString,
 		"integer",
 		"float",

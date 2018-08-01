@@ -17,6 +17,7 @@ public:
 		keyword_elif,
 		keyword_while,
 		keyword_break,
+		keyword_continue,
 		keyword_for,
 		keyword_return,
 		keyword_return_value,

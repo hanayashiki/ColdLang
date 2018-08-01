@@ -11,6 +11,10 @@ namespace IR
 			wstring name_;
 		public:
 			explicit Label(wstring && name);
+			Label(const Label &);
+			Label(Label &&) noexcept;
+			Label & operator=(Label &&) noexcept;
+			Label & operator=(const Label & label);
 			wstring to_string();
 		};
 	}

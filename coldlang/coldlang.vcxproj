@@ -215,6 +215,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BadSyntaxException.h" />
+    <ClInclude Include="BasicBlock.h" />
     <ClInclude Include="BytecodeBase.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -278,6 +279,7 @@
     <ClInclude Include="NumberParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasicBlock.cpp" />
     <ClCompile Include="BytecodeClass.cpp" />
     <ClCompile Include="BytecodeLength.cpp" />
     <ClCompile Include="BytecodeVectorReader.cpp" />

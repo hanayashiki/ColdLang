@@ -270,6 +270,9 @@
     <ClInclude Include="TypeCalc.h">
       <Filter>头文件\runtime</Filter>
     </ClInclude>
+    <ClInclude Include="BasicBlock.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -381,6 +384,9 @@
       <Filter>源文件\ir\cl_object</Filter>
     </ClCompile>
     <ClCompile Include="IRStatementGenerator.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBlock.cpp">
       <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
   </ItemGroup>

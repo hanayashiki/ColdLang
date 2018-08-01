@@ -24,6 +24,7 @@ public:
 		trie.add_sequence(L"elif", 4, Word::keyword_elif);
 		trie.add_sequence(L"while", 5, Word::keyword_while);
 		trie.add_sequence(L"break", 5, Word::keyword_break);
+		trie.add_sequence(L"continue", 9, Word::keyword_continue);
 		trie.add_sequence(L"for", 3, Word::keyword_for);
 		trie.add_sequence(L"ret", 3, Word::keyword_return);
 		trie.add_sequence(L"retv", 4, Word::keyword_return_value);

@@ -25,6 +25,7 @@ namespace IR {
 		BytecodeWriter * bytecode_writer_;
 		typedef list<function<void()>> SideEffectList;
 		stack<SideEffectList> side_effect_stack;
+		stack<Label> loop_start_stack;
 		stack<Label> loop_end_stack;
 
 		void initialize_native_symbols();
@@ -63,6 +64,7 @@ namespace IR {
 		Symbol * if_reader(TreeNode * tn);
 		Symbol * while_reader(TreeNode * tn);
 		void break_loop();
+		void continue_loop();
 		Symbol * elif_reader(TreeNode * tn, Label * elif_next);
 		Symbol * else_reader(TreeNode * tn);
 		void statement_block_reader(TreeNode * tn);

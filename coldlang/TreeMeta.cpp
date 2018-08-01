@@ -410,6 +410,13 @@ void TreeMeta::add_statement_defs()
 	));
 
 	add_builder(new TreeBuilder(
+		"statement",
+		{ Word::keyword_break },
+		{ tutils::isolate(Word::keyword_continue) },
+		"statement_keyword_continue"
+	));
+
+	add_builder(new TreeBuilder(
 		"optional_else",
 		{},
 		{},

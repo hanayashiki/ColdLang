@@ -37,7 +37,7 @@ different levels of priorities.
 + optional_elif_list -> `elif` expr `{` statement_block `}` optional_elif_list | empty
 + optional_else -> `else` `{` statement_block `}` | empty
 + statement -> `while` expr `{` statement_block `}`
-+ statement -> `break`
++ statement -> `break` | `continue`
 
 ## function
 
