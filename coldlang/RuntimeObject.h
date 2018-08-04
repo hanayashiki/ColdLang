@@ -7,8 +7,8 @@ namespace Runtime
 {
 	enum ValueType
 	{
-		AnyVal = 1,
-		IntegerVal = 2,
+		AnyVal,
+		IntegerVal,
 		FloatVal,
 		BooleanVal,
 		NoneVal,
@@ -16,6 +16,18 @@ namespace Runtime
 		FunctionPointerVal,
 		ObjectPointerVal,
 		ErrorVal
+	};
+
+	static const char * ValueTypeName[] = {
+		"any",
+		"int",
+		"float",
+		"bool",
+		"none",
+		"string_ptr",
+		"func_ptr",
+		"obj_ptr",
+		"err_ptr"
 	};
 
 	enum ObjectType

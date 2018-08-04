@@ -6,8 +6,8 @@ namespace IR
 {
 	class BytecodeVectorWriter : public BytecodeWriter
 	{
-		BytecodeWriter * next_writer;
-		vector<uint8_t>* vec_;
+		BytecodeWriter * next_writer_;
+		vector<uint8_t> * vec_;
 	public:
 		BytecodeVectorWriter(vector<uint8_t>* vec)
 			:vec_(vec)
@@ -15,9 +15,9 @@ namespace IR
 			
 		}
 
-		virtual void pass_to(BytecodeWriter * w)
+		virtual void pass_to(BytecodeWriter * w) override
 		{
-			next_writer = w;
+			next_writer_ = w;
 		}
 
 		virtual void emit(BytecodeClass::BytecodeBase & bytecode) override
@@ -33,9 +33,9 @@ namespace IR
 			{
 				wcout << "[" << BytecodeClass::mem_to_string(buf, len).c_str() << "]" << endl;
 			}
-			if (next_writer)
+			if (next_writer_)
 			{
-				next_writer->emit(bytecode);
+				next_writer_->emit(bytecode);
 			}
 		}
 		void bind(OperandType::Label & label) override

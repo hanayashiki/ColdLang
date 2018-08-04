@@ -20,7 +20,7 @@ namespace IR {
 			if (statement_right->get_builder_name() == "statement_right_assign_expr") {
 				Symbol * expr = expr_reader(statement_right->get_non_terminal(1));
 				load_if_not_nullptr(expr);
-				emit<StoreAcc>(bytecode_writer_, entity);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(entity));
 			}
 		}
 		else if (tn->get_builder_name() == "statement_keyword_return_value_expr")

@@ -8,7 +8,8 @@ namespace IR
 		class Symbol
 		{
 		public:
-			enum ValueType
+			static constexpr nullptr_t Acc = nullptr;
+			enum LRValueType
 			{
 				LValue = 1,
 				RValue
@@ -16,19 +17,30 @@ namespace IR
 		private:
 			shared_ptr<Token> token_;
 			size_t id_;
-			ValueType value_type_;
+			LRValueType value_type_;
 			bool is_temp_;
 		public:
-			Symbol(shared_ptr<Token> && token_, ValueType vt = LValue);
+			Symbol(shared_ptr<Token> && token_, LRValueType vt = LValue);
 			shared_ptr<Token> & get_token();
 			size_t get_id();
-			void set_value_type(ValueType);
-			ValueType get_value_type();
+			void set_value_type(LRValueType);
+			LRValueType get_value_type();
 			void set_id(size_t);
 			virtual wstring to_string();
 			void set_temp(bool is_temp);
 			bool is_temp();
 			virtual ~Symbol();
 		};
+
+		static inline wstring to_string(Symbol* symbol)
+		{
+			if (symbol == nullptr)
+			{
+				return L"Acc";
+			} else
+			{
+				return symbol->to_string();
+			}
+		}
 	}
 }

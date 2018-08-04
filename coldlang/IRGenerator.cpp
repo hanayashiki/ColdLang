@@ -86,11 +86,6 @@ namespace IR {
 		
 	}
 
-	Variable * IRGenerator::new_name(Token * token)
-	{
-		return nullptr;
-	}
-
 	Symbol * IRGenerator::look_up_name(Token * token)
 	{
 		return static_cast<Symbol*>(
@@ -100,16 +95,16 @@ namespace IR {
 
 	Symbol * IRGenerator::self_or_store(Symbol * symbol)
 	{
-		if (symbol == nullptr) {
+		if (symbol == Symbol::Acc) {
 			symbol = temp_table_->lend();
-			emit<StoreAcc>(bytecode_writer_, symbol);
+			EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(symbol));
 		}
 		return symbol;
 	}
 
 	void IRGenerator::load_if_not_nullptr(Symbol * symbol)
 	{
-		if (symbol != nullptr)
+		if (symbol != Symbol::Acc)
 		{
 			emit<LoadToAcc>(bytecode_writer_, symbol);
 		}
@@ -158,7 +153,12 @@ namespace IR {
 		}
 		if (tn->get_builder_name() == "atom_integer")
 		{
-			return add_literal<Integer>(tn->get_terminal(0), nullptr);
+			auto integer_token = std::static_pointer_cast<Integer>(tn->get_terminal(0));
+			auto rto = new Runtime::IntegerValue(integer_token->get_value());
+			Constant * constant = new Constant(tn->get_terminal(0), rto);
+			// wcout << "Constant*: " << constant << endl;
+			literal_table_->add(constant);
+			return constant;
 		}
 		if (tn->get_builder_name() == "atom_general_string")
 		{
@@ -203,7 +203,7 @@ namespace IR {
 				EMIT(CallFunc, bytecode_writer_, var);
 			}
 			/* result in Acc */
-			return nullptr;
+			return Symbol::Acc;
 		}
 		if (tn->get_builder_name() == "atom_expr")
 		{
@@ -329,12 +329,12 @@ namespace IR {
 			}
 			else
 			{
-				if (term == nullptr)
+				if (term == Symbol::Acc)
 				{
 					// will be overwritten, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					emit<StoreAcc>(bytecode_writer_, temp);
+					EMIT(StoreAcc, bytecode_writer_, temp);
 				}
 				else
 				{
@@ -344,15 +344,15 @@ namespace IR {
 		}
 		else
 		{
-			if (left_symbol == nullptr) {
+			if (left_symbol == Symbol::Acc) {
 				left_symbol = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, left_symbol);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(left_symbol));
 			}
 			Symbol * term = term_reader(tn->get_non_terminal(0), true, "");
-			if (term == nullptr)
+			if (term == Symbol::Acc)
 			{
 				term = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, term);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(term));
 				temp_table_->revert(static_cast<Variable*>(term));
 			}
 			emit<LoadToAcc>(bytecode_writer_, left_symbol);
@@ -431,7 +431,7 @@ namespace IR {
 		load_if_not_nullptr(expr_right);
 		bytecode_writer_->bind(branch_end);
 
-		return nullptr;
+		return Symbol::Acc;
 	}
 
 	IRGenerator::~IRGenerator()

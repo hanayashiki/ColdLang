@@ -10,27 +10,17 @@ namespace unittest
 {
 	using namespace IR;
 	using namespace Runtime;
-	using namespace IR::BytecodeClass;
+	using namespace BytecodeClass;
 
 	TEST_CLASS(TestTypeCalc)
 	{
 	public:		
-		TEST_METHOD(type_calc_add)
+		TEST_METHOD(TestGetResultType)
 		{
-			Assert::IsTrue(TypeCalc::type_calc_add(IntegerVal, IntegerVal) == IntegerVal);
-			Assert::IsTrue(TypeCalc::type_calc_add(FloatVal, IntegerVal) == FloatVal);
-			Assert::IsTrue(TypeCalc::type_calc_add(StringPointerVal, IntegerVal) == StringPointerVal);
-			Assert::IsTrue(TypeCalc::type_calc_add(ObjectPointerVal, IntegerVal) == AnyVal);
-			Assert::IsTrue(TypeCalc::type_calc_add(IntegerVal, ObjectPointerVal) == AnyVal);
-		}
-		TEST_METHOD(type_calc_mult_div)
-		{
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(IntegerVal, ObjectPointerVal) == AnyVal);
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(ObjectPointerVal, IntegerVal) == AnyVal);
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(IntegerVal, IntegerVal) == IntegerVal);
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(FloatVal, FloatVal) == FloatVal);
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(IntegerVal, FloatVal) == FloatVal);
-			Assert::IsTrue(TypeCalc::type_calc_mult_div(StringPointerVal, FloatVal) == ErrorVal);
+			Assert::IsTrue(TypeCalc::get_result_type(OpAdd, IntegerVal, IntegerVal) == IntegerVal);
+			Assert::IsTrue(TypeCalc::get_result_type(OpAdd, IntegerVal, FloatVal) == FloatVal);
+			Assert::IsTrue(TypeCalc::get_result_type(OpMul, IntegerVal, StringPointerVal) == StringPointerVal);
+			Assert::IsTrue(TypeCalc::get_result_type(OpMul, FloatVal, StringPointerVal) == ErrorVal);
 		}
 	};
 }

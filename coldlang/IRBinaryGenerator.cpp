@@ -20,12 +20,12 @@ namespace IR {
 			}
 			else
 			{
-				if (expr_5 == nullptr)
+				if (expr_5 == Symbol::Acc)
 				{
 					// will be overwrite, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					emit<StoreAcc>(bytecode_writer_, temp);
+					EMIT(StoreAcc, bytecode_writer_, temp);
 				}
 				else
 				{
@@ -37,10 +37,10 @@ namespace IR {
 		{
 			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_5 = expr_5_reader(tn->get_non_terminal(0), true, nullptr, "");
-			if (expr_5 == nullptr)
+			if (expr_5 == Symbol::Acc)
 			{
 				expr_5 = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, expr_5);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(expr_5));
 				temp_table_->revert(static_cast<Variable*>(expr_5));
 			}
 			emit<LoadToAcc>(bytecode_writer_, left_symbol);
@@ -82,12 +82,12 @@ namespace IR {
 			}
 			else
 			{
-				if (expr_4 == nullptr)
+				if (expr_4 == Symbol::Acc)
 				{
 					// will be overwrite, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					emit<StoreAcc>(bytecode_writer_, temp);
+					EMIT(StoreAcc, bytecode_writer_, temp);
 				}
 				else
 				{
@@ -99,10 +99,10 @@ namespace IR {
 		{
 			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_4 = expr_4_reader(tn->get_non_terminal(0), true, nullptr, "");
-			if (expr_4 == nullptr)
+			if (expr_4 == Symbol::Acc)
 			{
 				expr_4 = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, expr_4);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(expr_4));
 				temp_table_->revert(static_cast<Variable*>(expr_4));
 			}
 			emit<LoadToAcc>(bytecode_writer_, left_symbol);
@@ -140,12 +140,12 @@ namespace IR {
 			}
 			else
 			{
-				if (expr_3 == nullptr)
+				if (expr_3 == Symbol::Acc)
 				{
 					// will be overwrite, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					emit<StoreAcc>(bytecode_writer_, temp);
+					EMIT(StoreAcc, bytecode_writer_, temp);
 				}
 				else
 				{
@@ -157,10 +157,10 @@ namespace IR {
 		{
 			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_3 = expr_3_reader(tn->get_non_terminal(0), true, nullptr, "");
-			if (expr_3 == nullptr)
+			if (expr_3 == Symbol::Acc)
 			{
 				expr_3 = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, expr_3);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(expr_3));
 				temp_table_->revert(static_cast<Variable*>(expr_3));
 			}
 			emit<LoadToAcc>(bytecode_writer_, left_symbol);
@@ -196,12 +196,12 @@ namespace IR {
 			}
 			else
 			{
-				if (expr_2 == nullptr)
+				if (expr_2 == Symbol::Acc)
 				{
 					// will be overwrite, so we should store `Acc` somewhere
 					Variable * temp = temp_table_->lend();
 					new_left_symbol = temp;
-					emit<StoreAcc>(bytecode_writer_, temp);
+					EMIT(StoreAcc, bytecode_writer_, temp);
 				}
 				else
 				{
@@ -213,10 +213,10 @@ namespace IR {
 		{
 			left_symbol = self_or_store(left_symbol);
 			Symbol * expr_2 = expr_2_reader(tn->get_non_terminal(0), true, nullptr, "");
-			if (expr_2 == nullptr)
+			if (expr_2 == Symbol::Acc)
 			{
 				expr_2 = temp_table_->lend();
-				emit<StoreAcc>(bytecode_writer_, expr_2);
+				EMIT(StoreAcc, bytecode_writer_, static_cast<Variable*>(expr_2));
 				temp_table_->revert(static_cast<Variable*>(expr_2));
 			}
 			emit<LoadToAcc>(bytecode_writer_, left_symbol);

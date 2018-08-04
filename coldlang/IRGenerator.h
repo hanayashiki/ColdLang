@@ -29,7 +29,6 @@ namespace IR {
 		stack<Label> loop_end_stack;
 
 		void initialize_native_symbols();
-		Variable * new_name(Token * token);
 		Symbol * look_up_name(Token * token);
 		Symbol * self_or_store(Symbol * symbol);
 		void load_if_not_nullptr(Symbol * symbol);

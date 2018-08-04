@@ -6,34 +6,39 @@
 
 ColdLangBackend::ColdLangBackend()
 {
-	symbol_table_ = new IR::SymbolTable();
-	function_table_ = new IR::FunctionTable();
-	literal_table_ = new IR::LiteralTable();
-	constant_table_ = new IR::ConstantTable();
-	bytecode_dumper_ = new IR::BytecodeDumper();
+	symbol_table = new IR::SymbolTable();
+	function_table = new IR::FunctionTable();
+	literal_table = new IR::LiteralTable();
+	constant_table = new IR::ConstantTable();
+	bytecode_dumper = new IR::BytecodeDumper();
 
-	bytecode_byte_dump_ = new IR::BytecodeVectorWriter(&bytecode_vector_);
-	bytecode_dumper_->pass_to(bytecode_byte_dump_);
-	bytecode_reader_ = 
-		new IR::BytecodeVectorReader(&bytecode_vector_);
+	bytecode_vector_writer = new IR::BytecodeVectorWriter(&bytecode_vector);
+	bytecode_dumper->pass_to(bytecode_vector_writer);
+	bytecode_reader = 
+		new IR::BytecodeVectorReader(&bytecode_vector);
 
-	ir_gen_ = new IR::IRGenerator(
-		symbol_table_,
-		function_table_,
-		literal_table_,
-		constant_table_,
-		bytecode_dumper_
+	dump_compiler = new Compile::DumpingCompiler();
+	typed_block_compiler_caller = new Compile::TypedBlockCompilerCaller(bytecode_reader, dump_compiler);
+
+	ir_gen = new IR::IRGenerator(
+		symbol_table,
+		function_table,
+		literal_table,
+		constant_table,
+		bytecode_dumper
 	);
 }
 
 ColdLangBackend::~ColdLangBackend()
 {
-	delete symbol_table_;
-	delete function_table_;
-	delete literal_table_;
-	delete constant_table_;
-	delete bytecode_dumper_;
-	delete bytecode_byte_dump_;
-	delete bytecode_reader_;
-	delete ir_gen_;
+	delete symbol_table;
+	delete function_table;
+	delete literal_table;
+	delete constant_table;
+	delete bytecode_dumper;
+	delete bytecode_vector_writer;
+	delete bytecode_reader;
+	delete ir_gen;
+	delete dump_compiler;
+	delete typed_block_compiler_caller;
 }

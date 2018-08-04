@@ -13,8 +13,8 @@ namespace IR {
 		explicit BasicBlock(Label &&);
 		explicit BasicBlock(Label &);
 		BasicBlock(const BasicBlock &);
-		BasicBlock(BasicBlock &&);
-		BasicBlock & operator=(BasicBlock&&);
+		BasicBlock(BasicBlock &&) noexcept;
+		BasicBlock & operator=(BasicBlock&&) noexcept;
 		BasicBlock & operator=(const BasicBlock&);
 
 		vector<uint8_t> * get_bytecode_vector();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 namespace IR {
-	OperandType::Symbol::Symbol(shared_ptr<Token> && token, ValueType vt)
+	OperandType::Symbol::Symbol(shared_ptr<Token> && token, LRValueType vt)
 		: token_(token), value_type_(vt), is_temp_(false)
 	{
 	}
@@ -16,12 +16,12 @@ namespace IR {
 		return id_;
 	}
 
-	void OperandType::Symbol::set_value_type(ValueType vt)
+	void OperandType::Symbol::set_value_type(LRValueType vt)
 	{
 		this->value_type_ = vt;
 	}
 
-	OperandType::Symbol::ValueType OperandType::Symbol::get_value_type()
+	OperandType::Symbol::LRValueType OperandType::Symbol::get_value_type()
 	{
 		return this->value_type_;
 	}

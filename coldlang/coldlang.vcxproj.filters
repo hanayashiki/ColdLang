@@ -180,9 +180,6 @@
     <ClInclude Include="BytecodeClass.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
-    <ClInclude Include="BytecodeGenerator.h">
-      <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
     <ClInclude Include="BytecodeOperandTypes.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
@@ -272,6 +269,21 @@
     </ClInclude>
     <ClInclude Include="BasicBlock.h">
       <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeArgumentDump.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="TypedBlockCompilerCaller.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="Compiler.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="MiscellaneousBytecodeInfoGetters.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="DumpingCompiler.h">
+      <Filter>头文件\compile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -389,6 +401,9 @@
     <ClCompile Include="BasicBlock.cpp">
       <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
+    <ClCompile Include="TypedBlockCompilerCaller.cpp">
+      <Filter>源文件\jit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json">
@@ -396,6 +411,9 @@
     </None>
     <None Include="BytecodeClassGen.py">
       <Filter>头文件\ir\bytecode\resource</Filter>
+    </None>
+    <None Include="TypeCalcGen.py">
+      <Filter>头文件\runtime</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

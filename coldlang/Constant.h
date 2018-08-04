@@ -12,8 +12,7 @@ namespace IR
 			Runtime::RuntimeValue * value_;
 		public:
 			Constant(shared_ptr<Token> & token, Runtime::RuntimeValue * value)
-				:
-				value_(value), Symbol(std::move(token))
+				: value_(value), Symbol(std::move(token))
 			{
 			}
 			Runtime::RuntimeValue * get_value()

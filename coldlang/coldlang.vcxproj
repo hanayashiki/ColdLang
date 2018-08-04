@@ -216,11 +216,15 @@
   <ItemGroup>
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BasicBlock.h" />
+    <ClInclude Include="BytecodeArgumentDump.h" />
     <ClInclude Include="BytecodeBase.h" />
+    <ClInclude Include="Compiler.h" />
+    <ClInclude Include="DumpingCompiler.h" />
+    <ClInclude Include="MiscellaneousBytecodeInfoGetters.h" />
+    <ClInclude Include="TypedBlockCompilerCaller.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
     <ClInclude Include="BytecodeDumper.h" />
-    <ClInclude Include="BytecodeGenerator.h" />
     <ClInclude Include="BytecodeLength.h" />
     <ClInclude Include="BytecodeReader.h" />
     <ClInclude Include="BytecodeVectorReader.h" />
@@ -280,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicBlock.cpp" />
+    <ClCompile Include="TypedBlockCompilerCaller.cpp" />
     <ClCompile Include="BytecodeClass.cpp" />
     <ClCompile Include="BytecodeLength.cpp" />
     <ClCompile Include="BytecodeVectorReader.cpp" />
@@ -333,6 +338,7 @@
   <ItemGroup>
     <None Include="BytecodeClassGen.py" />
     <None Include="module.json" />
+    <None Include="TypeCalcGen.py" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\asmjit\asmjit.vcxproj">

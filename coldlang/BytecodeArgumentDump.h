@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "BytecodeByteDump.h"
 #include "NativeFunction.h"
 
 #define ARG_INFO(Type, size_expr, dump_block, retrieve_block) \
@@ -10,12 +11,14 @@
 	};\
 	static size_t dump_one_arg(unsigned char * buf, Type src) { dump_block return get_one_length<Type>::value;} \
 	template<>\
-	static Type retrieve_arg<Type>(char * buf) retrieve_block
+	static Type retrieve_arg<Type>(unsigned char * buf) retrieve_block
 
 namespace IR
 {
 	namespace BytecodeClass
 	{
+		static string mem_to_string(unsigned char * start, size_t len);
+
 		using namespace OperandType;
 
 		template<typename T>
@@ -24,9 +27,9 @@ namespace IR
 			static constexpr size_t value = 0;
 		};
 		template<typename T>
-		static T retrieve_arg(char * buf)
+		static T retrieve_arg(unsigned char * buf)
 		{
-			
+			return T::this_fucking_not_exist;
 		}
 
 		//static size_t dump_one_arg(char* buf, NativeFunction* native_func)
@@ -45,7 +48,7 @@ namespace IR
 				memcpy(buf, &src, sizeof(src));
 			},
 			{
-				return reinterpret_cast<NativeFunction*>(buf);
+				return reinterpret_cast<NativeFunction*>(*(size_t*)buf);
 			}
 		)
 
@@ -54,7 +57,7 @@ namespace IR
 				memcpy(buf, &src, sizeof(src));
 			},
 			{
-				return reinterpret_cast<Literal*>(buf);
+				return reinterpret_cast<Literal*>(*(size_t*)buf);
 			}
 		)
 
@@ -63,7 +66,7 @@ namespace IR
 				memcpy(buf, &src, sizeof(src));
 			},
 			{
-				return reinterpret_cast<Variable*>(buf);
+				return reinterpret_cast<Variable*>(*(size_t*)buf);
 			}
 		)
 
@@ -72,7 +75,7 @@ namespace IR
 				memcpy(buf, &src, sizeof(src));
 			},
 			{
-				return reinterpret_cast<Constant*>(buf);
+				return reinterpret_cast<Constant*>(*(size_t*)buf);
 			}
 		)
 
@@ -81,7 +84,7 @@ namespace IR
 				memcpy(buf, &src, sizeof(src));
 			},
 			{
-				return reinterpret_cast<Label*>(buf);
+				return reinterpret_cast<Label*>(*(size_t*)buf);
 			}
 		)
 

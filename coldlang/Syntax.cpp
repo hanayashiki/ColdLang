@@ -59,7 +59,7 @@ TreeNode * Syntax::parse(const TreeBuilder * tree_builder)
 		else
 		{
 			shared_ptr<Token> peek_token = lexer_->peek_token(0);
-			wcout << tree_builder->get_name().c_str() << "/" << tree_builder->get_builder_name().c_str()  << ": " << peek_token->get_raw_string() << endl;
+			// wcout << tree_builder->get_name().c_str() << "/" << tree_builder->get_builder_name().c_str()  << ": " << peek_token->get_raw_string() << endl;
 			if (component.is_good_token(peek_token.get()))
 			{
 				result_node->set_child(index, peek_token);
