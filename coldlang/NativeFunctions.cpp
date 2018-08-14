@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "native_functions.h"
+#include "NativeFunctions.h"
 #include "RuntimeObject.h"
 
-namespace Runtime
+namespace CldRuntime
 {
 	void native_puts(PointerValue pointer)
 	{

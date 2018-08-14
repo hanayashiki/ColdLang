@@ -60,7 +60,7 @@ namespace IR {
 		vector<Variable*> param_list = comma_identifiers_reader(comma_identifiers);
 		Function * function = new Function(keyword_token, param_list);
 		function_table_->add(function);
-		Runtime::FunctionObject * function_object = new Runtime::FunctionObject;
+		CldRuntime::FunctionObject * function_object = new CldRuntime::FunctionObject;
 		constant_table_->add(function_object);
 		function_object->meta = function;
 
@@ -71,6 +71,7 @@ namespace IR {
 
 		function->compile_to_bytecode = [=]()
 		{
+			function->bytecode_compiled = true;
 			wcout << endl;
 			wcout << "code for " << func_literal->to_string() << endl << endl;
 			wcout << "-----------------------------------------------------------" << endl << endl;

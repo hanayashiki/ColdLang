@@ -216,11 +216,20 @@
   <ItemGroup>
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BasicBlock.h" />
+    <ClInclude Include="BasicBlockHolder.h" />
+    <ClInclude Include="BlockCode.h" />
     <ClInclude Include="BytecodeArgumentDump.h" />
     <ClInclude Include="BytecodeBase.h" />
+    <ClInclude Include="BytecodeClassHelper.h" />
+    <ClInclude Include="BytecodeTyper.h" />
+    <ClInclude Include="Code.h" />
     <ClInclude Include="Compiler.h" />
+    <ClInclude Include="CompilerFactory.h" />
     <ClInclude Include="DumpingCompiler.h" />
+    <ClInclude Include="ExecCompiler.h" />
+    <ClInclude Include="ExecDebug.h" />
     <ClInclude Include="MiscellaneousBytecodeInfoGetters.h" />
+    <ClInclude Include="RuntimeFunction.h" />
     <ClInclude Include="TypedBlockCompilerCaller.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -253,7 +262,7 @@
     <ClInclude Include="Delimiter.h" />
     <ClInclude Include="NativeFunction.h" />
     <ClInclude Include="NativeSymbol.h" />
-    <ClInclude Include="native_functions.h" />
+    <ClInclude Include="NativeFunctions.h" />
     <ClInclude Include="ResizableBuffer.h" />
     <ClInclude Include="RuntimeObject.h" />
     <ClInclude Include="stdafx.h" />
@@ -277,13 +286,22 @@
     <ClInclude Include="Tutils.h" />
     <ClInclude Include="TokenException.h" />
     <ClInclude Include="TypeCalc.h" />
+    <ClInclude Include="TypeToCode.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="ValueTypeVec.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Word.h" />
     <ClInclude Include="NumberParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicBlock.cpp" />
+    <ClCompile Include="BasicBlockHolder.cpp" />
+    <ClCompile Include="BlockCode.cpp" />
+    <ClCompile Include="BytecodeTyper.cpp" />
+    <ClCompile Include="Code.cpp" />
+    <ClCompile Include="ExecCompiler.cpp" />
+    <ClCompile Include="ExecDebug.cpp" />
+    <ClCompile Include="RuntimeFunction.cpp" />
     <ClCompile Include="TypedBlockCompilerCaller.cpp" />
     <ClCompile Include="BytecodeClass.cpp" />
     <ClCompile Include="BytecodeLength.cpp" />
@@ -305,7 +323,7 @@
     <ClCompile Include="Jit.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LiteralTable.cpp" />
-    <ClCompile Include="native_functions.cpp">
+    <ClCompile Include="NativeFunctions.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">All</AssemblerOutput>
     </ClCompile>
     <ClCompile Include="Symbol.cpp" />
@@ -317,6 +335,7 @@
     <ClCompile Include="TreeBuilder.cpp" />
     <ClCompile Include="TreeUnitBuilder.cpp" />
     <ClCompile Include="Tutils.cpp" />
+    <ClCompile Include="TypeToCode.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />

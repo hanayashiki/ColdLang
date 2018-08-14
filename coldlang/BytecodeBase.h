@@ -15,7 +15,7 @@ namespace IR
 
 		enum OpType;
 
-		struct UnaryInfo
+		struct UnaryBytecodeInfo
 		{
 			OpType op;
 			OperandType::Symbol* symbol;

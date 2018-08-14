@@ -145,12 +145,12 @@ bytecode_list_entry_template =\
 get_unary_template0=\
 """
             template<T>
-			static UnaryInfo get_unary_info<%(class_name)s>(unsigned char buf[]);
+			static UnaryBytecodeInfo get_unary_info<%(class_name)s>(unsigned char buf[]);
 """
 
 get_unary_template=\
 """
-		static UnaryInfo get_unary_info_%(class_name)s(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_%(class_name)s(unsigned char buf[])
 		{
 			return {
 				%(op_type)s, retrieve_arg<%(arg_type)s>(&buf[1])
@@ -160,7 +160,7 @@ get_unary_template=\
 
 get_unary_info_array=\
 """
-        typedef UnaryInfo (*GetUnaryInfo)(unsigned char[]);
+        typedef UnaryBytecodeInfo (*GetUnaryInfo)(unsigned char[]);
         const GetUnaryInfo get_unary_info_list[] = {
 %s
         };
@@ -172,7 +172,7 @@ get_unary_info_array=\
             return getter;
         }
 
-        static bool is_unary(unsigned char buf[]) {
+        static bool is_unary(const unsigned char buf[]) {
             unsigned char code_id = buf[0];
             return code_id >= PushParamVariable::code_id && code_id <= LoadToAccConstant::code_id;
         }
@@ -305,7 +305,47 @@ def string_sum(param_name_list):
         return 'L" " + ' + ' + L" " + '.join([x + '->to_string()' for x in param_name_list])
     else:
         return 'L""'
-    
+
+decompile_base = """\
+		static wstring decompile(const unsigned char buf[])
+		{
+			wstring str;
+			switch (buf[0])
+			{
+%(decompiler_list)s            default:
+                assert(false);
+			}
+            return str;
+		}
+""".replace('\t', '    ')
+
+single_decompiler = """\
+			case Enum%(bytecode_name)s:
+				str = L"%(bytecode_name)s" %(retrieve_list)s;
+				break;
+""".replace('\t', '    ')
+
+def decompile(bytecode_classes: list):
+    single_decompilers = []
+    for bytecode_def in bytecode_classes:
+        single_decompilers.append(
+            single_decompiler % {
+                'bytecode_name': bytecode_def['class_name'],
+                'retrieve_list': generate_retrieve_list(bytecode_def)
+            }
+        )
+    return decompile_base % {
+        'decompiler_list': ''.join(single_decompilers)
+    }
+
+def generate_retrieve_list(bytecode_def: dict):
+    parameter_type_list = bytecode_def['op_types']
+    if len(parameter_type_list) > 0:
+        # currently we have one-argument only bytecode
+        # TODO: make it for multiple args
+        return "L\" \" + retrieve_arg<%s>(buf + 1)->to_string()" % parameter_type_list[0]
+    else:
+        return ""
 
 def define():
     b = bytecode_def
@@ -337,6 +377,8 @@ def define():
     b('Inc', acc_write, [variable])
     b('Decre', acc_write, [variable])
 
+    b('Label', acc_none, [label])
+
 define()
 
 print(head)
@@ -363,6 +405,8 @@ for bytecode in bytecode_classes:
         unary_func_pointers.append("nullptr")
 print(get_unary_info_array % ',\n'.join([12*' ' + x for x in unary_func_pointers]))
 print("")
+
+print(decompile(bytecode_classes))
 print(tail)
 
 print(acc_use)

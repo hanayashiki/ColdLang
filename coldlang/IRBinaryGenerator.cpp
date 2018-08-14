@@ -56,7 +56,7 @@ namespace IR {
 				emit<LessEqual>(bytecode_writer_, expr_5);
 			if (left_builder_name == "less_expr_4")
 				emit<LessThan>(bytecode_writer_, expr_5);
-
+			new_left_symbol = Symbol::Acc;
 		}
 		expr_4_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;
@@ -114,7 +114,7 @@ namespace IR {
 				emit<NotEqual>(bytecode_writer_, expr_4);
 			if (left_builder_name == "equal_expr_3")
 				emit<Equal>(bytecode_writer_, expr_4);
-
+			new_left_symbol = Symbol::Acc;
 		}
 		expr_3_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;
@@ -170,7 +170,7 @@ namespace IR {
 			}
 			if (left_builder_name == "expr_2_tail_and")
 				emit<And>(bytecode_writer_, expr_3);
-
+			new_left_symbol = Symbol::Acc;
 		}
 		expr_2_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;
@@ -226,7 +226,7 @@ namespace IR {
 			}
 			if (left_builder_name == "expr_1_tail_or")
 				emit<Or>(bytecode_writer_, expr_2);
-
+			new_left_symbol = Symbol::Acc;
 		}
 		expr_1_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;

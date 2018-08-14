@@ -10,7 +10,8 @@ namespace IR
 		: token_(token), parameter_list_(parameter_list),
 		bytecode_reader_(new BytecodeVectorReader(&bytecode_)),
 		bytecode_byte_writer(new BytecodeVectorWriter(&bytecode_)),
-		bytecode_writer_(new BytecodeDumper())
+		bytecode_writer_(new BytecodeDumper()),
+		bytecode_compiled(false)
 	{
 		bytecode_writer_->pass_to(bytecode_byte_writer);
 	}

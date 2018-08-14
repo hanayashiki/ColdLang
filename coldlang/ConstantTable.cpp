@@ -8,7 +8,7 @@ namespace IR
 	{
 	}
 
-	size_t ConstantTable::add(Runtime::RuntimeObject* constant)
+	size_t ConstantTable::add(CldRuntime::RuntimeObject* constant)
 	{
 		constants_.push_back(constant);
 		return id_++;

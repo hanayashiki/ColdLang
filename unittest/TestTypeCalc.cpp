@@ -9,7 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace unittest
 {
 	using namespace IR;
-	using namespace Runtime;
+	using namespace CldRuntime;
 	using namespace BytecodeClass;
 
 	TEST_CLASS(TestTypeCalc)

@@ -75,6 +75,7 @@ namespace IR
 			EnumJumpOnFalse,
 			EnumInc,
 			EnumDecre,
+			EnumLabel,
 		};
 
 		enum OpType {
@@ -1911,6 +1912,37 @@ namespace IR
 			}
 		};
 
+		class Label : public BytecodeBase
+		{
+		private:
+			unsigned char byte_buf[128];
+			size_t byte_len;
+			OperandType::Label* param1;
+		public:
+			static const unsigned char code_id = EnumLabel;
+			Label(OperandType::Label* param1)
+				: param1(param1)
+			{
+				byte_len = params_to_byte(byte_buf, EnumLabel, param1);
+			}
+
+			size_t dump_byte(unsigned char out_buf[]) override
+			{
+				memcpy(out_buf, byte_buf, byte_len);
+				return byte_len;
+			}
+
+			wstring get_name() override
+			{
+				return L"Label";
+			}
+
+			wstring to_string() override
+			{
+				return get_name() + L" " + param1->to_string();
+			}
+		};
+
 		class PushParam {};
 		class Or {};
 		class And {};
@@ -2261,8 +2293,9 @@ namespace IR
         C(JumpOnFalse, AccumulatorUse::Read, OperandType::Label*)\
         C(Inc, AccumulatorUse::Write, OperandType::Variable*)\
         C(Decre, AccumulatorUse::Write, OperandType::Variable*)\
+        C(Label, AccumulatorUse::None, OperandType::Label*)\
 
-		static UnaryInfo get_unary_info_PushParamVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_PushParamVariable(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2270,7 +2303,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_PushParamLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_PushParamLiteral(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2278,7 +2311,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_PushParamConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_PushParamConstant(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2286,7 +2319,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_OrVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_OrVariable(unsigned char buf[])
 		{
 			return {
 				OpLogicalOr, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2294,7 +2327,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_OrLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_OrLiteral(unsigned char buf[])
 		{
 			return {
 				OpLogicalOr, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2302,7 +2335,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_OrConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_OrConstant(unsigned char buf[])
 		{
 			return {
 				OpLogicalOr, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2310,7 +2343,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AndVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AndVariable(unsigned char buf[])
 		{
 			return {
 				OpLogicalAnd, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2318,7 +2351,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AndLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AndLiteral(unsigned char buf[])
 		{
 			return {
 				OpLogicalAnd, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2326,7 +2359,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AndConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AndConstant(unsigned char buf[])
 		{
 			return {
 				OpLogicalAnd, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2334,7 +2367,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_EqualVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_EqualVariable(unsigned char buf[])
 		{
 			return {
 				OpEqual, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2342,7 +2375,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_EqualLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_EqualLiteral(unsigned char buf[])
 		{
 			return {
 				OpEqual, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2350,7 +2383,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_EqualConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_EqualConstant(unsigned char buf[])
 		{
 			return {
 				OpEqual, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2358,7 +2391,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NotEqualVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NotEqualVariable(unsigned char buf[])
 		{
 			return {
 				OpNotEqual, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2366,7 +2399,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NotEqualLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NotEqualLiteral(unsigned char buf[])
 		{
 			return {
 				OpNotEqual, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2374,7 +2407,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NotEqualConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NotEqualConstant(unsigned char buf[])
 		{
 			return {
 				OpNotEqual, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2382,7 +2415,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterEqualVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterEqualVariable(unsigned char buf[])
 		{
 			return {
 				OpGreaterEqual, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2390,7 +2423,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterEqualLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterEqualLiteral(unsigned char buf[])
 		{
 			return {
 				OpGreaterEqual, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2398,7 +2431,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterEqualConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterEqualConstant(unsigned char buf[])
 		{
 			return {
 				OpGreaterEqual, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2406,7 +2439,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessEqualVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessEqualVariable(unsigned char buf[])
 		{
 			return {
 				OpLessEqual, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2414,7 +2447,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessEqualLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessEqualLiteral(unsigned char buf[])
 		{
 			return {
 				OpLessEqual, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2422,7 +2455,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessEqualConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessEqualConstant(unsigned char buf[])
 		{
 			return {
 				OpLessEqual, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2430,7 +2463,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterThanVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterThanVariable(unsigned char buf[])
 		{
 			return {
 				OpGreaterThan, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2438,7 +2471,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterThanLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterThanLiteral(unsigned char buf[])
 		{
 			return {
 				OpGreaterThan, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2446,7 +2479,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_GreaterThanConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_GreaterThanConstant(unsigned char buf[])
 		{
 			return {
 				OpGreaterThan, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2454,7 +2487,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessThanVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessThanVariable(unsigned char buf[])
 		{
 			return {
 				OpLessThan, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2462,7 +2495,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessThanLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessThanLiteral(unsigned char buf[])
 		{
 			return {
 				OpLessThan, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2470,7 +2503,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LessThanConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LessThanConstant(unsigned char buf[])
 		{
 			return {
 				OpLessThan, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2478,7 +2511,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AddVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AddVariable(unsigned char buf[])
 		{
 			return {
 				OpAdd, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2486,7 +2519,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AddLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AddLiteral(unsigned char buf[])
 		{
 			return {
 				OpAdd, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2494,7 +2527,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_AddConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_AddConstant(unsigned char buf[])
 		{
 			return {
 				OpAdd, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2502,7 +2535,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_SubVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_SubVariable(unsigned char buf[])
 		{
 			return {
 				OpSub, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2510,7 +2543,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_SubLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_SubLiteral(unsigned char buf[])
 		{
 			return {
 				OpSub, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2518,7 +2551,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_SubConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_SubConstant(unsigned char buf[])
 		{
 			return {
 				OpSub, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2526,7 +2559,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_MulVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_MulVariable(unsigned char buf[])
 		{
 			return {
 				OpMul, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2534,7 +2567,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_MulLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_MulLiteral(unsigned char buf[])
 		{
 			return {
 				OpMul, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2542,7 +2575,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_MulConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_MulConstant(unsigned char buf[])
 		{
 			return {
 				OpMul, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2550,7 +2583,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_DivVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_DivVariable(unsigned char buf[])
 		{
 			return {
 				OpDiv, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2558,7 +2591,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_DivLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_DivLiteral(unsigned char buf[])
 		{
 			return {
 				OpDiv, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2566,7 +2599,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_DivConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_DivConstant(unsigned char buf[])
 		{
 			return {
 				OpDiv, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2574,7 +2607,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_ModVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_ModVariable(unsigned char buf[])
 		{
 			return {
 				OpMod, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2582,7 +2615,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_ModLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_ModLiteral(unsigned char buf[])
 		{
 			return {
 				OpMod, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2590,7 +2623,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_ModConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_ModConstant(unsigned char buf[])
 		{
 			return {
 				OpMod, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2598,7 +2631,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NegVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NegVariable(unsigned char buf[])
 		{
 			return {
 				OpNeg, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2606,7 +2639,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NegLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NegLiteral(unsigned char buf[])
 		{
 			return {
 				OpNeg, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2614,7 +2647,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_NegConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_NegConstant(unsigned char buf[])
 		{
 			return {
 				OpNeg, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2622,7 +2655,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LoadToAccVariable(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LoadToAccVariable(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Variable*>(&buf[1])
@@ -2630,7 +2663,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LoadToAccLiteral(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LoadToAccLiteral(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Literal*>(&buf[1])
@@ -2638,7 +2671,7 @@ namespace IR
 		}
 
 
-		static UnaryInfo get_unary_info_LoadToAccConstant(unsigned char buf[])
+		static UnaryBytecodeInfo get_unary_info_LoadToAccConstant(unsigned char buf[])
 		{
 			return {
 				OpMove, retrieve_arg<OperandType::Constant*>(&buf[1])
@@ -2646,7 +2679,7 @@ namespace IR
 		}
 
 
-		typedef UnaryInfo(*GetUnaryInfo)(unsigned char[]);
+		typedef UnaryBytecodeInfo(*GetUnaryInfo)(unsigned char[]);
 		const GetUnaryInfo get_unary_info_list[] = {
 			get_unary_info_PushParamVariable,
 			get_unary_info_PushParamLiteral,
@@ -2705,6 +2738,7 @@ namespace IR
 			nullptr,
 			nullptr,
 			nullptr,
+			nullptr,
 			nullptr
 		};
 
@@ -2715,11 +2749,199 @@ namespace IR
 			return getter;
 		}
 
-		static bool is_unary(unsigned char buf[]) {
+		static bool is_unary(const unsigned char buf[]) {
 			unsigned char code_id = buf[0];
 			return code_id >= PushParamVariable::code_id && code_id <= LoadToAccConstant::code_id;
 		}
 
+
+		static wstring decompile(const unsigned char buf[])
+		{
+			wstring str;
+			switch (buf[0])
+			{
+			case EnumPushParamVariable:
+				str = L"PushParamVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumPushParamLiteral:
+				str = L"PushParamLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumPushParamConstant:
+				str = L"PushParamConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumOrVariable:
+				str = L"OrVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumOrLiteral:
+				str = L"OrLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumOrConstant:
+				str = L"OrConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumAndVariable:
+				str = L"AndVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumAndLiteral:
+				str = L"AndLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumAndConstant:
+				str = L"AndConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumEqualVariable:
+				str = L"EqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumEqualLiteral:
+				str = L"EqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumEqualConstant:
+				str = L"EqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumNotEqualVariable:
+				str = L"NotEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumNotEqualLiteral:
+				str = L"NotEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumNotEqualConstant:
+				str = L"NotEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterEqualVariable:
+				str = L"GreaterEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterEqualLiteral:
+				str = L"GreaterEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterEqualConstant:
+				str = L"GreaterEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumLessEqualVariable:
+				str = L"LessEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumLessEqualLiteral:
+				str = L"LessEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumLessEqualConstant:
+				str = L"LessEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterThanVariable:
+				str = L"GreaterThanVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterThanLiteral:
+				str = L"GreaterThanLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumGreaterThanConstant:
+				str = L"GreaterThanConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumLessThanVariable:
+				str = L"LessThanVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumLessThanLiteral:
+				str = L"LessThanLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumLessThanConstant:
+				str = L"LessThanConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumAddVariable:
+				str = L"AddVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumAddLiteral:
+				str = L"AddLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumAddConstant:
+				str = L"AddConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumSubVariable:
+				str = L"SubVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumSubLiteral:
+				str = L"SubLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumSubConstant:
+				str = L"SubConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumMulVariable:
+				str = L"MulVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumMulLiteral:
+				str = L"MulLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumMulConstant:
+				str = L"MulConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumDivVariable:
+				str = L"DivVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumDivLiteral:
+				str = L"DivLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumDivConstant:
+				str = L"DivConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumModVariable:
+				str = L"ModVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumModLiteral:
+				str = L"ModLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumModConstant:
+				str = L"ModConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumNegVariable:
+				str = L"NegVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumNegLiteral:
+				str = L"NegLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumNegConstant:
+				str = L"NegConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumLoadToAccVariable:
+				str = L"LoadToAccVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumLoadToAccLiteral:
+				str = L"LoadToAccLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				break;
+			case EnumLoadToAccConstant:
+				str = L"LoadToAccConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				break;
+			case EnumStoreAcc:
+				str = L"StoreAcc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumCallFunc:
+				str = L"CallFunc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumCallNative:
+				str = L"CallNative" L" " + retrieve_arg<OperandType::NativeFunction*>(buf + 1)->to_string();
+				break;
+			case EnumRetAcc:
+				str = L"RetAcc";
+				break;
+			case EnumPushParamAcc:
+				str = L"PushParamAcc";
+				break;
+			case EnumJump:
+				str = L"Jump" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				break;
+			case EnumJumpOnTrue:
+				str = L"JumpOnTrue" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				break;
+			case EnumJumpOnFalse:
+				str = L"JumpOnFalse" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				break;
+			case EnumInc:
+				str = L"Inc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumDecre:
+				str = L"Decre" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				break;
+			case EnumLabel:
+				str = L"Label" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				break;
+			default:
+				assert(false);
+			}
+			return str;
+		}
 
 	}
 }

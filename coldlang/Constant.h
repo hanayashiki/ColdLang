@@ -9,13 +9,13 @@ namespace IR
 		class Constant : public Symbol
 		{
 		private:
-			Runtime::RuntimeValue * value_;
+			CldRuntime::RuntimeValue * value_;
 		public:
-			Constant(shared_ptr<Token> & token, Runtime::RuntimeValue * value)
+			Constant(shared_ptr<Token> & token, CldRuntime::RuntimeValue * value)
 				: value_(value), Symbol(std::move(token))
 			{
 			}
-			Runtime::RuntimeValue * get_value()
+			CldRuntime::RuntimeValue * get_value()
 			{
 				return value_;
 			}

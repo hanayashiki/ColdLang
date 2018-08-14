@@ -7,7 +7,7 @@
 
 namespace IR
 {
-	/* function links to definition of a Runtime::FunctionObject */
+	/* function links to definition of a CldRuntime::FunctionObject */
 	class Function : public CLObject
 	{
 	private:
@@ -18,12 +18,13 @@ namespace IR
 		BytecodeWriter * bytecode_writer_;
 		BytecodeWriter * bytecode_byte_writer;
 	public:
+		bool bytecode_compiled;
 		function<void()> compile_to_bytecode;
 
 		Function(shared_ptr<Token> & token, vector<OperandType::Variable *> & parameter_list);
-		~Function();
+		virtual ~Function();
 
-		wstring to_string();
+		wstring to_string() override;
 		BytecodeReader * get_bytecode_reader();
 		BytecodeWriter * get_bytecode_writer();
 	};

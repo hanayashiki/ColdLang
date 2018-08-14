@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "RuntimeObject.h"
 
-namespace Runtime
+namespace CldRuntime
 {
 	void native_puts(PointerValue pointer);
 

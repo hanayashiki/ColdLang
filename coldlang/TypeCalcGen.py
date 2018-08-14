@@ -54,7 +54,7 @@ namespace Runtime
 
 template =\
 """\
-        static const ValueType op_val_val_to_res_val[op_type_count][value_type_count][value_type_count];\
+        inline static const ValueType op_val_val_to_res_val[op_type_count][value_type_count][value_type_count] = { %(mat)s };\
 """.replace('\t', 4*' ')
 
 tail =\
@@ -65,8 +65,6 @@ tail =\
 			return op_val_val_to_res_val[op][left][right];
 		}
 	};
-
-    const ValueType TypeCalc::op_val_val_to_res_val[op_type_count][value_type_count][value_type_count] = { %(mat)s };
 }\
 """.replace('\t', 4*' ')
 
@@ -212,5 +210,5 @@ for def_enty in calc_def:
 res_type_init_arr = [value_types[int(index)] for index in np.nditer(op_left_right)]
 
 print(head % (len(op_types), len(value_types)))
-print(template)
-print(tail % { 'mat': ', '.join(res_type_init_arr) })
+print(template % { 'mat': ', '.join(res_type_init_arr) })
+print(tail)

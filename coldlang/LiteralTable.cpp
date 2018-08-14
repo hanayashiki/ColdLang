@@ -6,12 +6,12 @@ namespace IR {
 	using namespace OperandType;
 	LiteralTable::LiteralTable()
 	{
-		true_constant_ = add_native_constant(L"true", new Runtime::BooleanValue(true));
-		false_constant_ = add_native_constant(L"false", new Runtime::BooleanValue(false));
-		none_constant_ = add_native_constant(L"none", new Runtime::NoneValue());
+		true_constant_ = add_native_constant(L"true", new CldRuntime::BooleanValue(true));
+		false_constant_ = add_native_constant(L"false", new CldRuntime::BooleanValue(false));
+		none_constant_ = add_native_constant(L"none", new CldRuntime::NoneValue());
 	}
 
-	Constant* LiteralTable::add_native_constant(const wchar_t * name, Runtime::RuntimeValue* val)
+	Constant* LiteralTable::add_native_constant(const wchar_t * name, CldRuntime::RuntimeValue* val)
 	{
 		auto mock_token = std::dynamic_pointer_cast<Token>(Word::mock(name));
 		Constant * constant = new Constant(mock_token, val);

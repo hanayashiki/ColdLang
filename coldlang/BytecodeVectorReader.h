@@ -12,5 +12,6 @@ namespace IR
 	public:
 		BytecodeVectorReader(vector<uint8_t> * bytecode_vector);
 		void read_byte(unsigned char buf[], size_t* count) override;
+		bool more() override;
 	};
 }

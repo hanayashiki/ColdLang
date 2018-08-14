@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
 namespace IR {
+
+	Symbol* Symbol::Acc = &Variable::AccVal;
+
 	OperandType::Symbol::Symbol(shared_ptr<Token> && token, LRValueType vt)
 		: token_(token), value_type_(vt), is_temp_(false)
 	{

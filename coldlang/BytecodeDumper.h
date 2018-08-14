@@ -7,25 +7,29 @@ namespace IR
 	class BytecodeDumper : public BytecodeWriter
 	{
 	private:
-		BytecodeWriter * next_writer = nullptr;
+		BytecodeWriter * next_writer_ = nullptr;
 	public:
 		void pass_to(BytecodeWriter * w)
 		{
-			next_writer = w;
+			next_writer_ = w;
 		}
 
 		void emit(BytecodeClass::BytecodeBase & bytecode) override
 		{
 			// todo
 			wcout << bytecode.to_string() << endl;
-			if (next_writer)
+			if (next_writer_)
 			{
-				next_writer->emit(bytecode);
+				next_writer_->emit(bytecode);
 			}
 		}
 		void bind(OperandType::Label & label) override
 		{
 			wcout << label.to_string() + L":" << endl;
+			if (next_writer_)
+			{
+				next_writer_->bind(label);
+			}
 		}
 	};
 }

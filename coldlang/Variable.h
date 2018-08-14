@@ -9,6 +9,8 @@ namespace IR
 		class Variable : public Symbol
 		{
 		public:
+			static Variable AccVal;
+
 			Variable(shared_ptr<Token> & token);
 			Variable(shared_ptr<Token> && token);
 			const wchar_t * get_name();

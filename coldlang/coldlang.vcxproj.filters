@@ -82,14 +82,14 @@
     <Filter Include="源文件\runtime">
       <UniqueIdentifier>{a3100b76-f5a2-4ddc-95bf-d27af89ff5f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\jit">
-      <UniqueIdentifier>{3d01a8bc-3c61-44f1-b62e-ee2fcaeae4b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\compile">
       <UniqueIdentifier>{9212cb37-4c7a-473b-9042-7e55563e1f66}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\ir\bytecode\resource">
       <UniqueIdentifier>{5c769235-0ffe-41a3-87ad-8a5e46fa27ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\compile">
+      <UniqueIdentifier>{3d01a8bc-3c61-44f1-b62e-ee2fcaeae4b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -234,9 +234,6 @@
     <ClInclude Include="NativeFunction.h">
       <Filter>头文件\ir\operands</Filter>
     </ClInclude>
-    <ClInclude Include="native_functions.h">
-      <Filter>头文件\runtime</Filter>
-    </ClInclude>
     <ClInclude Include="RuntimeObject.h">
       <Filter>头文件\runtime</Filter>
     </ClInclude>
@@ -283,6 +280,42 @@
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
     <ClInclude Include="DumpingCompiler.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeTyper.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicBlockHolder.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="BytecodeClassHelper.h">
+      <Filter>头文件\ir\bytecode</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeFunctions.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeFunction.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeToCode.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="Code.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockCode.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueTypeVec.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerFactory.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecCompiler.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecDebug.h">
       <Filter>头文件\compile</Filter>
     </ClInclude>
   </ItemGroup>
@@ -377,12 +410,6 @@
     <ClCompile Include="LiteralTable.cpp">
       <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantTable.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="native_functions.cpp">
-      <Filter>源文件\runtime</Filter>
-    </ClCompile>
     <ClCompile Include="BytecodeVectorReader.cpp">
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
@@ -390,7 +417,7 @@
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
     <ClCompile Include="Jit.cpp">
-      <Filter>源文件\jit</Filter>
+      <Filter>源文件\compile</Filter>
     </ClCompile>
     <ClCompile Include="Function.cpp">
       <Filter>源文件\ir\cl_object</Filter>
@@ -402,7 +429,37 @@
       <Filter>源文件\ir\irgen</Filter>
     </ClCompile>
     <ClCompile Include="TypedBlockCompilerCaller.cpp">
-      <Filter>源文件\jit</Filter>
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="BytecodeTyper.cpp">
+      <Filter>源文件\ir\bytecode</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantTable.cpp">
+      <Filter>源文件\ir\irgen</Filter>
+    </ClCompile>
+    <ClCompile Include="RuntimeFunction.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBlockHolder.cpp">
+      <Filter>源文件\ir\bytecode</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeToCode.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeFunctions.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockCode.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecCompiler.cpp">
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecDebug.cpp">
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="Code.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

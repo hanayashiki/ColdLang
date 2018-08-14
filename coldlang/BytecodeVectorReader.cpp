@@ -25,4 +25,9 @@ namespace IR {
 		}
 	}
 
+	bool BytecodeVectorReader::more()
+	{
+		return offset < bytecode_vector_->size();
+	}
+
 }

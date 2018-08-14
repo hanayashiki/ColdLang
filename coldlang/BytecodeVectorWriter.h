@@ -40,7 +40,12 @@ namespace IR
 		}
 		void bind(OperandType::Label & label) override
 		{
-			//wcout << label.to_string() + L":" << endl;
+			BytecodeClass::Label label_place_holder(&label);
+			emit(label_place_holder);
+			if (next_writer_)
+			{
+				next_writer_->bind(label);
+			}
 		}
 	};
 }

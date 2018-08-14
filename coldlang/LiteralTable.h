@@ -15,7 +15,7 @@ namespace IR
 		Constant * none_constant_;
 	public:
 		LiteralTable();
-		Constant * add_native_constant(const wchar_t * name, Runtime::RuntimeValue *);
+		Constant * add_native_constant(const wchar_t * name, CldRuntime::RuntimeValue *);
 		size_t add(Literal* literal);
 		size_t add(Constant* constant);
 		Constant * get_true_constant();

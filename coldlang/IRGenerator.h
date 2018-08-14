@@ -25,15 +25,15 @@ namespace IR {
 		BytecodeWriter * bytecode_writer_;
 		typedef list<function<void()>> SideEffectList;
 		stack<SideEffectList> side_effect_stack;
-		stack<Label> loop_start_stack;
-		stack<Label> loop_end_stack;
+		stack<OperandType::Label> loop_start_stack;
+		stack<OperandType::Label> loop_end_stack;
 
 		void initialize_native_symbols();
 		Symbol * look_up_name(Token * token);
 		Symbol * self_or_store(Symbol * symbol);
 		void load_if_not_nullptr(Symbol * symbol);
 		template<typename RealTokenType>
-		Literal * add_literal(shared_ptr<Token> & token, Runtime::RuntimeObject * rto);
+		Literal * add_literal(shared_ptr<Token> & token, CldRuntime::RuntimeObject * rto);
 	public:
 		IRGenerator(SymbolTable * symbol_table, FunctionTable * function_table, LiteralTable * literal_table, ConstantTable * constant_table, BytecodeWriter * bytecode_writer);
 		~IRGenerator();
@@ -64,7 +64,7 @@ namespace IR {
 		Symbol * while_reader(TreeNode * tn);
 		void break_loop();
 		void continue_loop();
-		Symbol * elif_reader(TreeNode * tn, Label * elif_next);
+		Symbol * elif_reader(TreeNode * tn, OperandType::Label * elif_next);
 		Symbol * else_reader(TreeNode * tn);
 		void statement_block_reader(TreeNode * tn);
 

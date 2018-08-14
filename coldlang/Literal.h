@@ -10,14 +10,14 @@ namespace IR
 		class Literal : public Symbol
 		{
 		private:
-			Runtime::RuntimeObject * object_;
+			CldRuntime::RuntimeObject * object_;
 		public:
-			Literal(shared_ptr<Token> & token, Runtime::RuntimeObject * object)
+			Literal(shared_ptr<Token> & token, CldRuntime::RuntimeObject * object)
 				:
 				object_(object), Symbol(std::move(token))
 			{
 			}
-			Runtime::RuntimeObject * get_object()
+			CldRuntime::RuntimeObject * get_object()
 			{
 				return object_;
 			}

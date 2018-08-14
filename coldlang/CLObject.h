@@ -11,6 +11,6 @@ namespace IR
 		virtual wstring to_string() = 0;
 		void set_id(size_t id);
 		size_t get_id();
-		~CLObject();
+		virtual ~CLObject();
 	};
 }

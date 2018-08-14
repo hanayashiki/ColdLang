@@ -3,7 +3,7 @@
 #include "Function.h"
 
 
-namespace Runtime 
+namespace CldRuntime 
 {
 	enum ValueType
 	{
@@ -17,6 +17,8 @@ namespace Runtime
 		ObjectPointerVal,
 		ErrorVal
 	};
+
+	static const ValueType ValueVecEnd = ErrorVal;
 
 	static const char * ValueTypeName[] = {
 		"any",

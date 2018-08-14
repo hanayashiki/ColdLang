@@ -4,6 +4,7 @@
 #include <cassert>
 #include "Compiler.h"
 #include "MiscellaneousBytecodeInfoGetters.h"
+#include "BytecodeTyper.h"
 
 namespace Compile {
 
@@ -12,128 +13,90 @@ namespace Compile {
 	{
 	}
 
-	BlockTypeInfo TypedBlockCompilerCaller::next_block(BlockTypeInfo && type_info)
+	bool TypedBlockCompilerCaller::CompileBinary(BytecodeTyper::BytecodeTypeInfo & type_info, SymbolToType & symbol_to_type)
 	{
-		BlockTypeInfo info = type_info;
-		return next_block(type_info);
-	}
+		assert(type_info.type == BytecodeTyper::BytecodeTypeInfo::Binary);
 
-	bool TypedBlockCompilerCaller::compile_unary(unsigned char bytecode_buf[], BlockTypeInfo & type_info)
-	{
-		GetUnaryInfo get_unary_info = get_get_unary_info(bytecode_buf);
-		UnaryInfo unary_info = get_unary_info(bytecode_buf);
-		OpType op_type = unary_info.op;
-		Symbol* target_symbol = Symbol::Acc;
-		Symbol* left_symbol = Symbol::Acc;
-		ValueType left_type = get_type_of_(left_symbol);
-		Symbol* right_symbol = unary_info.symbol;
-		ValueType right_type = get_type_of_(right_symbol);
-
-		if (op_type == OpMove)
+		const auto & binary_info = type_info.binary;
+		if (binary_info.left_type == AnyVal || binary_info.right_type == AnyVal)
 		{
-			left_type = right_type;
-			left_symbol = right_symbol;
-		}
-
-		if (left_type == AnyVal || right_type == AnyVal)
-		{
-			// wcout << "left type: " << ValueTypeName[left_type] << endl;
-			// wcout << "left: " << to_string(left_symbol) << endl;
-			// wcout << "right: " << to_string(right_symbol) << endl;
+			//wcout << "left type: " << ValueTypeName[binary_info.left_type] << endl;
+			//wcout << "left: " << to_string(binary_info.left_symbol) << endl;
+			//wcout << "right: " << to_string(binary_info.right_symbol) << endl;
 			return false;
 		}
 
-		ValueType target_type = TypeCalc::get_result_type(op_type, left_type, right_type);
-		type_info.insert_or_assign(target_symbol, target_type);
-		// wcout << "set " << to_string(target_symbol) << " <- " << ValueTypeName[target_type] << endl;
-		if (op_type != OpMove) {
-			compiler_->CompileBinary(
-				target_symbol, op_type,
-				left_type, left_symbol,
-				right_type, right_symbol);
-		} else
-		{
-			compiler_->CompileUnary(
-				target_symbol, op_type,
-				left_type, left_symbol);
-		}
+		symbol_to_type.insert_or_assign(binary_info.target, binary_info.target_type);
+		//wcout << "set " << to_string(binary_info.target) << " <- " << ValueTypeName[binary_info.target_type] << endl;
+		//wcout << "CompileBinary: symbol to type: " << &symbol_to_type << endl;
+		compiler_->CompileBinary(
+			binary_info.target, binary_info.op_type,
+			binary_info.left_type, binary_info.left_symbol,
+			binary_info.right_type, binary_info.right_symbol);
 		return true;
 	}
 
-	bool TypedBlockCompilerCaller::compile_store_acc(unsigned char bytecode_buf[], BlockTypeInfo & type_info)
+	bool TypedBlockCompilerCaller::CompileUnary(BytecodeTyper::BytecodeTypeInfo & type_info, SymbolToType & symbol_to_type)
 	{
-		UnaryInfo unary_info = get_unary_info_StoreAcc(bytecode_buf);
-		ValueType acc_type = get_type_of_(Symbol::Acc);
-		if (acc_type == AnyVal)
+		assert(type_info.type == BytecodeTyper::BytecodeTypeInfo::Unary);
+
+		const auto & unary_info = type_info.unary;
+		if (unary_info.source_type == AnyVal)
 		{
+			//wcout << "source: " << to_string(unary_info.source) << endl;
 			return false;
 		}
-		type_info.insert_or_assign(unary_info.symbol, acc_type);
-		compiler_->CompileUnary(unary_info.symbol, unary_info.op, acc_type, Symbol::Acc);
+		symbol_to_type.insert_or_assign(unary_info.target, unary_info.target_type);
+		//wcout << "CompileUnary: symbol to type: " << &symbol_to_type << endl;
+		compiler_->CompileUnary(unary_info.target, unary_info.op_type, unary_info.source_type, unary_info.source);
 		return true;
 	}
 
-	BlockTypeInfo TypedBlockCompilerCaller::next_block(BlockTypeInfo & type_info)
+	SymbolToType TypedBlockCompilerCaller::NextBlock(SymbolToType && symbol_to_type)
+	{
+		return NextBlock(symbol_to_type);
+	}
+
+	SymbolToType TypedBlockCompilerCaller::NextBlock(SymbolToType & symbol_to_type)
 	{
 		unsigned char buf[128];
 
-		get_type_of_ = get_get_type_of(type_info);
 		while (true)
 		{
 			// wcout << "start typedblock" << endl;
-			size_t read_count;
-			reader_->read_byte(buf, &read_count);
 			// wcout << "get bytecode: " << mem_to_string(buf, read_count).c_str() << endl;
-			if (read_count == 0)
+			if (reader_->more() == false)
 			{
 				break;
 			}
-			if (is_unary(buf))
+
+			IR::BytecodeTyper::BytecodeTypeInfo type_info =
+				BytecodeTyper::get_bytecode_type_info(symbol_to_type, reader_);
+
+			switch (type_info.type)
 			{
-				if (!compile_unary(buf, type_info))
-				{
-					goto while_end;
-				}
-			} else
-			{
-				switch(buf[0])
-				{
-				case EnumStoreAcc:
-				if (!compile_store_acc(buf, type_info))
+			case BytecodeTyper::BytecodeTypeInfo::Unary:
+				if (!CompileUnary(type_info, symbol_to_type))
 				{
 					goto while_end;
 				}
 				break;
-				default:
-					wcout << "Not implemented. " << endl;
+			case BytecodeTyper::BytecodeTypeInfo::Binary:
+				if (!CompileBinary(type_info, symbol_to_type))
+				{
+					goto while_end;
 				}
+				break;
+			case BytecodeTyper::BytecodeTypeInfo::Unknown:
+				wcout << "Not implemented" << endl;
+				assert(false);
+				break;
+			default:
+				assert(false);
 			}
 
 		}
 		while_end:
-		return BlockTypeInfo();
+		return SymbolToType();
 	}
-
-
-	function<ValueType(Symbol*)> TypedBlockCompilerCaller::get_get_type_of(BlockTypeInfo & type_info)
-	{
-		return [&](Symbol* symbol) -> ValueType
-		{
-			if (type_info.find(symbol) != type_info.end())
-			{
-				return type_info.find(symbol)->second;
-			}
-			else if (auto constant = dynamic_cast<Constant*>(symbol))
-			{
-				//wcout << "constant: " << constant->to_string() <<
-				//	": " << ValueTypeName[constant->get_value()->type] << endl;
-				return constant->get_value()->type;
-			} else
-			{
-				// wcout << "anyval: " << to_string(symbol) << endl;
-				return AnyVal;
-			}
-		};
-	}
-
 }

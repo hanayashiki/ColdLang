@@ -2,7 +2,7 @@
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
 #include "RuntimeObject.h"
-#include "native_functions.h"
+#include "NativeFunctions.h"
 #include "NativeSymbol.h"
 #include "NativeFunction.h"
 
@@ -76,7 +76,7 @@ namespace IR {
 	{
 		vector<tuple<const wchar_t*, void*>> native_functions;
 		decltype(native_functions)::value_type a;
-		Runtime::add_native_functions(native_functions);
+		CldRuntime::add_native_functions(native_functions);
 
 		for (auto t : native_functions)
 		{
@@ -154,7 +154,7 @@ namespace IR {
 		if (tn->get_builder_name() == "atom_integer")
 		{
 			auto integer_token = std::static_pointer_cast<Integer>(tn->get_terminal(0));
-			auto rto = new Runtime::IntegerValue(integer_token->get_value());
+			auto rto = new CldRuntime::IntegerValue(integer_token->get_value());
 			Constant * constant = new Constant(tn->get_terminal(0), rto);
 			// wcout << "Constant*: " << constant << endl;
 			literal_table_->add(constant);
@@ -162,11 +162,11 @@ namespace IR {
 		}
 		if (tn->get_builder_name() == "atom_general_string")
 		{
-			Runtime::StringObject * rto = new Runtime::StringObject;
+			CldRuntime::StringObject * rto = new CldRuntime::StringObject;
 			auto token = tn->get_terminal(0);
 			String * string = static_cast<String*>(token.get());
 
-			rto->type = Runtime::StringObj;
+			rto->type = CldRuntime::StringObj;
 			rto->length = wcslen(string->get_value());
 			wchar_t * copied = new wchar_t[rto->length + 1];
 			wcscpy_s(copied, rto->length + 1, string->get_value());
@@ -249,7 +249,7 @@ namespace IR {
 	}
 
 	template<typename RealTokenType>
-	Literal * IRGenerator::add_literal(shared_ptr<Token> & token, Runtime::RuntimeObject * rto)
+	Literal * IRGenerator::add_literal(shared_ptr<Token> & token, CldRuntime::RuntimeObject * rto)
 	{
 		shared_ptr<RealTokenType> integer = 
 			dynamic_pointer_cast<RealTokenType>(token);
@@ -364,6 +364,7 @@ namespace IR {
 				emit<Add>(bytecode_writer_, term);
 			if (left_builder_name == "expr_5_tail_minus")
 				emit<Sub>(bytecode_writer_, term);
+			new_left_symbol = Symbol::Acc;
 		}
 		expr_5_tail_reader(tn->get_non_terminal(1), new_left_symbol);
 		return ret;
@@ -412,7 +413,7 @@ namespace IR {
 
 	Symbol * IRGenerator::expr_reader(TreeNode * tn)
 	{
-		Label branch_false(L"branch_false"), branch_end(L"branch_end");
+		OperandType::Label branch_false(L"branch_false"), branch_end(L"branch_end");
 		Symbol * expr_1 = expr_1_reader(tn->get_non_terminal(0), true, nullptr, "");
 		TreeNode * expr_tail = tn->get_non_terminal(1);
 		if (tn->get_non_terminal(1)->get_builder_name() == "expr_tail_empty")

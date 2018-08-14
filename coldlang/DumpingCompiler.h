@@ -8,11 +8,11 @@ namespace Compile
 	using namespace asmjit;
 	using namespace IR;
 	using namespace BytecodeClass;
-	using namespace Runtime;
+	using namespace CldRuntime;
 	class DumpingCompiler : public Compiler
 	{
-	public:
-		virtual void CompileBinary(Symbol * target, OpType op_type,
+	protected:
+		virtual void CompileBinaryImpl(Symbol * target, OpType op_type,
 			ValueType left_type, Symbol * left_symbol,
 			ValueType right_type, Symbol * right_symbol) override
 		{
@@ -22,11 +22,16 @@ namespace Compile
 				ValueTypeName[right_type] << L" " << to_string(right_symbol) << endl;
 		}
 
-		virtual void CompileUnary(Symbol * target, OpType op_type,
-			ValueType type, Symbol* left_symbol)
+		virtual void CompileUnaryImpl(Symbol * target, OpType op_type,
+			ValueType type, Symbol* left_symbol) override
 		{
 			wcout << to_string(target) << L" <- " << OpTypeName[op_type] <<
 				L" " << ValueTypeName[type] << L" " << to_string(left_symbol) << endl;
+		}
+
+		virtual Code GetCode() override
+		{
+			return Code(nullptr);
 		}
 	};
 }

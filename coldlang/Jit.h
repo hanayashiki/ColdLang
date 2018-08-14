@@ -6,10 +6,11 @@
 
 namespace Compile {
 	using namespace asmjit;
+	/* obsolete */
 	class Jit
 	{
 	private:
-		JitRuntime jit_runtime;
+		JitRuntime jit_runtime_;
 		CodeHolder code;
 		FileLogger logger;
 		X86Compiler * compiler;

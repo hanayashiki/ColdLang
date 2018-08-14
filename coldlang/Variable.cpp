@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+IR::Variable IR::Variable::AccVal(Word::mock(L"Acc"));
+
 IR::OperandType::Variable::Variable(shared_ptr<Token> && token)
 	: Symbol(std::move(token))
 {

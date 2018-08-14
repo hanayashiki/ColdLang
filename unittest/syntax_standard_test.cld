@@ -23,6 +23,7 @@ y = y--
 func = fn x, y, z {
     retv true
     ret
+    a = fn a, b, c {  retv a+b+c }
     if (x == z) {
 
     } elif true {

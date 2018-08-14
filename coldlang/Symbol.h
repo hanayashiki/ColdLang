@@ -8,7 +8,7 @@ namespace IR
 		class Symbol
 		{
 		public:
-			static constexpr nullptr_t Acc = nullptr;
+			static Symbol * Acc;
 			enum LRValueType
 			{
 				LValue = 1,
@@ -34,13 +34,7 @@ namespace IR
 
 		static inline wstring to_string(Symbol* symbol)
 		{
-			if (symbol == nullptr)
-			{
-				return L"Acc";
-			} else
-			{
-				return symbol->to_string();
-			}
+			return symbol->to_string();
 		}
 	}
 }

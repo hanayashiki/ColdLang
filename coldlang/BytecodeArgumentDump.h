@@ -11,7 +11,7 @@
 	};\
 	static size_t dump_one_arg(unsigned char * buf, Type src) { dump_block return get_one_length<Type>::value;} \
 	template<>\
-	static Type retrieve_arg<Type>(unsigned char * buf) retrieve_block
+	static Type retrieve_arg<Type>(const unsigned char * buf) retrieve_block
 
 namespace IR
 {
@@ -27,7 +27,7 @@ namespace IR
 			static constexpr size_t value = 0;
 		};
 		template<typename T>
-		static T retrieve_arg(unsigned char * buf)
+		static T retrieve_arg(const unsigned char * buf)
 		{
 			return T::this_fucking_not_exist;
 		}
@@ -79,12 +79,12 @@ namespace IR
 			}
 		)
 
-		ARG_INFO(Label*, sizeof(Label*),
+		ARG_INFO(Label*, sizeof(uint32_t),
 			{
-				memcpy(buf, &src, sizeof(src));
+				memcpy(buf, &src->get_id(), sizeof(uint32_t));
 			},
 			{
-				return reinterpret_cast<Label*>(*(size_t*)buf);
+				return &Label::id_to_label(*(uint32_t*)buf);
 			}
 		)
 

@@ -2,12 +2,12 @@
 #include "../asmjit/asmjit.h"
 #include "RuntimeObject.h"
 #include <stddef.h>
-#include "native_functions.h"
+#include "NativeFunction.h"
 
 namespace Compile
 {
 	using namespace IR;
-	using namespace Runtime;
+	using namespace CldRuntime;
 	using namespace IR::BytecodeClass;
 	using namespace asmjit;
 
@@ -26,7 +26,7 @@ namespace Compile
 
 	void Jit::Init()
 	{
-		code.init(jit_runtime.getCodeInfo());
+		code.init(jit_runtime_.getCodeInfo());
 		code.setLogger(&logger);
 		compiler = new X86Compiler(&code);
 		compiler->addFunc(FuncSignature0<int>());
@@ -102,7 +102,7 @@ namespace Compile
 
 		compiler->endFunc();                           // End of the function body.
 		compiler->finalize();                          // Translate and assemble the whole `cc` content.
-		jit_runtime.add(&entrance, &code);
+		jit_runtime_.add(&entrance, &code);
 		return entrance;
 	}
 

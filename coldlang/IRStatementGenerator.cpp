@@ -2,7 +2,7 @@
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
 #include "RuntimeObject.h"
-#include "native_functions.h"
+#include "NativeFunctions.h"
 #include "NativeSymbol.h"
 #include "NativeFunction.h"
 
@@ -79,12 +79,12 @@ namespace IR {
 		TreeNode * optional_elif_list = tn->get_non_terminal(5);
 		TreeNode * optional_else = tn->get_non_terminal(6);
 
-		Label if_end(L"if_end");
-		Label elif_begin(L"elif_begin");
-		Label else_begin(L"else_begin");
+		OperandType::Label if_end(L"if_end");
+		OperandType::Label elif_begin(L"elif_begin");
+		OperandType::Label else_begin(L"else_begin");
 
-		Label * if_expr_false;
-		Label * elif_next;
+		OperandType::Label * if_expr_false;
+		OperandType::Label * elif_next;
 
 		// if expr {
 		Symbol * expr_result = expr_reader(expr);
@@ -147,14 +147,14 @@ namespace IR {
 		return nullptr;
 	}
 
-	Symbol * IRGenerator::elif_reader(TreeNode * tn, Label * elif_next)
+	Symbol * IRGenerator::elif_reader(TreeNode * tn, OperandType::Label * elif_next)
 	{
 		if (tn->get_builder_name() == "optional_elif_list_elif") {
 			TreeNode * expr = tn->get_non_terminal(1);
 			TreeNode * statement_block = tn->get_non_terminal(3);
 			TreeNode * elif_list = tn->get_non_terminal(5);
 
-			Label elif_false(L"elif_false");
+			OperandType::Label elif_false(L"elif_false");
 			Symbol * expr_result = expr_reader(expr);
 			load_if_not_nullptr(expr_result);
 
@@ -189,7 +189,7 @@ namespace IR {
 	{
 		TreeNode * expr = tn->get_non_terminal(1);
 		TreeNode * statement_block = tn->get_non_terminal(3);
-		Label condition(L"while_condition"), while_end(L"while_end");
+		OperandType::Label condition(L"while_condition"), while_end(L"while_end");
 		bytecode_writer_->bind(condition);
 		Symbol * expr_result = expr_reader(expr);
 		load_if_not_nullptr(expr_result);
