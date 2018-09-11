@@ -5,11 +5,11 @@ namespace IR {
 	Symbol* Symbol::Acc = &Variable::AccVal;
 
 	OperandType::Symbol::Symbol(shared_ptr<Token> && token, LRValueType vt)
-		: token_(token), value_type_(vt), is_temp_(false)
+		: token_(token), value_type_(vt), is_temp_(false), nest_level_(0), offset_(0)
 	{
 	}
 
-	shared_ptr<Token> & OperandType::Symbol::get_token()
+	const shared_ptr<Token> & OperandType::Symbol::get_token() const
 	{
 		return token_;
 	}
@@ -33,7 +33,7 @@ namespace IR {
 	{
 		id_ = id;
 	}
-	wstring OperandType::Symbol::to_string()
+	wstring OperandType::Symbol::to_string() const
 	{
 		return token_->to_string();
 	}
@@ -44,6 +44,14 @@ namespace IR {
 	bool OperandType::Symbol::is_temp()
 	{
 		return is_temp_;
+	}
+	void OperandType::Symbol::set_nest_level(uint32_t nest_level)
+	{
+		nest_level_ = nest_level;
+	}
+	uint32_t OperandType::Symbol::get_nest_level()
+	{
+		return nest_level_;
 	}
 	OperandType::Symbol::~Symbol()
 	{

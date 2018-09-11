@@ -2,6 +2,11 @@
 #include "stdafx.h"
 #include "Function.h"
 
+#define VARIADIC(type, field_name) \
+	inline type * field_name() \
+	{ \
+		return reinterpret_cast<type*>((size_t)this + sizeof(*this)); \
+	}
 
 namespace CldRuntime 
 {
@@ -31,6 +36,8 @@ namespace CldRuntime
 		"obj_ptr",
 		"err_ptr"
 	};
+
+	static const size_t ValueTypeCount = sizeof(ValueTypeName) / sizeof(ValueTypeName[0]);
 
 	enum ObjectType
 	{
@@ -96,9 +103,11 @@ namespace CldRuntime
 		wchar_t * content;
 	};
 
+	struct RuntimeStack;
 	struct FunctionObject : RuntimeObject
 	{
 		void * func_ptr;
 		IR::Function * meta;
+		VARIADIC(RuntimeStack, contexts)
 	};
 }

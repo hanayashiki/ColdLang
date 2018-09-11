@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Clr|Win32">
@@ -218,18 +218,26 @@
     <ClInclude Include="BasicBlock.h" />
     <ClInclude Include="BasicBlockHolder.h" />
     <ClInclude Include="BlockCode.h" />
+    <ClInclude Include="BlockEnv.h" />
+    <ClInclude Include="BlockResult.h" />
     <ClInclude Include="BytecodeArgumentDump.h" />
     <ClInclude Include="BytecodeBase.h" />
     <ClInclude Include="BytecodeClassHelper.h" />
     <ClInclude Include="BytecodeTyper.h" />
+    <ClInclude Include="CldMem.h" />
     <ClInclude Include="Code.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerFactory.h" />
+    <ClInclude Include="CompilerUtils.h" />
     <ClInclude Include="DumpingCompiler.h" />
     <ClInclude Include="ExecCompiler.h" />
+    <ClInclude Include="ExecIntegerEmitter.h" />
     <ClInclude Include="ExecDebug.h" />
+    <ClInclude Include="ExecOperands.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="MiscellaneousBytecodeInfoGetters.h" />
     <ClInclude Include="RuntimeFunction.h" />
+    <ClInclude Include="RuntimeStack.h" />
     <ClInclude Include="TypedBlockCompilerCaller.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -286,7 +294,6 @@
     <ClInclude Include="Tutils.h" />
     <ClInclude Include="TokenException.h" />
     <ClInclude Include="TypeCalc.h" />
-    <ClInclude Include="TypeToCode.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="ValueTypeVec.h" />
     <ClInclude Include="Variable.h" />
@@ -300,7 +307,10 @@
     <ClCompile Include="BytecodeTyper.cpp" />
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="ExecCompiler.cpp" />
+    <ClCompile Include="ExecCompilerQuadHandlers.cpp" />
+    <ClCompile Include="ExecIntegerEmitter.cpp" />
     <ClCompile Include="ExecDebug.cpp" />
+    <ClCompile Include="ExecOperands.cpp" />
     <ClCompile Include="RuntimeFunction.cpp" />
     <ClCompile Include="TypedBlockCompilerCaller.cpp" />
     <ClCompile Include="BytecodeClass.cpp" />
@@ -335,7 +345,6 @@
     <ClCompile Include="TreeBuilder.cpp" />
     <ClCompile Include="TreeUnitBuilder.cpp" />
     <ClCompile Include="Tutils.cpp" />
-    <ClCompile Include="TypeToCode.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClInclude Include="DelimiterParser.h" />
     <ClCompile Include="DelimiterParser.cpp" />
@@ -356,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BytecodeClassGen.py" />
+    <None Include="cpp.hint" />
     <None Include="module.json" />
     <None Include="TypeCalcGen.py" />
   </ItemGroup>

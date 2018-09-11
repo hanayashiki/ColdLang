@@ -29,7 +29,7 @@ namespace IR
 		template<typename T>
 		static T retrieve_arg(const unsigned char * buf)
 		{
-			return T::this_fucking_not_exist;
+			return T::this_fucking_not_exists;
 		}
 
 		//static size_t dump_one_arg(char* buf, NativeFunction* native_func)
@@ -79,12 +79,12 @@ namespace IR
 			}
 		)
 
-		ARG_INFO(Label*, sizeof(uint32_t),
+		ARG_INFO(OperandType::Label*, sizeof(uint32_t),
 			{
 				memcpy(buf, &src->get_id(), sizeof(uint32_t));
 			},
 			{
-				return &Label::id_to_label(*(uint32_t*)buf);
+				return &OperandType::Label::id_to_label(*(uint32_t*)buf);
 			}
 		)
 

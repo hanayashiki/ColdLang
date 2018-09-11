@@ -39,6 +39,12 @@ public:
 		wcscpy_s(copy, wcslen(raw_string) + 1, raw_string);
 		return shared_ptr<Word>(new Word(nullptr, copy, 0, 0, identifier));
 	}
+	static shared_ptr<Token> mockAsToken(const wchar_t * raw_string)
+	{
+		wchar_t * copy = new wchar_t[wcslen(raw_string) + 1];
+		wcscpy_s(copy, wcslen(raw_string) + 1, raw_string);
+		return shared_ptr<Token>(new Word(nullptr, copy, 0, 0, identifier));
+	}
 	std::wstring to_string() {
 		return std::wstring(this->get_raw_string());
 	}

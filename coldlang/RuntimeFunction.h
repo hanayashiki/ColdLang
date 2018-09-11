@@ -1,18 +1,20 @@
 #pragma once
 #include "BasicBlock.h"
-#include "TypeToCode.h"
 #include "BlockCode.h"
+#include "BlockEnv.h"
 
 namespace CldRuntime
 {
 	class RuntimeFunction
 	{
-	private:
-		vector<IR::BasicBlock> * basic_blocks_;
-		vector<BlockCode> block_codes_;
-		IR::Function * function_;
 	public:
 		RuntimeFunction(vector<IR::BasicBlock> * basic_blocks, IR::Function * function);
-		void run();
+		void run(const vector<RuntimeStack*> & contexts);
+	private:
+		vector<IR::BasicBlock> * basic_blocks_;
+		IR::Function * function_;
+
+		BlockEnv make_block_env(const vector<RuntimeStack*> & contexts);
+		static RuntimeStack * make_runtime_stack(IR::Function * function);
 	};
 }

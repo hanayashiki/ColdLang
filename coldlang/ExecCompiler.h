@@ -3,6 +3,10 @@
 #include "../asmjit/asmjit.h"
 #include "Code.h"
 #include "ExecDebug.h"
+#include "ExecOperands.h"
+#include "ExecIntegerEmitter.h"
+
+#include "BytecodeTyper.h"
 
 namespace Compile
 {
@@ -10,39 +14,61 @@ namespace Compile
 	class ExecCompiler : public Compiler
 	{
 	public:
-		ExecCompiler();
+		ExecCompiler(IR::SymbolToType * symbolToType);
 		virtual Code GetCode() override;
 	private:
-		X86Gp & GetTempReg64();
-		void RevertTempReg64(const X86Gp & gp);
+		struct OperandParams {
+			Symbol * symbol;
+			bool loadValue;
+			ValueType valueType;
+			bool operator< (const OperandParams & rhs) const {
+				return symbol < rhs.symbol;
+			}
+		};
+		IR::SymbolToType * symbolToType;
 
 		friend class Code;
 		friend class ExecDebug;
 
 		ExecDebug debug;
+		ExecOperands operands;
 
-		static JitRuntime jit_runtime_;
+		std::unique_ptr<ExecIntegerEmitter> integerEmitter;
+
+		static JitRuntime jitRuntime;
 
 		CodeHolder code;
 		FileLogger logger;
 		shared_ptr<X86Compiler> compiler;
 
-		unordered_map<Variable*, X86Gp> variable_to_reg;
+		static const size_t OpTypeCount = sizeof(OpTypeName) / sizeof(OpTypeName[0]);
 
-		list<X86Gp> temp_reg64;
+		typedef function<bool(ExecCompiler * _this, Symbol * target, Symbol* left, Symbol * right)> QuadHandler;
+		inline static QuadHandler QuadHandlers[OpTypeCount][ValueTypeCount][ValueTypeCount];
+		
+		static bool isHandlersInited;
+		static void InitQuadHandlers();
 
-		X86Gp & IntegerReg(Variable*);
-		void AddCodeIntegerTwoOperands(Symbol * target, OpType op_type, Symbol * left_symbol, Symbol * right_symbol);
-		void AddCodeIntegerRegReg(OpType op_type, X86Gp & reg1, X86Gp & reg2) const;
-		void AddCodeIntegerRegImm(OpType op_type, X86Gp & reg, Imm && imm) const;
+		vector<asmjit::Operand> Locate(const initializer_list<OperandParams> & symbols);
+		asmjit::Operand Locate(Variable * var, bool loadVal, ValueType type, const set<const Variable*> & varGroup);
+		asmjit::Operand Locate(Constant * constant);
 
-		void AddCodeIntegerOneOperand(Symbol * target, OpType op_type, Symbol * source);
+		vector<asmjit::Operand> LocateQuad(Symbol * target, ValueType type, Symbol * left, Symbol * right);
+
+		void MoveMemToReg(X86Gp reg, X86Mem base, ValueType valueType);
+		void MoveRegToMem(X86Mem base, X86Gp reg, ValueType valueType);
+
+		ValueType GetType(const Symbol* symbol);
+
+		X86Mem WithOffset(X86Mem mem, int64_t offset);
 	protected:
 		static const bool executable = true;
-		virtual void CompileBinaryImpl(Symbol * target, OpType op_type,
-			ValueType left_type, Symbol * left_symbol,
-			ValueType right_type, Symbol * right_symbol) override;
+		virtual void CompileBinaryImpl(Symbol * target, OpType opType,
+			ValueType leftType, Symbol * leftSymbol,
+			ValueType rightType, Symbol * rightSymbol) override;
 		virtual void CompileUnaryImpl(Symbol * target, OpType op_type,
 			ValueType type, Symbol* source) override;
+		virtual void CompileSingleImpl(Symbol * target, BytecodeEnum bytecode_name,
+			ValueType source_type) override;
 	};
 }

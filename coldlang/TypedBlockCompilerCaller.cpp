@@ -52,6 +52,20 @@ namespace Compile {
 		return true;
 	}
 
+	bool TypedBlockCompilerCaller::CompileSingle(BytecodeTyper::BytecodeTypeInfo & type_info, SymbolToType & symbol_to_type)
+	{
+		assert(type_info.type == BytecodeTyper::BytecodeTypeInfo::Single);
+
+		const auto & single_info = type_info.single;
+		if (single_info.origin_type == AnyVal)
+		{
+			return false;
+		}
+		symbol_to_type.insert_or_assign(single_info.target, single_info.result_type);
+		compiler_->CompileSingle(single_info.target, single_info.bytecode_enum, single_info.origin_type);
+		return true;
+	}
+
 	SymbolToType TypedBlockCompilerCaller::NextBlock(SymbolToType && symbol_to_type)
 	{
 		return NextBlock(symbol_to_type);

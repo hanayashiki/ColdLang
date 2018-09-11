@@ -6,8 +6,8 @@
 
 namespace IR
 {
-	Function::Function(shared_ptr<Token>& token, vector<Variable*>& parameter_list)
-		: token_(token), parameter_list_(parameter_list),
+	Function::Function(shared_ptr<Token>& token, vector<Variable*>& parameter_list, SymbolTable * symbol_table)
+		: token_(token), parameter_list_(parameter_list), symbol_table_(symbol_table),
 		bytecode_reader_(new BytecodeVectorReader(&bytecode_)),
 		bytecode_byte_writer(new BytecodeVectorWriter(&bytecode_)),
 		bytecode_writer_(new BytecodeDumper()),
@@ -29,6 +29,11 @@ namespace IR
 	BytecodeWriter * Function::get_bytecode_writer()
 	{
 		return bytecode_writer_;
+	}
+
+	const SymbolTable * Function::get_symbol_table()
+	{
+		return symbol_table_;
 	}
 
 	Function::~Function()

@@ -15,11 +15,11 @@ namespace IR
 				: value_(value), Symbol(std::move(token))
 			{
 			}
-			CldRuntime::RuntimeValue * get_value()
+			CldRuntime::RuntimeValue * get_value() const
 			{
 				return value_;
 			}
-			wstring to_string() override
+			wstring to_string() const override
 			{
 				return wstring(get_token()->get_raw_string())
 					+ L"@" + to_wstring(get_token()->get_line_index()) + wstring(L",") + to_wstring(get_token()->get_column_index());

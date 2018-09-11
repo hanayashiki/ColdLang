@@ -22,6 +22,17 @@ namespace IR
 
 		switch (buf[0])
 		{
+		case EnumRetAcc:
+		case EnumInc:
+		case EnumDecre:
+		{
+			SingleTypeInfo single_type_info = get_single_type_info(get_type_info, buf);
+			BytecodeTypeInfo type_info;
+			type_info.type = BytecodeTypeInfo::Single;
+			type_info.single = single_type_info;
+			return type_info;
+			break;
+		}
 		case EnumJump:
 		case EnumJumpOnFalse:
 		case EnumJumpOnTrue:
@@ -81,34 +92,36 @@ namespace IR
 
 	UnaryTypeInfo BytecodeTyper::get_unary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[])
 	{
+		UnaryTypeInfo unary_type_info;
+		UnaryBytecodeInfo bytecode_info;
+
 		switch (buf[0])
 		{
 		case EnumStoreAcc:
 		{
-			UnaryBytecodeInfo bytecode_info = get_unary_info_StoreAcc(buf);
-			UnaryTypeInfo unary_type_info;
+			bytecode_info = get_unary_info_StoreAcc(buf);
 			unary_type_info.op_type = OpMove;
 			unary_type_info.source_type = get_type_of(Symbol::Acc);
 			unary_type_info.source = Symbol::Acc;
 			unary_type_info.target_type = get_type_of(Symbol::Acc);
 			unary_type_info.target = bytecode_info.symbol;
 			return unary_type_info;
+			break;
 		}
-		break;
 		case EnumLoadToAccVariable:
 		case EnumLoadToAccConstant:
 		case EnumLoadToAccLiteral:
 		{
-			UnaryBytecodeInfo bytecode_info = get_unary_info_StoreAcc(buf);
-			UnaryTypeInfo unary_type_info;
+			GetUnaryInfo unary_info_getter = get_get_unary_info(buf);
+			bytecode_info = unary_info_getter(buf);
 			unary_type_info.op_type = OpMove;
 			unary_type_info.source_type = get_type_of(bytecode_info.symbol);
 			unary_type_info.source = bytecode_info.symbol;
 			unary_type_info.target_type = get_type_of(bytecode_info.symbol);
 			unary_type_info.target = Symbol::Acc;
 			return unary_type_info;
+			break;
 		}
-		break;
 		default:
 			wcout << "Not implemented" << endl;
 			assert(false);
@@ -141,6 +154,29 @@ namespace IR
 		jump_info.bytecode_enum = BytecodeEnum(buf[0]);
 		jump_info.label_id = retrieve_arg<OperandType::Label*>(&buf[1])->get_id();
 		return jump_info;
+	}
+
+	SingleTypeInfo BytecodeTyper::get_single_type_info(function<ValueType(Symbol*)> get_type_of, const unsigned char buf[])
+	{
+		SingleTypeInfo single_type_info;
+		single_type_info.bytecode_enum = BytecodeEnum(buf[0]);
+		switch (buf[0]) {
+		case EnumRetAcc:
+			single_type_info.result_type = get_type_of(Symbol::Acc);
+			single_type_info.origin_type = get_type_of(Symbol::Acc);
+			single_type_info.target = Symbol::Acc;
+			break;
+		case EnumInc:
+		case EnumDecre:
+			Symbol* symbol = retrieve_arg<OperandType::Variable*>(&buf[1]);
+			single_type_info.result_type = get_type_of(symbol);
+			single_type_info.origin_type = get_type_of(symbol);
+			single_type_info.target = symbol;
+			break;
+		}
+
+		return single_type_info;
+		
 	}
 
 	function<ValueType(Symbol*)> BytecodeTyper::get_get_type_of(SymbolToType & symbol_to_type)

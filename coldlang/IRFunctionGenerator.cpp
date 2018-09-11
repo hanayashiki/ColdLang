@@ -58,7 +58,7 @@ namespace IR {
 		SymbolTable * my_table = symbol_table_;
 
 		vector<Variable*> param_list = comma_identifiers_reader(comma_identifiers);
-		Function * function = new Function(keyword_token, param_list);
+		Function * function = new Function(keyword_token, param_list, my_table);
 		function_table_->add(function);
 		CldRuntime::FunctionObject * function_object = new CldRuntime::FunctionObject;
 		constant_table_->add(function_object);
@@ -72,16 +72,21 @@ namespace IR {
 		function->compile_to_bytecode = [=]()
 		{
 			function->bytecode_compiled = true;
+
 			wcout << endl;
 			wcout << "code for " << func_literal->to_string() << endl << endl;
 			wcout << "-----------------------------------------------------------" << endl << endl;
+			
 			auto old_writer = bytecode_writer_;
 			auto old_table = symbol_table_;
+
 			symbol_table_ = my_table;
 			bytecode_writer_ = function->get_bytecode_writer();
 			statement_block_reader(statement_block);
+
 			symbol_table_ = old_table;
 			bytecode_writer_ = old_writer;
+
 			wcout << endl;
 			wcout << "-----------------------------------------------------------" << endl << endl;
 		};

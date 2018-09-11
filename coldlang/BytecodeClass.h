@@ -2755,187 +2755,371 @@ namespace IR
 		}
 
 
+		static wstring get_enum_name(BytecodeEnum bytecode_enum) {
+			switch (bytecode_enum) {
+			case EnumPushParamVariable:
+				return L"PushParamVariable";
+				break;
+			case EnumPushParamLiteral:
+				return L"PushParamLiteral";
+				break;
+			case EnumPushParamConstant:
+				return L"PushParamConstant";
+				break;
+			case EnumOrVariable:
+				return L"OrVariable";
+				break;
+			case EnumOrLiteral:
+				return L"OrLiteral";
+				break;
+			case EnumOrConstant:
+				return L"OrConstant";
+				break;
+			case EnumAndVariable:
+				return L"AndVariable";
+				break;
+			case EnumAndLiteral:
+				return L"AndLiteral";
+				break;
+			case EnumAndConstant:
+				return L"AndConstant";
+				break;
+			case EnumEqualVariable:
+				return L"EqualVariable";
+				break;
+			case EnumEqualLiteral:
+				return L"EqualLiteral";
+				break;
+			case EnumEqualConstant:
+				return L"EqualConstant";
+				break;
+			case EnumNotEqualVariable:
+				return L"NotEqualVariable";
+				break;
+			case EnumNotEqualLiteral:
+				return L"NotEqualLiteral";
+				break;
+			case EnumNotEqualConstant:
+				return L"NotEqualConstant";
+				break;
+			case EnumGreaterEqualVariable:
+				return L"GreaterEqualVariable";
+				break;
+			case EnumGreaterEqualLiteral:
+				return L"GreaterEqualLiteral";
+				break;
+			case EnumGreaterEqualConstant:
+				return L"GreaterEqualConstant";
+				break;
+			case EnumLessEqualVariable:
+				return L"LessEqualVariable";
+				break;
+			case EnumLessEqualLiteral:
+				return L"LessEqualLiteral";
+				break;
+			case EnumLessEqualConstant:
+				return L"LessEqualConstant";
+				break;
+			case EnumGreaterThanVariable:
+				return L"GreaterThanVariable";
+				break;
+			case EnumGreaterThanLiteral:
+				return L"GreaterThanLiteral";
+				break;
+			case EnumGreaterThanConstant:
+				return L"GreaterThanConstant";
+				break;
+			case EnumLessThanVariable:
+				return L"LessThanVariable";
+				break;
+			case EnumLessThanLiteral:
+				return L"LessThanLiteral";
+				break;
+			case EnumLessThanConstant:
+				return L"LessThanConstant";
+				break;
+			case EnumAddVariable:
+				return L"AddVariable";
+				break;
+			case EnumAddLiteral:
+				return L"AddLiteral";
+				break;
+			case EnumAddConstant:
+				return L"AddConstant";
+				break;
+			case EnumSubVariable:
+				return L"SubVariable";
+				break;
+			case EnumSubLiteral:
+				return L"SubLiteral";
+				break;
+			case EnumSubConstant:
+				return L"SubConstant";
+				break;
+			case EnumMulVariable:
+				return L"MulVariable";
+				break;
+			case EnumMulLiteral:
+				return L"MulLiteral";
+				break;
+			case EnumMulConstant:
+				return L"MulConstant";
+				break;
+			case EnumDivVariable:
+				return L"DivVariable";
+				break;
+			case EnumDivLiteral:
+				return L"DivLiteral";
+				break;
+			case EnumDivConstant:
+				return L"DivConstant";
+				break;
+			case EnumModVariable:
+				return L"ModVariable";
+				break;
+			case EnumModLiteral:
+				return L"ModLiteral";
+				break;
+			case EnumModConstant:
+				return L"ModConstant";
+				break;
+			case EnumNegVariable:
+				return L"NegVariable";
+				break;
+			case EnumNegLiteral:
+				return L"NegLiteral";
+				break;
+			case EnumNegConstant:
+				return L"NegConstant";
+				break;
+			case EnumLoadToAccVariable:
+				return L"LoadToAccVariable";
+				break;
+			case EnumLoadToAccLiteral:
+				return L"LoadToAccLiteral";
+				break;
+			case EnumLoadToAccConstant:
+				return L"LoadToAccConstant";
+				break;
+			case EnumStoreAcc:
+				return L"StoreAcc";
+				break;
+			case EnumCallFunc:
+				return L"CallFunc";
+				break;
+			case EnumCallNative:
+				return L"CallNative";
+				break;
+			case EnumRetAcc:
+				return L"RetAcc";
+				break;
+			case EnumPushParamAcc:
+				return L"PushParamAcc";
+				break;
+			case EnumJump:
+				return L"Jump";
+				break;
+			case EnumJumpOnTrue:
+				return L"JumpOnTrue";
+				break;
+			case EnumJumpOnFalse:
+				return L"JumpOnFalse";
+				break;
+			case EnumInc:
+				return L"Inc";
+				break;
+			case EnumDecre:
+				return L"Decre";
+				break;
+			case EnumLabel:
+				return L"Label";
+				break;
+			default:
+				assert(false);
+			}
+		}
+
 		static wstring decompile(const unsigned char buf[])
 		{
 			wstring str;
 			switch (buf[0])
 			{
 			case EnumPushParamVariable:
-				str = L"PushParamVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumPushParamVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumPushParamLiteral:
-				str = L"PushParamLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumPushParamLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumPushParamConstant:
-				str = L"PushParamConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumPushParamConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumOrVariable:
-				str = L"OrVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumOrVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumOrLiteral:
-				str = L"OrLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumOrLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumOrConstant:
-				str = L"OrConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumOrConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumAndVariable:
-				str = L"AndVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAndVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumAndLiteral:
-				str = L"AndLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAndLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumAndConstant:
-				str = L"AndConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAndConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumEqualVariable:
-				str = L"EqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumEqualVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumEqualLiteral:
-				str = L"EqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumEqualLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumEqualConstant:
-				str = L"EqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumEqualConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumNotEqualVariable:
-				str = L"NotEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNotEqualVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumNotEqualLiteral:
-				str = L"NotEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNotEqualLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumNotEqualConstant:
-				str = L"NotEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNotEqualConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterEqualVariable:
-				str = L"GreaterEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterEqualVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterEqualLiteral:
-				str = L"GreaterEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterEqualLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterEqualConstant:
-				str = L"GreaterEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterEqualConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumLessEqualVariable:
-				str = L"LessEqualVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessEqualVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumLessEqualLiteral:
-				str = L"LessEqualLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessEqualLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumLessEqualConstant:
-				str = L"LessEqualConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessEqualConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterThanVariable:
-				str = L"GreaterThanVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterThanVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterThanLiteral:
-				str = L"GreaterThanLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterThanLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumGreaterThanConstant:
-				str = L"GreaterThanConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumGreaterThanConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumLessThanVariable:
-				str = L"LessThanVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessThanVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumLessThanLiteral:
-				str = L"LessThanLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessThanLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumLessThanConstant:
-				str = L"LessThanConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLessThanConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumAddVariable:
-				str = L"AddVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAddVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumAddLiteral:
-				str = L"AddLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAddLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumAddConstant:
-				str = L"AddConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumAddConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumSubVariable:
-				str = L"SubVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumSubVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumSubLiteral:
-				str = L"SubLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumSubLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumSubConstant:
-				str = L"SubConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumSubConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumMulVariable:
-				str = L"MulVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumMulVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumMulLiteral:
-				str = L"MulLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumMulLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumMulConstant:
-				str = L"MulConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumMulConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumDivVariable:
-				str = L"DivVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumDivVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumDivLiteral:
-				str = L"DivLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumDivLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumDivConstant:
-				str = L"DivConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumDivConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumModVariable:
-				str = L"ModVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumModVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumModLiteral:
-				str = L"ModLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumModLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumModConstant:
-				str = L"ModConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumModConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumNegVariable:
-				str = L"NegVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNegVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumNegLiteral:
-				str = L"NegLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNegLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumNegConstant:
-				str = L"NegConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumNegConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumLoadToAccVariable:
-				str = L"LoadToAccVariable" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLoadToAccVariable) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumLoadToAccLiteral:
-				str = L"LoadToAccLiteral" L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLoadToAccLiteral) + L" " + retrieve_arg<OperandType::Literal*>(buf + 1)->to_string();
 				break;
 			case EnumLoadToAccConstant:
-				str = L"LoadToAccConstant" L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLoadToAccConstant) + L" " + retrieve_arg<OperandType::Constant*>(buf + 1)->to_string();
 				break;
 			case EnumStoreAcc:
-				str = L"StoreAcc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumStoreAcc) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumCallFunc:
-				str = L"CallFunc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumCallFunc) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumCallNative:
-				str = L"CallNative" L" " + retrieve_arg<OperandType::NativeFunction*>(buf + 1)->to_string();
+				str = get_enum_name(EnumCallNative) + L" " + retrieve_arg<OperandType::NativeFunction*>(buf + 1)->to_string();
 				break;
 			case EnumRetAcc:
-				str = L"RetAcc";
+				str = get_enum_name(EnumRetAcc);
 				break;
 			case EnumPushParamAcc:
-				str = L"PushParamAcc";
+				str = get_enum_name(EnumPushParamAcc);
 				break;
 			case EnumJump:
-				str = L"Jump" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				str = get_enum_name(EnumJump) + L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
 				break;
 			case EnumJumpOnTrue:
-				str = L"JumpOnTrue" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				str = get_enum_name(EnumJumpOnTrue) + L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
 				break;
 			case EnumJumpOnFalse:
-				str = L"JumpOnFalse" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				str = get_enum_name(EnumJumpOnFalse) + L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
 				break;
 			case EnumInc:
-				str = L"Inc" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumInc) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumDecre:
-				str = L"Decre" L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
+				str = get_enum_name(EnumDecre) + L" " + retrieve_arg<OperandType::Variable*>(buf + 1)->to_string();
 				break;
 			case EnumLabel:
-				str = L"Label" L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
+				str = get_enum_name(EnumLabel) + L" " + retrieve_arg<OperandType::Label*>(buf + 1)->to_string();
 				break;
 			default:
 				assert(false);

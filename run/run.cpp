@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+
+#ifdef DO_COMPILE
+
 #include "../coldlang/stdafx.h"
 #include "../coldlang/ByteCodeClass.h"
 #include <ctime>
@@ -1116,7 +1119,7 @@ void test_standard_syntax()
 	delete env;
 }
 
-int _main()
+int main()
 {
 	_setmode(_fileno(stdout), _O_WTEXT);
 
@@ -1127,3 +1130,5 @@ int _main()
 
 	return 0;
 }
+
+#endif

@@ -17,7 +17,7 @@ namespace IR {
 		BasicBlockHolder & operator=(BasicBlockHolder&&) = delete;
 		BasicBlockHolder & operator=(const BasicBlockHolder&) = delete;
 	private:
-		unordered_map<OperandType::Label::id_type, vector<BasicBlock>::size_type> 
+		unordered_map<OperandType::Label::id_type, vector<BasicBlock>::size_type>
 			label_to_block_;
 		vector<BasicBlock> blocks_;
 		BytecodeReader * reader_;

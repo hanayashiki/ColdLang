@@ -1,4 +1,9 @@
 #pragma once
+#include "Variable.h"
+#include "BlockEnv.h"
+#include "RuntimeStack.h"
+#include "BlockResult.h"
+#include "../asmjit/asmjit.h"
 
 namespace Compile
 {
@@ -6,7 +11,19 @@ namespace Compile
 	class Code
 	{
 	public:
-		typedef void* FuncPtr;
+		typedef void(*FuncPtr)(CldRuntime::BlockEnv);
+		inline const static asmjit::FuncSignature AsmjitFuncSignature =
+			asmjit::FuncSignature4<uint64_t, 
+				CldRuntime::RuntimeStack *, 
+				CldRuntime::BlockResult *,
+				size_t, 
+				CldRuntime::RuntimeStack* const*>();
+
+		static IR::Variable RuntimeStackPtr;
+		static IR::Variable BlockResultPtr;
+		static IR::Variable NContexts;
+		static IR::Variable ContextsPtr;
+
 	private:
 		FuncPtr func_ptr_;
 	public:
@@ -16,10 +33,9 @@ namespace Compile
 		}
 		~Code();
 
-		void operator() ()
+		void operator() (CldRuntime::BlockEnv env)
 		{
-			// TODO: param?
-			reinterpret_cast<void(*)()>(func_ptr_)();
+			reinterpret_cast<FuncPtr>(func_ptr_)(env);
 		}
 	};
 }

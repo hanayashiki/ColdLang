@@ -35,5 +35,8 @@
     <ClCompile Include="compile_run.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="x86code_run.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

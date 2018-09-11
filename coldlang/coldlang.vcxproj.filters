@@ -297,9 +297,6 @@
     <ClInclude Include="RuntimeFunction.h">
       <Filter>头文件\runtime</Filter>
     </ClInclude>
-    <ClInclude Include="TypeToCode.h">
-      <Filter>头文件\runtime</Filter>
-    </ClInclude>
     <ClInclude Include="Code.h">
       <Filter>头文件\compile</Filter>
     </ClInclude>
@@ -317,6 +314,30 @@
     </ClInclude>
     <ClInclude Include="ExecDebug.h">
       <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockResult.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockEnv.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeStack.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecOperands.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecIntegerEmitter.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="CldMem.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerUtils.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,9 +464,6 @@
     <ClCompile Include="BasicBlockHolder.cpp">
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
-    <ClCompile Include="TypeToCode.cpp">
-      <Filter>源文件\runtime</Filter>
-    </ClCompile>
     <ClCompile Include="NativeFunctions.cpp">
       <Filter>源文件\runtime</Filter>
     </ClCompile>
@@ -461,6 +479,15 @@
     <ClCompile Include="Code.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ExecOperands.cpp">
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecIntegerEmitter.cpp">
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecCompilerQuadHandlers.cpp">
+      <Filter>源文件\compile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json">
@@ -472,6 +499,7 @@
     <None Include="TypeCalcGen.py">
       <Filter>头文件\runtime</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="syntax_definition.md">

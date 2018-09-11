@@ -32,7 +32,10 @@ namespace IR
 	{
 	private:
 		static size_t symbol_id;
+		size_t var_id;
+
 		SymbolTable * parent_;
+		uint32_t nest_level_;
 		vector<SymbolTable*> sub_symbol_tables_;
 		unordered_map<const wchar_t*, OperandType::Symbol*, SymbolHashFunc, SymbolEqual<const wchar_t*>> name_to_symbol_;
 		unordered_map<size_t, OperandType::Symbol*> id_to_symbol_;
@@ -48,10 +51,12 @@ namespace IR
 		SymbolTable* get_sub_symbol_table(size_t id);
 		SymbolTable* get_parent_symbol_table();
 
-
 		OperandType::Symbol * get_by_name(const wchar_t*);
 		OperandType::Symbol * get_by_id(size_t id);
 		wstring dump_to_string(size_t offset = 0);
+
+		size_t get_variable_count() const { return var_id; }
+
 		~SymbolTable();
 	};
 }

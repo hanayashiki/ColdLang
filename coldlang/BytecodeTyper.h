@@ -36,9 +36,17 @@ namespace IR
 		OperandType::Label::id_type label_id;
 	};
 
+	struct SingleTypeInfo
+	{
+		BytecodeEnum bytecode_enum;
+		ValueType result_type;
+		ValueType origin_type;
+		Symbol * target;
+	};
+
 	typedef JumpInfo LabelInfo;
 
-	typedef unordered_map<Symbol*, ValueType>
+	typedef unordered_map<const Symbol*, ValueType>
 		SymbolToType;
 
 	class BytecodeTyper
@@ -47,6 +55,7 @@ namespace IR
 		static UnaryTypeInfo get_unary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[]);
 		static BinaryTypeInfo get_binary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[]);
 		static JumpInfo get_jump_info(const unsigned char buf[]);
+		static SingleTypeInfo get_single_type_info(function<ValueType(Symbol*)> get_type_of, const unsigned char buf[]);
 		static function<ValueType(Symbol*)> get_get_type_of(SymbolToType & type_info);
 	public:
 		struct BytecodeTypeInfo
@@ -57,6 +66,7 @@ namespace IR
 				Binary,
 				Jump,
 				Label,
+				Single,
 				Unknown		
 			} type;
 			union
@@ -65,6 +75,7 @@ namespace IR
 				BinaryTypeInfo binary;
 				JumpInfo jump;
 				LabelInfo label;
+				SingleTypeInfo single;
 			};
 		};
 		static BytecodeTypeInfo get_bytecode_type_info(SymbolToType & type_info, BytecodeReader * reader);

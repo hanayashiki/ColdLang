@@ -5,6 +5,7 @@
 namespace CldRuntime
 {
 	void native_puts(PointerValue pointer);
+	FunctionObject * native_make_function(IR::Function * meta, size_t );
 
 #define NATIVE_FUNCTION_DEF(C, container)	\
 	C(container, native_puts)	\

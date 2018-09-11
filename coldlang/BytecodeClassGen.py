@@ -306,6 +306,33 @@ def string_sum(param_name_list):
     else:
         return 'L""'
 
+get_enum_name_base = """\
+        static wstring get_enum_name(BytecodeEnum bytecode_enum) {
+            switch (bytecode_enum) {
+%(get_enum_name_list)s            default:
+                assert(false);
+            }
+        }
+""".replace('\t', '    ')
+
+single_get_enum_name = """\
+ 			case Enum%(bytecode_name)s:
+				return L"%(bytecode_name)s";
+				break;   
+"""
+
+def get_enum_name(bytecode_classes: list):
+    single_get_enum_names = []
+    for bytecode_def in bytecode_classes:
+        single_get_enum_names.append(
+            single_get_enum_name % {
+                'bytecode_name': bytecode_def['class_name']
+            }
+        )
+    return get_enum_name_base % {
+        'get_enum_name_list': ''.join(single_get_enum_names)
+    }
+
 decompile_base = """\
 		static wstring decompile(const unsigned char buf[])
 		{
@@ -321,7 +348,7 @@ decompile_base = """\
 
 single_decompiler = """\
 			case Enum%(bytecode_name)s:
-				str = L"%(bytecode_name)s" %(retrieve_list)s;
+				str = get_enum_name(Enum%(bytecode_name)s)%(retrieve_list)s;
 				break;
 """.replace('\t', '    ')
 
@@ -343,7 +370,7 @@ def generate_retrieve_list(bytecode_def: dict):
     if len(parameter_type_list) > 0:
         # currently we have one-argument only bytecode
         # TODO: make it for multiple args
-        return "L\" \" + retrieve_arg<%s>(buf + 1)->to_string()" % parameter_type_list[0]
+        return " + L\" \" + retrieve_arg<%s>(buf + 1)->to_string()" % parameter_type_list[0]
     else:
         return ""
 
@@ -406,6 +433,7 @@ for bytecode in bytecode_classes:
 print(get_unary_info_array % ',\n'.join([12*' ' + x for x in unary_func_pointers]))
 print("")
 
+print(get_enum_name(bytecode_classes))
 print(decompile(bytecode_classes))
 print(tail)
 

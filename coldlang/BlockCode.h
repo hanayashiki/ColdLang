@@ -1,20 +1,23 @@
 #pragma once
-#include "TypeToCode.h"
 #include "BasicBlock.h"
+#include "BytecodeTyper.h"
 
 namespace CldRuntime
 {
 	class BlockCode
 	{
 	public:
-		vector<IR::BasicBlock>::size_type block_id;
-		TypeToCode type_to_code;
+		using ptr = std::shared_ptr<BlockCode>;
 
-		explicit BlockCode(vector<IR::BasicBlock>::size_type);
+		BlockCode();
+		explicit BlockCode(size_t begin, size_t end);
 
-		BlockCode(const BlockCode &) noexcept;
-		BlockCode(BlockCode &&) noexcept;
-		BlockCode & operator=(const BlockCode &) noexcept;
-		BlockCode & operator=(BlockCode &&) noexcept;
+		size_t get_begin();
+		size_t get_end();
+	private:
+		size_t begin = 0;
+		size_t end = 0;
+		IR::SymbolToType type_reqs;
+		vector<BlockCode::ptr> next_block_codes;
 	};
 }

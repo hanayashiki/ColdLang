@@ -74,17 +74,18 @@ namespace IR {
 			break;
 			case BytecodeTyper::BytecodeTypeInfo::Label:
 			{
-				wcout << "see: " << decompile(bytecode_buf) << endl;
+				// wcout << "see: " << decompile(bytecode_buf) << endl;
 				if (!label_seq_start_)
 				{
 					blocks_.push_back(std::move(*current_block));
-					auto block_and_id = 
+					auto block_and_id =
 						register_block_(OperandType::Label::id_to_label(type_info.label.label_id).to_string().c_str());
 					delete current_block;
 					current_block = std::get<0>(block_and_id);
 					set_label_seq_block_id(std::get<1>(block_and_id));
 					label_seq_start_ = true;
-				} else
+				}
+				else
 				{
 					label_to_block_.insert(std::make_pair(type_info.label.label_id, get_label_seq_block_id()));
 				}
@@ -99,7 +100,7 @@ namespace IR {
 
 		blocks_.push_back(std::move(*current_block));
 		delete current_block;
- 	}
+	}
 
 	wstring BasicBlockHolder::to_string()
 	{

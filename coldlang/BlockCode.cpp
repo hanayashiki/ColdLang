@@ -2,34 +2,23 @@
 #include "BlockCode.h"
 
 namespace CldRuntime {
-	BlockCode::BlockCode(vector<IR::BasicBlock>::size_type b)
-		: block_id(b)
+	BlockCode::BlockCode()
 	{
 	}
 
-	BlockCode::BlockCode(const BlockCode & b) noexcept
-		: block_id(b.block_id), type_to_code(b.type_to_code)
+	BlockCode::BlockCode(size_t begin, size_t end)
+		: begin(begin), end(end)
 	{
 	}
 
-	BlockCode::BlockCode(BlockCode && b) noexcept
-		: block_id(b.block_id), type_to_code(std::move(b.type_to_code))
+	size_t BlockCode::get_begin()
 	{
-
+		return begin;
 	}
 
-	BlockCode & BlockCode::operator=(const BlockCode & b) noexcept
+	size_t BlockCode::get_end()
 	{
-		block_id = b.block_id;
-		type_to_code = b.type_to_code;
-		return *this;
-	}
-
-	BlockCode & BlockCode::operator=(BlockCode && b) noexcept
-	{
-		block_id = b.block_id;
-		type_to_code = b.type_to_code;
-		return *this;
+		return end;
 	}
 
 

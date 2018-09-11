@@ -1,9 +1,14 @@
 // run.cpp: 定义控制台应用程序的入口点。
 //
-
 #include "stdafx.h"
+
+#define DO_COMPILE
+
+#ifdef DO_COMPILE
 #include "../coldlang/stdafx.h"
 #include "../coldlang/ByteCodeClass.h"
+#include "../coldlang/Module.h"
+#include "../coldlang/log.h"
 #include <ctime>
 
 #include <iostream>
@@ -153,13 +158,14 @@ void test_simple_calc_run()
 	// wcout << blocks->to_string();
 
 	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), nullptr);
-	rf.run();
+
+	CLD_DEBUG << "rf.run() started" << std::endl;
+	rf.run({});
 
 	delete tree;
 	delete env;
 	delete backend;
 	delete blocks;
-
 }
 
 void test_simple_eval_calc_run()
@@ -169,38 +175,46 @@ void test_simple_eval_calc_run()
 	ColdLangFrontEnv* env;
 	ColdLangBackend* backend;
 	IR::BasicBlockHolder* blocks;
+	IR::Module* module;
 
 	code = LR"LINES(
 		a = 1 + 1
 	)LINES";
-	wcin >> code; getchar();
 	env = new ColdLangFrontEnv(&code);
+	CLD_DEBUG << "parse started" << std::endl;
 	tree = env->syntax->parse("statement_block");
 	//std::wcout << tree->to_xml(100);
 
 	backend = new ColdLangBackend();
+	module = new IR::Module("test", nullptr, backend->symbol_table);
 	backend->ir_gen->statement_block_reader(tree->get_root());
 
 	blocks = new IR::BasicBlockHolder(backend->bytecode_reader);
+	CLD_DEBUG << "make_blocks" << std::endl;
 	blocks->make_blocks();
 	// wcout << blocks->to_string();
 
-	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), nullptr);
-	rf.run();
+	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), module->get_main());
+
+	CLD_DEBUG << "rf run" << std::endl;
+	rf.run({});
 
 	delete tree;
 	delete env;
 	delete backend;
 	delete blocks;
+	delete module;
 
+	CLD_DEBUG << "rf run complete" << std::endl;
 }
 
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	// _CrtSetBreakAlloc(6841);
-	for (int i = 0; i < 1000; i++)
-		test_simple_calc_run();
-	//getchar();
+	_CrtSetBreakAlloc(2295);
+	test_simple_eval_calc_run();
+	getchar();
 	return 0;
 }
+
+#endif

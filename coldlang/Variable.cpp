@@ -15,7 +15,7 @@ IR::OperandType::Variable::Variable(shared_ptr<Token> & token)
 }
 
 
-const wchar_t * IR::OperandType::Variable::get_name()
+const wchar_t * IR::OperandType::Variable::get_name() const
 {
 	return static_cast<Word*>(get_token().get())->get_word();
 }

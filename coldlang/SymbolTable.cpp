@@ -4,13 +4,21 @@
 namespace IR{
 	size_t SymbolTable::symbol_id = 0;
 
-	SymbolTable::SymbolTable(SymbolTable * parent) : parent_(parent)
+	SymbolTable::SymbolTable(SymbolTable * parent) : parent_(parent), var_id(0)
 	{
+		if (parent == nullptr) {
+			nest_level_ = 0;
+		}
+		else {
+			nest_level_ = parent->nest_level_ + 1;
+		}
 	}
 
 	void SymbolTable::add(OperandType::Variable * variable)
 	{
 		add_symbol(variable->get_name(), variable);
+		variable->set_var_id(var_id);
+		var_id++;
 	}
 
 	void SymbolTable::add(OperandType::NativeSymbol * native)
@@ -22,6 +30,7 @@ namespace IR{
 	{
 		name_to_symbol_.insert(std::make_pair(name, symbol));
 		symbol->set_id(symbol_id);
+		symbol->set_nest_level(nest_level_);
 		id_to_symbol_.insert(std::make_pair(symbol->get_id(), symbol));
 		symbol_id++;
 	}

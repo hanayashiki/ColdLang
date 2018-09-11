@@ -21,6 +21,8 @@ namespace Compile
 			ValueType right_type, Symbol * right_symbol) = 0;
 		virtual void CompileUnaryImpl(Symbol * target, OpType op_type,
 			ValueType type, Symbol* left_symbol) = 0;
+		virtual void CompileSingleImpl(Symbol * target, BytecodeEnum bytecode_name,
+			ValueType source_type) = 0;
 	public:
 		virtual void CompileBinary(Symbol * target, OpType op_type, 
 			ValueType left_type, Symbol * left_symbol, 
@@ -41,6 +43,16 @@ namespace Compile
 			if (next_)
 			{
 				next_->CompileUnary(target, op_type, type, left_symbol);
+			}
+		}
+
+		virtual void CompileSingle(Symbol * target, BytecodeEnum bytecode_name,
+			ValueType source_type)
+		{
+			CompileSingleImpl(target, bytecode_name, source_type);
+			if (next_)
+			{
+				next_->CompileSingleImpl(target, bytecode_name, source_type);
 			}
 		}
 

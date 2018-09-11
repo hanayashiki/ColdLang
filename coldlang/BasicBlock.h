@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
-#include "Label.h"
+//#include <vector>
+//#include "Label.h"
 
 namespace IR {
 	using namespace std;
@@ -25,5 +25,7 @@ namespace IR {
 		vector<uint8_t> & get_bytecode_vector();
 		OperandType::Label & get_label();
 		void set_link(const vector<BasicBlock>::size_type & link);
+
+
 	};
 }
