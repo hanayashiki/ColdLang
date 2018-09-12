@@ -11,7 +11,8 @@ namespace Compile
 	class Code
 	{
 	public:
-		typedef void(*FuncPtr)(CldRuntime::BlockEnv);
+		typedef void(*FuncPtr)(CldRuntime::RuntimeStack *,
+			CldRuntime::BlockResult *, size_t, CldRuntime::RuntimeStack* const*);
 		inline const static asmjit::FuncSignature AsmjitFuncSignature =
 			asmjit::FuncSignature4<uint64_t, 
 				CldRuntime::RuntimeStack *, 
@@ -35,7 +36,7 @@ namespace Compile
 
 		void operator() (CldRuntime::BlockEnv env)
 		{
-			reinterpret_cast<FuncPtr>(func_ptr_)(env);
+			reinterpret_cast<FuncPtr>(func_ptr_)(env.runtime_stack, env.block_result, env.n_contexts, env.contexts);
 		}
 	};
 }

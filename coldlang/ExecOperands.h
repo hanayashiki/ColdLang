@@ -62,6 +62,8 @@ namespace Compile {
 		const Variable* GetInRegVariable(const set<const Variable*> & excluding);
 		bool AllocVariable(const Variable * var, const X86Gp & gp);
 
+		//const std::set<X86Gp> & GetWrittenGp
+
 		wstring DumpVariableToOperand() { return to_string(VariableToOperand); }
 
 	private:
@@ -73,6 +75,8 @@ namespace Compile {
 		// std::set<Variable*> InMemVariables;
 		std::set<X86Gp> UsedGps;
 		std::set<X86Gp> FreeGps;
+
+		std::set<X86Gp> WrittenGp;
 
 		void ReleaseReg(const X86Gp & gp);
 		void AllocReg(const X86Gp & gp);

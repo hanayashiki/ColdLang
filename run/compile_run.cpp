@@ -2,7 +2,7 @@
 //
 #include "stdafx.h"
 
-#define DO_COMPILE
+// #define DO_COMPILE
 
 #ifdef DO_COMPILE
 #include "../coldlang/stdafx.h"
@@ -160,7 +160,7 @@ void test_simple_calc_run()
 	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), nullptr);
 
 	CLD_DEBUG << "rf.run() started" << std::endl;
-	rf.run({});
+	rf.Run({});
 
 	delete tree;
 	delete env;
@@ -178,7 +178,8 @@ void test_simple_eval_calc_run()
 	IR::Module* module;
 
 	code = LR"LINES(
-		a = 1 + 1
+		a = 1 - 1
+		retv a
 	)LINES";
 	env = new ColdLangFrontEnv(&code);
 	CLD_DEBUG << "parse started" << std::endl;
@@ -197,7 +198,7 @@ void test_simple_eval_calc_run()
 	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), module->get_main());
 
 	CLD_DEBUG << "rf run" << std::endl;
-	rf.run({});
+	rf.Run({});
 
 	delete tree;
 	delete env;
@@ -211,7 +212,7 @@ void test_simple_eval_calc_run()
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtSetBreakAlloc(2295);
+	// _CrtSetBreakAlloc(2295);
 	test_simple_eval_calc_run();
 	getchar();
 	return 0;

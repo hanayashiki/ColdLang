@@ -20,6 +20,15 @@ namespace IR {
 		label_seq_start_ = true;
 		set_label_seq_block_id(std::get<1>(block_and_id));
 
+#define NEW_BLOCK(block_name) \
+	{ \
+		blocks_.push_back(std::move(*current_block)); \
+		delete current_block; \
+		auto block_and_id = register_block_(block_name); \
+		current_block = std::get<0>(block_and_id); \
+	} 
+
+		bool skip_until_next_label = false;
 		while (reader_->more())
 		{
 			size_t bytecode_len;
@@ -31,18 +40,28 @@ namespace IR {
 				label_seq_start_ = false;
 			}
 
+			if (skip_until_next_label)
+			{
+				if (!is_label(bytecode_buf)) 
+				{
+					continue;
+				}
+				else 
+				{
+					skip_until_next_label = false;
+				}
+			}
+
 			BytecodeTyper::BytecodeTypeInfo type_info =
 				BytecodeTyper::get_bytecode_type_info(symbol_to_type, bytecode_buf);
 			switch (type_info.type) {
 			case BytecodeTyper::BytecodeTypeInfo::Unary:
 			{
 				ValueType src_type = type_info.unary.source_type;
+				/*
 				if (src_type == AnyVal) {
-					blocks_.push_back(std::move(*current_block));
-					delete current_block;
-					auto block_and_id = register_block_(L"typed");
-					current_block = std::get<0>(block_and_id);
-				}
+					NEW_BLOCK(L"typed")
+				}*/
 				symbol_to_type.insert_or_assign(type_info.unary.target, type_info.unary.target_type);
 			}
 			break;
@@ -50,13 +69,11 @@ namespace IR {
 			{
 				ValueType left_type = type_info.binary.left_type;
 				ValueType right_type = type_info.binary.right_type;
+				/*
 				if (left_type == AnyVal || right_type == AnyVal)
 				{
-					blocks_.push_back(std::move(*current_block));
-					delete current_block;
-					auto block_and_id = register_block_(L"typed");
-					current_block = std::get<0>(block_and_id);
-				}
+					NEW_BLOCK(L"typed")
+				}*/
 				symbol_to_type.insert_or_assign(type_info.binary.target, type_info.binary.target_type);
 			}
 			break;
@@ -66,10 +83,7 @@ namespace IR {
 				auto block_id = label_to_block_[id];
 				current_block->set_link(block_id);
 				symbol_to_type.clear();
-				blocks_.push_back(std::move(*current_block));
-				delete current_block;
-				auto block_and_id = register_block_(L"jumped");
-				current_block = std::get<0>(block_and_id);
+				NEW_BLOCK(L"jumped")
 			}
 			break;
 			case BytecodeTyper::BytecodeTypeInfo::Label:
@@ -88,6 +102,18 @@ namespace IR {
 				else
 				{
 					label_to_block_.insert(std::make_pair(type_info.label.label_id, get_label_seq_block_id()));
+				}
+			}
+			case BytecodeTyper::BytecodeTypeInfo::Single:
+			{
+				ValueType origin_type = type_info.single.origin_type;
+				ValueType target_type = type_info.single.result_type;
+				switch (type_info.single.bytecode_enum) {
+				case EnumRetAcc:
+					skip_until_next_label = true; // Clean dead code
+					break;
+				default:
+					assert(false);
 				}
 			}
 			break;

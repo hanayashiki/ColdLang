@@ -21,26 +21,26 @@ namespace Compile
 			CLD_INFO << to_string(target) << L" <- " <<
 				ValueTypeName[left_type] << L" " << to_string(left_symbol) <<
 				L" " << OpTypeName[op_type] << L" " <<
-				ValueTypeName[right_type] << L" " << to_string(right_symbol) << endl;
+				ValueTypeName[right_type] << L" " << to_string(right_symbol) << std::endl;
 		}
 
 		virtual void CompileUnaryImpl(Symbol * target, OpType op_type,
 			ValueType type, Symbol* left_symbol) override
 		{
 			CLD_INFO << to_string(target) << L" <- " << OpTypeName[op_type] <<
-				L" " << ValueTypeName[type] << L" " << to_string(left_symbol) << endl;
+				L" " << ValueTypeName[type] << L" " << to_string(left_symbol) << std::endl;
 		}
 
 		virtual void CompileSingleImpl(Symbol * target, BytecodeEnum bytecode_name,
 			ValueType source_type) override
 		{
 			CLD_INFO << get_enum_name(bytecode_name) << L" " << ValueTypeName[source_type]
-				<< L" " << to_string(target);
+				<< L" " << to_string(target) << std::endl;
 		}
 
 		virtual Code GetCode() override
 		{
-			return Code(nullptr);
+			return Next()->GetCode();
 		}
 	};
 }

@@ -339,12 +339,18 @@
     <ClInclude Include="log.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Intepreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdLang.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeValue.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="coldlang.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CLObject.cpp">
@@ -487,6 +493,12 @@
     </ClCompile>
     <ClCompile Include="ExecCompilerQuadHandlers.cpp">
       <Filter>源文件\compile</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdLang.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Intepreter.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

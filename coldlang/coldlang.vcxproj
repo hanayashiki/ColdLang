@@ -226,6 +226,8 @@
     <ClInclude Include="BytecodeTyper.h" />
     <ClInclude Include="CldMem.h" />
     <ClInclude Include="Code.h" />
+    <ClInclude Include="ColdLang.h" />
+    <ClInclude Include="Intepreter.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerFactory.h" />
     <ClInclude Include="CompilerUtils.h" />
@@ -238,6 +240,7 @@
     <ClInclude Include="MiscellaneousBytecodeInfoGetters.h" />
     <ClInclude Include="RuntimeFunction.h" />
     <ClInclude Include="RuntimeStack.h" />
+    <ClInclude Include="RuntimeValue.h" />
     <ClInclude Include="TypedBlockCompilerCaller.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -311,13 +314,14 @@
     <ClCompile Include="ExecIntegerEmitter.cpp" />
     <ClCompile Include="ExecDebug.cpp" />
     <ClCompile Include="ExecOperands.cpp" />
+    <ClCompile Include="Intepreter.cpp" />
     <ClCompile Include="RuntimeFunction.cpp" />
     <ClCompile Include="TypedBlockCompilerCaller.cpp" />
     <ClCompile Include="BytecodeClass.cpp" />
     <ClCompile Include="BytecodeLength.cpp" />
     <ClCompile Include="BytecodeVectorReader.cpp" />
     <ClCompile Include="CLObject.cpp" />
-    <ClCompile Include="coldlang.cpp" />
+    <ClCompile Include="ColdLang.cpp" />
     <ClCompile Include="ColdLangBackend.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ColdLangFrontEnv.cpp" />

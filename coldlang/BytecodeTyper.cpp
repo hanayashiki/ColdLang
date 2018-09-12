@@ -12,6 +12,7 @@ namespace IR
 		unsigned char buf[128];
 		size_t read_count;
 		reader->read_byte(buf, &read_count);
+
 		assert(read_count > 0);
 		return get_bytecode_type_info(type_info, buf);
 	}

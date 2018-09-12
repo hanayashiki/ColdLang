@@ -52,7 +52,7 @@ namespace Compile
 			CompileSingleImpl(target, bytecode_name, source_type);
 			if (next_)
 			{
-				next_->CompileSingleImpl(target, bytecode_name, source_type);
+				next_->CompileSingle(target, bytecode_name, source_type);
 			}
 		}
 
@@ -60,6 +60,11 @@ namespace Compile
 		{
 			next_ = next;
 			return this;
+		}
+
+		Compiler * Next()
+		{
+			return next_;
 		}
 
 		virtual Code GetCode() = 0;

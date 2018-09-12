@@ -10,17 +10,17 @@ using CldRuntime::BlockEnv;
 #define DEF_QUAD_HANDLER_HEAD(_this, target, left, right) \
 	QuadHandler([](ExecCompiler* ##_this##, Symbol* ##target##, Symbol* ##left##, Symbol* ##right##)
 
-#define INTEGER_QUAD_EMIT(_this, exprOperands, op_type) \
-	CLD_DEBUG << ExecDebug::to_string(exprOperands[0]) << " " <<  \
-		IR::BytecodeClass::OpTypeName[op_type] << " " << \
-		ExecDebug::to_string(exprOperands[1]) << " " << \
-		ExecDebug::to_string(exprOperands[2]) << std::endl; \
-	_this->integerEmitter->Emit(exprOperands[0], OpAdd, \
+#define INTEGER_QUAD_EMIT(_this, exprOperands, opType) \
+	_this->integerEmitter->Emit(exprOperands[0], opType, \
 		exprOperands[1], exprOperands[2]);
 
 #define LOAD_QUAD_OPERANDS_AND_EMIT(_this, target, left, right, opType, valueType) \
 	vector<asmjit::Operand> exprOperands = \
 		_this->LocateQuad(target, valueType, left, right); \
+	_this->Comment("%ls %s %ls %ls", IR::to_string(target).c_str(), \
+		IR::BytecodeClass::OpTypeName[opType], \
+		IR::to_string(left).c_str(), \
+		IR::to_string(right).c_str()); \
 	INTEGER_QUAD_EMIT(_this, exprOperands, opType); 
 
 #define DEF_QUAD_HANDLER(opType, valueType) \

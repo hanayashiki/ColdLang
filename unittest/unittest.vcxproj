@@ -228,6 +228,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestBytecodeLength.cpp" />
+    <ClCompile Include="TestInterpreter.cpp" />
     <ClCompile Include="TestSyntax.cpp" />
     <ClCompile Include="TestTrie.cpp" />
     <ClCompile Include="TestResizableBuffer.cpp" />

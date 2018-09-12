@@ -30,9 +30,6 @@ namespace Compile
 		friend class Code;
 		friend class ExecDebug;
 
-		ExecDebug debug;
-		ExecOperands operands;
-
 		std::unique_ptr<ExecIntegerEmitter> integerEmitter;
 
 		static JitRuntime jitRuntime;
@@ -40,6 +37,9 @@ namespace Compile
 		CodeHolder code;
 		FileLogger logger;
 		shared_ptr<X86Compiler> compiler;
+
+		ExecDebug debug;
+		ExecOperands operands;
 
 		static const size_t OpTypeCount = sizeof(OpTypeName) / sizeof(OpTypeName[0]);
 
@@ -60,7 +60,17 @@ namespace Compile
 
 		ValueType GetType(const Symbol* symbol);
 
-		X86Mem WithOffset(X86Mem mem, int64_t offset);
+		X86Mem WithOffsetAndSize(X86Mem mem, int64_t offset, uint32_t size);
+
+		template<typename ...Args>
+		inline void Comment(const char * fmt, Args... args)
+		{
+			char buf[256];
+			int nHead = snprintf(buf, sizeof(buf), "; ");
+			snprintf(buf + nHead, sizeof(buf) - nHead, fmt, args...);
+			compiler->comment(buf);
+		}
+
 	protected:
 		static const bool executable = true;
 		virtual void CompileBinaryImpl(Symbol * target, OpType opType,

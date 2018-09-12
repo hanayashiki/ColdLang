@@ -73,8 +73,6 @@ namespace Compile {
 
 	SymbolToType TypedBlockCompilerCaller::NextBlock(SymbolToType & symbol_to_type)
 	{
-		unsigned char buf[128];
-
 		while (true)
 		{
 			// wcout << "start typedblock" << endl;
@@ -97,6 +95,12 @@ namespace Compile {
 				break;
 			case BytecodeTyper::BytecodeTypeInfo::Binary:
 				if (!CompileBinary(type_info, symbol_to_type))
+				{
+					goto while_end;
+				}
+				break;
+			case BytecodeTyper::BytecodeTypeInfo::Single:
+				if (!CompileSingle(type_info, symbol_to_type))
 				{
 					goto while_end;
 				}

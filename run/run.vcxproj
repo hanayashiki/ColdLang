@@ -214,6 +214,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="api_run.cpp" />
     <ClCompile Include="compile_run.cpp" />
     <ClCompile Include="run.cpp" />
     <ClCompile Include="stdafx.cpp">

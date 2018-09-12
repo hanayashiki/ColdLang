@@ -82,13 +82,8 @@ namespace Compile {
 	X86Mem ExecOperands::GenerateMem(const Variable * var)
 	{
 		// TODO: closure ?
-		if (sizeof CldRuntime::RuntimeStackSlot == 16) {
-			return X86Mem(runtimeStack, var->get_var_id(), 16);
-		}
-		else {
-			return X86Mem(runtimeStack,
-				var->get_var_id() * sizeof(CldRuntime::RuntimeStackSlot), 1);
-		}
+		X86Mem mem(runtimeStack, var->get_var_id() * 16, 16);
+		return mem;
 	}
 
 	void ExecOperands::ReleaseVariable(const Variable * var)
@@ -104,8 +99,10 @@ namespace Compile {
 	{
 		for (auto iter = InRegVariables.begin();
 			iter != InRegVariables.end();
-			iter++) {
-			if (excluding.find(*iter) != excluding.end()) {
+			iter++) 
+		{
+			if (excluding.find(*iter) == excluding.end()) 
+			{
 				return *iter;
 			}
 		}

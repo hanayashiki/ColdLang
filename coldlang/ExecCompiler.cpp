@@ -16,6 +16,8 @@
 using namespace asmjit;
 using CldRuntime::BlockEnv;
 
+#define OFFSET_SIZE(s, m) offsetof(s, m), sizeof(s::m)
+
 namespace Compile {
 	JitRuntime ExecCompiler::jitRuntime;
 	bool ExecCompiler::isHandlersInited = false;
@@ -40,6 +42,12 @@ namespace Compile {
 		code.setLogger(&logger);
 		compiler = std::make_shared<X86Compiler>(&code);
 		compiler->addFunc(Code::AsmjitFuncSignature);
+
+		// debug.PrintReg(L"block_result_reg", BlockEnv::block_result_reg);
+
+		for (auto & nonVolatile : ExecOperands::NonVolatileGps) {
+			compiler->push(nonVolatile);
+		}
 
 		integerEmitter = std::make_unique<ExecIntegerEmitter>(compiler);
 		
@@ -90,6 +98,9 @@ namespace Compile {
 	{
 		// TODO: Mem alternative
 		CLD_DEBUG << L"Locating variable: " << to_string(var) << std::endl;
+
+		Comment("Locate %ls", to_string(var).c_str());
+
 		if (operands.InReg(var)) {
 			return operands.GetReg(var);
 		}
@@ -108,6 +119,7 @@ namespace Compile {
 			X86Gp reg = operands.GetReg(var);
 			if (loadVal) {
 				X86Mem base = operands.GenerateMem(var);
+				CLD_DEBUG << base.getSize() << std::endl;
 				MoveMemToReg(reg, base, type);
 			}
 			return reg;
@@ -143,16 +155,16 @@ namespace Compile {
 			assert(false);
 			break;
 		case IntegerVal:
-			compiler->mov(reg, WithOffset(base, offsetof(IntegerValue, value)));
+			CHECK compiler->mov(reg, WithOffsetAndSize(base, OFFSET_SIZE(IntegerValue, value)));
 			break;
 		case FloatVal:
 			assert(false);
 			break;
 		case BooleanVal:
-			compiler->mov(reg, WithOffset(base, offsetof(IntegerValue, value)));
-			compiler->mov(reg, base);
+			CHECK compiler->mov(reg, WithOffsetAndSize(base, OFFSET_SIZE(BooleanValue, value)));
+			CHECK compiler->mov(reg, base);
 		case NoneVal:
-			compiler->mov(reg, 0);
+			CHECK compiler->mov(reg, 0);
 			break;
 		default:
 			assert(false);
@@ -161,21 +173,22 @@ namespace Compile {
 
 	void ExecCompiler::MoveRegToMem(X86Mem base, X86Gp reg, ValueType valueType)
 	{
-		compiler->mov(WithOffset(base, offsetof(IntegerValue, type)), asmjit::imm_u(valueType));
+		X86Mem typeMem = WithOffsetAndSize(base, OFFSET_SIZE(RuntimeValue, type));
+		CHECK compiler->mov(WithOffsetAndSize(base, OFFSET_SIZE(IntegerValue, type)), asmjit::imm_u(valueType));
 		switch (valueType) {
 		case AnyVal:
 			assert(false);
 			break;
 		case IntegerVal:
-			compiler->mov(WithOffset(base, offsetof(IntegerValue, value)), reg);
+			CHECK compiler->mov(WithOffsetAndSize(base, OFFSET_SIZE(IntegerValue, value)), reg);
 			break;
 		case FloatVal:
 			assert(false);
 			break;
 		case BooleanVal:
-			compiler->mov(WithOffset(base, offsetof(BooleanValue, value)), reg);
+			CHECK compiler->mov(WithOffsetAndSize(base, OFFSET_SIZE(BooleanValue, value)), reg);
 		case NoneVal:
-			compiler->mov(reg, 0);
+			CHECK compiler->mov(reg, 0);
 			break;
 		default:
 			assert(false);
@@ -201,9 +214,10 @@ namespace Compile {
 		}
 	}
 
-	X86Mem ExecCompiler::WithOffset(X86Mem mem, int64_t offset)
+	X86Mem ExecCompiler::WithOffsetAndSize(X86Mem mem, int64_t offset, uint32_t size)
 	{
 		mem.addOffset(offset);
+		mem.setSize(size);
 		return mem;
 	}
 
@@ -219,7 +233,7 @@ namespace Compile {
 	void ExecCompiler::CompileUnaryImpl(Symbol * target, OpType op_type, 
 		ValueType type, Symbol * source)
 	{
-
+		CompileBinaryImpl(target, op_type, type, source, type, source);
 	}
 
 	void ExecCompiler::CompileSingleImpl(Symbol * target, BytecodeEnum bytecode_name, ValueType source_type)
@@ -236,6 +250,7 @@ namespace Compile {
 			X86Gp returnValuePtrBaseReg = op[1].as<X86Gp>();
 			X86Mem returnValuePtr = asmjit::x86::ptr(returnValuePtrBaseReg,
 				offsetof(BlockResult, return_value));
+			MoveRegToMem(returnValuePtr, valueReg, source_type);
 			break;
 		}
 		default:
@@ -247,17 +262,16 @@ namespace Compile {
 	Code ExecCompiler::GetCode()
 	{
 		Code::FuncPtr func_ptr;
+
+		for (int32_t i = ExecOperands::NonVolatileGps.size() - 1;
+			i >= 0; i--) {
+			compiler->pop(ExecOperands::NonVolatileGps[i]);
+		}
 		compiler->ret();
 
 		compiler->endFunc();
-		Error err = compiler->finalize();
-		if (err) 
-		{
-			CLD_FATAL << "Asmjit error code: " << err << ": "
-				<< asmjit::DebugUtils::errorAsString(err) << std::endl;
-			assert(false);
-		}
-		jitRuntime.add(&func_ptr, &code);
+		CHECK compiler->finalize();
+		CHECK jitRuntime.add(&func_ptr, &code);
 		return Code(func_ptr);
 	}
 }

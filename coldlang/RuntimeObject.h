@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Function.h"
+#include "RuntimeValue.h"
 
 #define VARIADIC(type, field_name) \
 	inline type * field_name() \
@@ -8,87 +9,9 @@
 		return reinterpret_cast<type*>((size_t)this + sizeof(*this)); \
 	}
 
+
 namespace CldRuntime 
 {
-	enum ValueType
-	{
-		AnyVal,
-		IntegerVal,
-		FloatVal,
-		BooleanVal,
-		NoneVal,
-		StringPointerVal,
-		FunctionPointerVal,
-		ObjectPointerVal,
-		ErrorVal
-	};
-
-	static const ValueType ValueVecEnd = ErrorVal;
-
-	static const char * ValueTypeName[] = {
-		"any",
-		"int",
-		"float",
-		"bool",
-		"none",
-		"string_ptr",
-		"func_ptr",
-		"obj_ptr",
-		"err_ptr"
-	};
-
-	static const size_t ValueTypeCount = sizeof(ValueTypeName) / sizeof(ValueTypeName[0]);
-
-	enum ObjectType
-	{
-		StringObj = 1,
-		FunctionObj
-	};
-
-	struct RuntimeValue
-	{
-		ValueType type;
-		RuntimeValue(ValueType type) : type(type)
-		{	
-		}
-	};
-
-	struct IntegerValue : RuntimeValue
-	{
-		int64_t value;
-		IntegerValue(int64_t value) : value(value), RuntimeValue(IntegerVal)
-		{
-		}
-	};
-
-	struct FloatValue : RuntimeValue
-	{
-		double value;
-		FloatValue(double value) : value(value), RuntimeValue(FloatVal)
-		{
-		}
-	};
-
-	struct BooleanValue : RuntimeValue
-	{
-		bool value;
-		BooleanValue(bool value) : value(value), RuntimeValue(BooleanVal)
-		{
-		}
-	};
-
-	struct NoneValue : RuntimeValue
-	{
-		NoneValue() : RuntimeValue(NoneVal)
-		{
-		}
-	};
-
-	struct RuntimeObject;
-	struct PointerValue : RuntimeValue
-	{
-		RuntimeObject * value;
-	};
 
 	struct RuntimeObject
 	{

@@ -12,8 +12,8 @@ namespace Compile
 		{
 			Compiler * exec = new ExecCompiler(symbolToType);
 			Compiler * dump = new DumpingCompiler();
-			exec->PassTo(dump);
-			return shared_ptr<Compiler>(exec);
+			dump->PassTo(exec);
+			return shared_ptr<Compiler>(dump);
 		}
 	};
 }

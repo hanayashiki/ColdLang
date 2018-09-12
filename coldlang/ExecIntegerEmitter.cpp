@@ -2,6 +2,8 @@
 #include "ExecIntegerEmitter.h"
 #include "ExecOperands.h"
 
+#include "ExecDebug.h"
+
 #define MAKE_EMITTER(block) [=](std::shared_ptr<X86Compiler>& cc){block}
 
 namespace Compile {
@@ -54,8 +56,6 @@ namespace Compile {
 				best = &emitter;
 			}
 		}
-		best->adaptor->Exec(compiler);
-		best->emitter(compiler);
 		return *best;
 	}
 
@@ -73,31 +73,31 @@ namespace Compile {
 					// ASMJIT_INST_2x(add, Add, X86Gp, X86Gp)
 					target.isReg(),
 					GetAdaptor({ left, right }, { target, RegOrTemp1(right) }),
-					MAKE_EMITTER({ cc->add(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->add(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2x(add, Add, X86Gp, X86Mem)
 					target.isReg() && right.isMem(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->add(target.as<X86Gp>(), right.as<X86Mem>()); })
+					MAKE_EMITTER({ CHECK cc->add(target.as<X86Gp>(), right.as<X86Mem>()); })
 				},
 				{
 					// ASMJIT_INST_2i(add, Add, X86Gp, Imm)
 					target.isReg() && right.isImm(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->add(target.as<X86Gp>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->add(target.as<X86Gp>(), right.as<Imm>()); })
 				},
 				{
 					// ASMJIT_INST_2x(add, Add, X86Mem, X86Gp)
 					target.isMem(),
 					GetAdaptor({ left, right }, { target, RegOrTemp1(right) }),
-					MAKE_EMITTER({ cc->add(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->add(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2i(add, Add, X86Mem, Imm)
 					target.isMem() && right.isImm(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->add(target.as<X86Mem>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->add(target.as<X86Mem>(), right.as<Imm>()); })
 				},
 			});
 			break;
@@ -107,64 +107,65 @@ namespace Compile {
 					// ASMJIT_INST_2x(~, ~~, X86Gp, X86Gp)
 					target.isReg(),
 					GetAdaptor({ left, right }, { target, RegOrTemp1(right) }),
-					MAKE_EMITTER({ cc->sub(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->sub(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2x(~, ~~, X86Gp, X86Mem)
 					target.isReg() && right.isMem(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->sub(target.as<X86Gp>(), right.as<X86Mem>()); })
+					MAKE_EMITTER({ CHECK cc->sub(target.as<X86Gp>(), right.as<X86Mem>()); })
 				},
 				{
 					// ASMJIT_INST_2i(~, ~~, X86Gp, Imm)
 					target.isReg() && right.isImm(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->sub(target.as<X86Gp>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->sub(target.as<X86Gp>(), right.as<Imm>()); })
 				},
 				{
 					// ASMJIT_INST_2x(~, ~~, X86Mem, X86Gp)
 					target.isMem(),
 					GetAdaptor({ left, right }, { target, RegOrTemp1(right) }),
-					MAKE_EMITTER({ cc->sub(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->sub(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2i(~, ~~, X86Mem, Imm)
 					target.isMem() && right.isImm(),
 					GetAdaptor({ left }, { target }),
-					MAKE_EMITTER({ cc->sub(target.as<X86Mem>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->sub(target.as<X86Mem>(), right.as<Imm>()); })
 				},
 			});
+			break;
 		case OpMove:
 			emitters = vector<InstrEmitter>({
 				{
 					// ASMJIT_INST_2x(~, ~~, X86Gp, X86Gp)
 					target.isReg(),
 					GetAdaptor({ right }, { RegOrTemp1(right) }),
-					MAKE_EMITTER({ cc->mov(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->mov(target.as<X86Gp>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2x(~, ~~, X86Gp, X86Mem)
 					target.isReg() && right.isMem(),
 					GetAdaptor({ }, { }),
-					MAKE_EMITTER({ cc->mov(target.as<X86Gp>(), right.as<X86Mem>()); })
+					MAKE_EMITTER({ CHECK cc->mov(target.as<X86Gp>(), right.as<X86Mem>()); })
 				},
 				{
 					// ASMJIT_INST_2i(~, ~~, X86Gp, Imm)
 					target.isReg() && right.isImm(),
 					GetAdaptor({ }, { }),
-					MAKE_EMITTER({ cc->mov(target.as<X86Gp>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->mov(target.as<X86Gp>(), right.as<Imm>()); })
 				},
 				{
 					// ASMJIT_INST_2x(~, ~~, X86Mem, X86Gp)
 					target.isMem(),
 					GetAdaptor({ }, { }),
-					MAKE_EMITTER({ cc->mov(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
+					MAKE_EMITTER({ CHECK cc->mov(target.as<X86Mem>(), RegOrTemp1(right).as<X86Gp>()); })
 				},
 				{
 					// ASMJIT_INST_2i(~, ~~, X86Mem, Imm)
 					target.isMem() && right.isImm(),
 					GetAdaptor({ }, { }),
-					MAKE_EMITTER({ cc->mov(target.as<X86Mem>(), right.as<Imm>()); })
+					MAKE_EMITTER({ CHECK cc->mov(target.as<X86Mem>(), right.as<Imm>()); })
 				},
 			});
 			break;

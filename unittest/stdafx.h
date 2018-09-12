@@ -5,6 +5,8 @@
 
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "targetver.h"
 
 // 用于 CppUnitTest 的头文件
