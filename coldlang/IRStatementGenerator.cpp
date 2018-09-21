@@ -2,7 +2,7 @@
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
 #include "RuntimeObject.h"
-#include "NativeFunctions.h"
+#include "NativeFunctionsDefs.h"
 #include "NativeSymbol.h"
 #include "NativeFunction.h"
 

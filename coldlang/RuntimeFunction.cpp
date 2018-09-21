@@ -13,6 +13,7 @@ namespace CldRuntime {
 	RuntimeFunction::RuntimeFunction(vector<IR::BasicBlock>* basic_blocks, IR::Function * function)
 		: basic_blocks_(basic_blocks), function_(function)
 	{
+		
 	}
 
 	void RuntimeFunction::Run(const vector<RuntimeStack*> & contexts)

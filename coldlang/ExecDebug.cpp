@@ -53,7 +53,8 @@ namespace Compile {
 
 	wstring ExecDebug::to_string(const X86Gp & gp)
 	{
-		return L"Gp";
+		uint32_t id = gp.getId();
+		return L"Gp" + to_wstring(id);
 	}
 
 	ExecDebug::ErrorCollector ExecDebug::ErrorCollector::instance;

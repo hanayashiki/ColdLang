@@ -19,10 +19,11 @@ namespace IR
 			size_t id_;
 			LRValueType value_type_;
 			bool is_temp_;
+			bool is_static_;
 			uint32_t nest_level_;
 			uint32_t offset_;
 		public:
-			Symbol(shared_ptr<Token> && token_, LRValueType vt = LValue);
+			Symbol(shared_ptr<Token> && token_, bool is_static = false, LRValueType vt = LValue);
 			virtual ~Symbol();
 
 			const shared_ptr<Token> & get_token() const;
@@ -32,6 +33,7 @@ namespace IR
 			void set_id(size_t);
 			void set_temp(bool is_temp);
 			bool is_temp();
+			bool is_static();
 			void set_nest_level(uint32_t);
 			uint32_t get_nest_level();
 			virtual wstring to_string() const;

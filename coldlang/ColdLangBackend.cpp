@@ -9,7 +9,6 @@ ColdLangBackend::ColdLangBackend()
 	symbol_table = new IR::SymbolTable();
 	function_table = new IR::FunctionTable();
 	literal_table = new IR::LiteralTable();
-	constant_table = new IR::ConstantTable();
 	bytecode_dumper = new IR::BytecodeDumper();
 
 	bytecode_vector_writer = new IR::BytecodeVectorWriter(&bytecode_vector);
@@ -24,7 +23,6 @@ ColdLangBackend::ColdLangBackend()
 		symbol_table,
 		function_table,
 		literal_table,
-		constant_table,
 		bytecode_dumper
 	);
 }
@@ -34,7 +32,6 @@ ColdLangBackend::~ColdLangBackend()
 	delete symbol_table;
 	delete function_table;
 	delete literal_table;
-	delete constant_table;
 	delete bytecode_dumper;
 	delete bytecode_vector_writer;
 	delete bytecode_reader;

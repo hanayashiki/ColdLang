@@ -61,10 +61,9 @@ namespace IR {
 		Function * function = new Function(keyword_token, param_list, my_table);
 		function_table_->add(function);
 		CldRuntime::FunctionObject * function_object = new CldRuntime::FunctionObject;
-		constant_table_->add(function_object);
 		function_object->meta = function;
 
-		Literal * func_literal = new Literal(keyword_token, function_object);
+		Literal * func_literal = new Literal(keyword_token, make_pointer(function_object));
 		literal_table_->add(func_literal);
 
 		symbol_table_ = symbol_table_->get_parent_symbol_table();

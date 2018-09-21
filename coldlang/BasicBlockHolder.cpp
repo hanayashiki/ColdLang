@@ -3,6 +3,8 @@
 #include "BytecodeClassHelper.h"
 #include "BytecodeTyper.h"
 
+#include "log.h"
+
 namespace IR {
 
 	BasicBlockHolder::BasicBlockHolder(BytecodeReader * reader)
@@ -113,7 +115,7 @@ namespace IR {
 					skip_until_next_label = true; // Clean dead code
 					break;
 				default:
-					assert(false);
+					CLD_DEBUG << "Single switch used default" << std::endl;
 				}
 			}
 			break;

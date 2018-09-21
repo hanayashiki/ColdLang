@@ -9,6 +9,7 @@ namespace Compile
 {
 	class ExecIntegerEmitter {
 	protected:
+		typedef asmjit::X86Compiler X86Compiler;
 		typedef IR::BytecodeClass::OpType OpType;
 	public:
 		ExecIntegerEmitter(std::shared_ptr<X86Compiler> & compiler);

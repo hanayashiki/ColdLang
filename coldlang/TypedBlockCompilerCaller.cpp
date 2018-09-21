@@ -6,6 +6,8 @@
 #include "MiscellaneousBytecodeInfoGetters.h"
 #include "BytecodeTyper.h"
 
+#include "log.h"
+
 namespace Compile {
 
 	TypedBlockCompilerCaller::TypedBlockCompilerCaller(BytecodeReader * reader, Compiler * compiler)
@@ -23,11 +25,13 @@ namespace Compile {
 			//wcout << "left type: " << ValueTypeName[binary_info.left_type] << endl;
 			//wcout << "left: " << to_string(binary_info.left_symbol) << endl;
 			//wcout << "right: " << to_string(binary_info.right_symbol) << endl;
+			CLD_DEBUG << "CompileBinary ended" << std::endl;
+			assert(false);
 			return false;
 		}
 
 		symbol_to_type.insert_or_assign(binary_info.target, binary_info.target_type);
-		//wcout << "set " << to_string(binary_info.target) << " <- " << ValueTypeName[binary_info.target_type] << endl;
+		CLD_DEBUG << "set " << to_string(binary_info.target) << " <- " << ValueTypeName[binary_info.target_type] << endl;
 		//wcout << "CompileBinary: symbol to type: " << &symbol_to_type << endl;
 		compiler_->CompileBinary(
 			binary_info.target, binary_info.op_type,
@@ -44,10 +48,13 @@ namespace Compile {
 		if (unary_info.source_type == AnyVal)
 		{
 			//wcout << "source: " << to_string(unary_info.source) << endl;
+			CLD_DEBUG << "CompileUnary ended" << std::endl;
+			assert(false);
 			return false;
 		}
 		symbol_to_type.insert_or_assign(unary_info.target, unary_info.target_type);
 		//wcout << "CompileUnary: symbol to type: " << &symbol_to_type << endl;
+		CLD_DEBUG << "set " << to_string(unary_info.target) << " <- " << ValueTypeName[unary_info.target_type] << endl;
 		compiler_->CompileUnary(unary_info.target, unary_info.op_type, unary_info.source_type, unary_info.source);
 		return true;
 	}
@@ -59,9 +66,16 @@ namespace Compile {
 		const auto & single_info = type_info.single;
 		if (single_info.origin_type == AnyVal)
 		{
+			CLD_DEBUG << "CompileSingle ended" << std::endl;
+			assert(false);
 			return false;
 		}
-		symbol_to_type.insert_or_assign(single_info.target, single_info.result_type);
+		if (!single_info.write_acc) {
+			symbol_to_type.insert_or_assign(single_info.target, single_info.result_type);
+		} else 
+		{
+			symbol_to_type.insert_or_assign(Symbol::Acc, single_info.result_type);
+		}
 		compiler_->CompileSingle(single_info.target, single_info.bytecode_enum, single_info.origin_type);
 		return true;
 	}

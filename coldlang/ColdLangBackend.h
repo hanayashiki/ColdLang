@@ -13,7 +13,6 @@ public:
 	IR::SymbolTable * symbol_table;
 	IR::FunctionTable * function_table;
 	IR::LiteralTable * literal_table;
-	IR::ConstantTable * constant_table;
 	IR::BytecodeWriter * bytecode_dumper;
 
 	vector<uint8_t> bytecode_vector;

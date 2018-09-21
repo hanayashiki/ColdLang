@@ -21,7 +21,6 @@ namespace IR {
 		TempTable * temp_table_;
 		FunctionTable * function_table_;
 		LiteralTable * literal_table_;
-		ConstantTable * constant_table_;
 		BytecodeWriter * bytecode_writer_;
 		typedef list<function<void()>> SideEffectList;
 		stack<SideEffectList> side_effect_stack;
@@ -35,7 +34,7 @@ namespace IR {
 		template<typename RealTokenType>
 		Literal * add_literal(shared_ptr<Token> & token, CldRuntime::RuntimeObject * rto);
 	public:
-		IRGenerator(SymbolTable * symbol_table, FunctionTable * function_table, LiteralTable * literal_table, ConstantTable * constant_table, BytecodeWriter * bytecode_writer);
+		IRGenerator(SymbolTable * symbol_table, FunctionTable * function_table, LiteralTable * literal_table, BytecodeWriter * bytecode_writer);
 		~IRGenerator();
 
 		Symbol * atom_reader(TreeNode * tn, bool left);

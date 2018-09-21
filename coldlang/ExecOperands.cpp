@@ -10,23 +10,32 @@
 #define X86 asmjit::x86
 
 using namespace CldRuntime;
+using namespace asmjit;
 
 namespace Compile {
 
-	const vector<asmjit::X86Gp> ExecOperands::NonVolatileGps({
+	const vector<asmjit::X86Gp> ExecOperands::ParameterGps({
+		X86::rcx, X86::rdx, X86::r8, X86::r9
+	});
+
+	const set<asmjit::X86Gp> ExecOperands::NonVolatileGps({
 		X86::rbx, X86::rbp, X86::rdi, X86::rsi, X86::r12,
 		X86::r13, X86::r14, X86::r15
 	});
 
-	const vector<asmjit::X86Gp> ExecOperands::VolatileGps({
+	const set<asmjit::X86Gp> ExecOperands::VolatileGps({
 		X86::rax, X86::rcx, X86::rdx, X86::r8, X86::r9,
 		X86::r10, X86::r11
 	});
 
+	const set<asmjit::X86Gp> ExecOperands::SaveOnCallGps({
+		X86::rcx, X86::rdx, X86::r8, X86::r9
+	});
+
 	const set<asmjit::X86Gp> ExecOperands::InitialFreeGps({
-		X86::rbx, X86::rbp, X86::rdi, X86::rsi, X86::r12,
+		X86::rbx, X86::rdi, X86::rsi, X86::r12,
 		X86::r13, X86::r14, X86::r15,
-		X86::rax, X86::rcx, X86::rdx, X86::r8, X86::r9,
+		X86::rax, /*X86::rcx,*/ X86::rdx, X86::r8, X86::r9,
 	});
 
 	ExecOperands::ExecOperands(
@@ -91,6 +100,7 @@ namespace Compile {
 		Operand gp = VariableToOperand.at(var);
 		assert(gp.isReg());
 		VariableToOperand.erase(var);
+		RegToVariable.erase(gp.as<X86Gp>());
 		InRegVariables.erase(var);
 		ReleaseReg(gp.as<X86Gp>());
 	}
@@ -110,6 +120,19 @@ namespace Compile {
 		assert(false);
 	}
 
+	const ExecOperands::Variable * ExecOperands::FindVariableByGp(const X86Gp & gp)
+	{
+		auto iter = RegToVariable.find(gp);
+		if (iter != RegToVariable.end())
+		{
+			return iter->second;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
 	bool ExecOperands::AllocVariable(const Variable * var, const X86Gp & gp)
 	{
 		if (!IsFree(gp)) {
@@ -120,10 +143,76 @@ namespace Compile {
 			CLD_DEBUG << "alloc " << IR::OperandType::to_string(var) << std::endl;
 			AllocReg(gp);
 			VariableToOperand[var] = gp;
+			RegToVariable[gp] = var;
 			CLD_DEBUG << DumpVariableToOperand() << std::endl;
 			InRegVariables.emplace(var);
 			return true;
 		}
+	}
+
+	const std::vector<X86Gp> ExecOperands::GetUsedSaveOnCallGps()
+	{
+		return std::vector<X86Gp>(
+			UsedSaveOnCallGps.begin(),
+			UsedSaveOnCallGps.end()
+		);
+	}
+
+	const std::vector<X86Gp> ExecOperands::GetUsedVolatileGps()
+	{
+		return std::vector<X86Gp>(
+			UsedVolatileGps.begin(), 
+			UsedVolatileGps.end()
+		);
+	}
+
+	const std::vector<X86Gp> ExecOperands::GetUsedNonVolatileGps()
+	{
+		return std::vector<X86Gp>(
+			UsedNonVolatileGps.begin(),
+			UsedNonVolatileGps.end()
+		);
+	}
+
+	void ExecOperands::RecordGpUse(const X86Gp & gp)
+	{
+		RecordIfVolatile(gp);
+		RecordIfSaveOnCallGps(gp);
+		RecordIfNonVolatile(gp);
+	}
+
+	void ExecOperands::RecordIfVolatile(const X86Gp & gp)
+	{
+		if (VolatileGps.find(gp) != VolatileGps.end())
+		{
+			UsedVolatileGps.emplace(gp);
+		}
+	}
+
+	void ExecOperands::RecordIfSaveOnCallGps(const X86Gp & gp)
+	{
+		if (SaveOnCallGps.find(gp) != SaveOnCallGps.end())
+		{
+			UsedSaveOnCallGps.emplace(gp);
+		}
+	}
+
+	void ExecOperands::RecordIfNonVolatile(const X86Gp & gp)
+	{
+		if (NonVolatileGps.find(gp) != NonVolatileGps.end())
+		{
+			UsedNonVolatileGps.emplace(gp);
+		}
+	}
+
+	void ExecOperands::ClearUsedVolatileGps()
+	{
+		UsedVolatileGps.clear();
+	}
+
+	void ExecOperands::ClearUsedSaveOnCallGps()
+	{
+		UsedSaveOnCallGps.clear();
 	}
 
 	wstring ExecOperands::to_string(const std::unordered_map<const Variable*, Operand>& v2o) const

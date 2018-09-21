@@ -180,9 +180,6 @@
     <ClInclude Include="BytecodeClass.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
-    <ClInclude Include="BytecodeOperandTypes.h">
-      <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
     <ClInclude Include="Variable.h">
       <Filter>头文件\ir\operands</Filter>
     </ClInclude>
@@ -225,9 +222,6 @@
     <ClInclude Include="LiteralTable.h">
       <Filter>头文件\ir\irgen</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantTable.h">
-      <Filter>头文件\ir\irgen</Filter>
-    </ClInclude>
     <ClInclude Include="NativeSymbol.h">
       <Filter>头文件\ir\operands</Filter>
     </ClInclude>
@@ -252,14 +246,8 @@
     <ClInclude Include="BytecodeLength.h">
       <Filter>头文件\ir\bytecode</Filter>
     </ClInclude>
-    <ClInclude Include="Jit.h">
-      <Filter>头文件\compile</Filter>
-    </ClInclude>
     <ClInclude Include="Function.h">
       <Filter>头文件\ir\object</Filter>
-    </ClInclude>
-    <ClInclude Include="Constant.h">
-      <Filter>头文件\ir\operands</Filter>
     </ClInclude>
     <ClInclude Include="TypeCalc.h">
       <Filter>头文件\runtime</Filter>
@@ -290,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="BytecodeClassHelper.h">
       <Filter>头文件\ir\bytecode</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeFunctions.h">
-      <Filter>头文件\runtime</Filter>
     </ClInclude>
     <ClInclude Include="RuntimeFunction.h">
       <Filter>头文件\runtime</Filter>
@@ -346,6 +331,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="RuntimeValue.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeFunctionsDefs.h">
+      <Filter>头文件\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecStack.h">
+      <Filter>头文件\compile</Filter>
+    </ClInclude>
+    <ClInclude Include="porting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RuntimeValueUtils.h">
       <Filter>头文件\runtime</Filter>
     </ClInclude>
   </ItemGroup>
@@ -443,9 +440,6 @@
     <ClCompile Include="BytecodeLength.cpp">
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
-    <ClCompile Include="Jit.cpp">
-      <Filter>源文件\compile</Filter>
-    </ClCompile>
     <ClCompile Include="Function.cpp">
       <Filter>源文件\ir\cl_object</Filter>
     </ClCompile>
@@ -461,17 +455,11 @@
     <ClCompile Include="BytecodeTyper.cpp">
       <Filter>源文件\ir\bytecode</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantTable.cpp">
-      <Filter>源文件\ir\irgen</Filter>
-    </ClCompile>
     <ClCompile Include="RuntimeFunction.cpp">
       <Filter>源文件\runtime</Filter>
     </ClCompile>
     <ClCompile Include="BasicBlockHolder.cpp">
       <Filter>源文件\ir\bytecode</Filter>
-    </ClCompile>
-    <ClCompile Include="NativeFunctions.cpp">
-      <Filter>源文件\runtime</Filter>
     </ClCompile>
     <ClCompile Include="BlockCode.cpp">
       <Filter>源文件\runtime</Filter>
@@ -498,6 +486,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Intepreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeFunctionsDefs.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecStack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

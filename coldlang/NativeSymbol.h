@@ -10,7 +10,7 @@ namespace IR
 		{
 		public:
 			NativeSymbol(const wchar_t * name) :
-				Symbol(Word::mock(name))
+				Symbol(Word::mock(name), true)
 			{
 			}
 

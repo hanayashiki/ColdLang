@@ -5,6 +5,8 @@
 #include "Variable.h"
 
 #include <set>
+#include <functional>
+
 
 #define X86 asmjit::x86
 
@@ -15,11 +17,26 @@ struct std::less<asmjit::X86Gp> {
 	}
 };
 
+template<>
+struct std::hash<const asmjit::X86Gp> {
+	size_t operator()(const asmjit::X86Gp & gp) const {
+		return (gp.getSignature() + gp.getId()) * 19260817;
+	}
+};
+
+template<>
+struct std::equal_to<const asmjit::X86Gp> {
+	size_t operator()(const asmjit::X86Gp& lhs, const asmjit::X86Gp& rhs) const {
+		return lhs == rhs;
+	}
+};
+
 namespace Compile {
 	class ExecOperands {
 	private:
 		typedef asmjit::Operand Operand;
 		typedef asmjit::X86Gp X86Gp;
+		typedef asmjit::X86Mem X86Mem;
 		typedef asmjit::X86Gpq X86Gpq;
 
 		typedef IR::OperandType::Symbol Symbol;
@@ -30,6 +47,7 @@ namespace Compile {
 		inline const static X86Gp PlaceHolder = asmjit::X86Gp();
 
 	public:
+		inline const static asmjit::X86Gp ret_reg = asmjit::x86::rax;
 		inline const static asmjit::X86Gp temp_reg_0 = asmjit::x86::r10;
 		inline const static asmjit::X86Gp temp_reg_1 = asmjit::x86::r11;
 
@@ -40,8 +58,10 @@ namespace Compile {
 		 * https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/x64-architecture 
 		 */
 		
-		const static vector<asmjit::X86Gp> NonVolatileGps;
-		const static vector<asmjit::X86Gp> VolatileGps;
+		const static vector<asmjit::X86Gp> ParameterGps;
+		const static set<asmjit::X86Gp> NonVolatileGps;
+		const static set<asmjit::X86Gp> VolatileGps;
+		const static set<asmjit::X86Gp> SaveOnCallGps;
 		const static set<asmjit::X86Gp> InitialFreeGps;
 
 
@@ -60,14 +80,25 @@ namespace Compile {
 
 		void ReleaseVariable(const Variable * var);
 		const Variable* GetInRegVariable(const set<const Variable*> & excluding);
+		const Variable* FindVariableByGp(const X86Gp & gp);
 		bool AllocVariable(const Variable * var, const X86Gp & gp);
 
-		//const std::set<X86Gp> & GetWrittenGp
+		const std::vector<X86Gp> GetUsedSaveOnCallGps();
+		const std::vector<X86Gp> GetUsedVolatileGps();
+		const std::vector<X86Gp> GetUsedNonVolatileGps();
+
+		void RecordGpUse(const X86Gp & gp);
+		void RecordIfVolatile(const X86Gp & gp);
+		void RecordIfSaveOnCallGps(const X86Gp & gp);
+		void RecordIfNonVolatile(const X86Gp & gp);
+		void ClearUsedVolatileGps();
+		void ClearUsedSaveOnCallGps();
 
 		wstring DumpVariableToOperand() { return to_string(VariableToOperand); }
 
 	private:
 		std::unordered_map<const Variable*, Operand> VariableToOperand;
+		std::unordered_map<const X86Gp, const Variable*> RegToVariable;
 		
 		wstring to_string(const std::unordered_map<const Variable*, Operand> &) const;
 
@@ -76,7 +107,9 @@ namespace Compile {
 		std::set<X86Gp> UsedGps;
 		std::set<X86Gp> FreeGps;
 
-		std::set<X86Gp> WrittenGp;
+		std::set<X86Gp> UsedSaveOnCallGps;
+		std::set<X86Gp> UsedVolatileGps;
+		std::set<X86Gp> UsedNonVolatileGps;
 
 		void ReleaseReg(const X86Gp & gp);
 		void AllocReg(const X86Gp & gp);

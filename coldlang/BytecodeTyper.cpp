@@ -5,6 +5,8 @@
 #include "MiscellaneousBytecodeInfoGetters.h"
 #include "BytecodeClassHelper.h"
 
+#include "log.h"
+
 namespace IR
 {
 	BytecodeTyper::BytecodeTypeInfo IR::BytecodeTyper::get_bytecode_type_info(SymbolToType & type_info, BytecodeReader * reader)
@@ -23,6 +25,9 @@ namespace IR
 
 		switch (buf[0])
 		{
+		case EnumPushParamVariable:
+		case EnumPushParamLiteral:
+		case EnumCallNative:
 		case EnumRetAcc:
 		case EnumInc:
 		case EnumDecre:
@@ -56,7 +61,6 @@ namespace IR
 			break;
 		}
 		case EnumStoreAcc:
-		case EnumLoadToAccConstant:
 		case EnumLoadToAccLiteral:
 		case EnumLoadToAccVariable:
 		{
@@ -91,6 +95,25 @@ namespace IR
 
 	}
 
+	Symbol * BytecodeTyper::retrieve_on_type(
+		BytecodeEnum this_enum,
+		BytecodeEnum enum_var,
+		BytecodeEnum enum_literal, const unsigned char buf[])
+	{
+		if (this_enum == enum_var)
+		{
+			return retrieve_arg<OperandType::Variable*>(&buf[1]);;
+		}
+		else if (this_enum == enum_literal)
+		{
+			return retrieve_arg<OperandType::Literal*>(&buf[1]);;
+		}
+		else {
+			assert(false);
+		}
+
+	}
+
 	UnaryTypeInfo BytecodeTyper::get_unary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[])
 	{
 		UnaryTypeInfo unary_type_info;
@@ -110,7 +133,6 @@ namespace IR
 			break;
 		}
 		case EnumLoadToAccVariable:
-		case EnumLoadToAccConstant:
 		case EnumLoadToAccLiteral:
 		{
 			GetUnaryInfo unary_info_getter = get_get_unary_info(buf);
@@ -162,18 +184,44 @@ namespace IR
 		SingleTypeInfo single_type_info;
 		single_type_info.bytecode_enum = BytecodeEnum(buf[0]);
 		switch (buf[0]) {
+		case EnumPushParamVariable:
+		case EnumPushParamLiteral:
+			{
+				Symbol * symbol = retrieve_on_type(single_type_info.bytecode_enum,
+					EnumPushParamVariable, EnumPushParamLiteral, buf);
+				single_type_info.result_type = NoneVal;
+				single_type_info.origin_type = get_type_of(symbol);
+				single_type_info.target = symbol;
+				single_type_info.write_acc = false;
+				break;
+			}
+		case EnumCallNative:
+			{
+				NativeFunction* symbol = retrieve_arg<OperandType::NativeFunction*>(&buf[1]);
+				single_type_info.result_type = symbol->get_ret_type();
+				single_type_info.origin_type = NoneVal;
+				single_type_info.target = symbol;
+				single_type_info.write_acc = true;
+				break;
+			}
 		case EnumRetAcc:
-			single_type_info.result_type = get_type_of(Symbol::Acc);
-			single_type_info.origin_type = get_type_of(Symbol::Acc);
-			single_type_info.target = Symbol::Acc;
-			break;
+			{
+				single_type_info.result_type = get_type_of(Symbol::Acc);
+				single_type_info.origin_type = get_type_of(Symbol::Acc);
+				single_type_info.target = Symbol::Acc;
+				single_type_info.write_acc = false;
+				break;
+			}
 		case EnumInc:
 		case EnumDecre:
-			Symbol* symbol = retrieve_arg<OperandType::Variable*>(&buf[1]);
-			single_type_info.result_type = get_type_of(symbol);
-			single_type_info.origin_type = get_type_of(symbol);
-			single_type_info.target = symbol;
-			break;
+			{
+				Symbol* symbol = retrieve_arg<OperandType::Variable*>(&buf[1]);
+				single_type_info.result_type = get_type_of(symbol);
+				single_type_info.origin_type = get_type_of(symbol);
+				single_type_info.target = symbol;
+				single_type_info.write_acc = false;
+				break;
+			}
 		}
 
 		return single_type_info;
@@ -189,11 +237,11 @@ namespace IR
 				//wcout << "get_get_type_of: symbol to type: " << &symbol_to_type << endl;
 				return symbol_to_type.find(symbol)->second;
 			}
-			else if (auto constant = dynamic_cast<Constant*>(symbol))
+			else if (auto literal = dynamic_cast<Literal*>(symbol))
 			{
-				//wcout << "constant: " << constant->to_string() <<
-				//	": " << ValueTypeName[constant->get_value()->type] << endl;
-				return constant->get_value()->type;
+				CLD_DEBUG << "constant: " << literal->to_string() <<
+					": " << ValueTypeName[literal->get_value()->type] << endl;
+				return literal->get_value()->type;
 			}
 			else
 			{

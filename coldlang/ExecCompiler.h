@@ -5,6 +5,7 @@
 #include "ExecDebug.h"
 #include "ExecOperands.h"
 #include "ExecIntegerEmitter.h"
+#include "ExecStack.h"
 
 #include "BytecodeTyper.h"
 
@@ -17,6 +18,11 @@ namespace Compile
 		ExecCompiler(IR::SymbolToType * symbolToType);
 		virtual Code GetCode() override;
 	private:
+		typedef asmjit::X86Compiler X86Compiler;
+		typedef asmjit::Operand Operand;
+		typedef asmjit::X86Gp X86Gp;
+		typedef asmjit::X86Mem X86Mem;
+
 		struct OperandParams {
 			Symbol * symbol;
 			bool loadValue;
@@ -25,12 +31,21 @@ namespace Compile
 				return symbol < rhs.symbol;
 			}
 		};
+
+		struct Argument {
+			Symbol * symbol = nullptr;
+			bool isRef = false;
+		};
+
 		IR::SymbolToType * symbolToType;
+		vector<Argument> arguments;
 
 		friend class Code;
 		friend class ExecDebug;
+		friend class ExecStack;
 
 		std::unique_ptr<ExecIntegerEmitter> integerEmitter;
+		std::unique_ptr<ExecStack> stackManager;
 
 		static JitRuntime jitRuntime;
 
@@ -38,8 +53,15 @@ namespace Compile
 		FileLogger logger;
 		shared_ptr<X86Compiler> compiler;
 
+		CBNode * DummyNode();
+
+		CBNode * prologInsertingPoint;
+		CBNode * epilogInsertingPoint;
+
 		ExecDebug debug;
 		ExecOperands operands;
+		X86Gp & Def(X86Gp &);
+		const X86Gp & Def(const X86Gp &);
 
 		static const size_t OpTypeCount = sizeof(OpTypeName) / sizeof(OpTypeName[0]);
 
@@ -51,12 +73,29 @@ namespace Compile
 
 		vector<asmjit::Operand> Locate(const initializer_list<OperandParams> & symbols);
 		asmjit::Operand Locate(Variable * var, bool loadVal, ValueType type, const set<const Variable*> & varGroup);
-		asmjit::Operand Locate(Constant * constant);
+		asmjit::Operand Locate(Literal * constant);
+
+		const X86Gp Reserve(const Variable * var);
+		void Shelter(const X86Gp & gp); // If gp contains a var, reserve the var to stack
 
 		vector<asmjit::Operand> LocateQuad(Symbol * target, ValueType type, Symbol * left, Symbol * right);
 
 		void MoveMemToReg(X86Gp reg, X86Mem base, ValueType valueType);
 		void MoveRegToMem(X86Mem base, X86Gp reg, ValueType valueType);
+		void MemSync(const Variable * var);
+		/* Uses rcx, rdi, rsi*/
+		void MemMovD(X86Mem dst, X86Mem src, uint32_t sizeDword);
+
+		void Ret(Symbol * target, ValueType sourceType);
+		void CallNative(Symbol * target, ValueType sourceType);
+
+		/* https://docs.microsoft.com/zh-cn/cpp/build/parameter-passing */
+		void Push(Symbol * symbol);
+		void PushParams(const vector<Argument> & args);
+		uint32_t PushParam(const Argument & arg, uint32_t tempMemOffset, std::function<void(X86Mem)> ptrLoader);
+		uint32_t PushParamToReg(const Argument & arg, uint32_t tempMemOffset, const X86Gp & gp);
+		uint32_t PushParamToMem(const Argument & arg, uint32_t tempMemOffset, const X86Mem & mem);
+		void Invoke(void * funcPtr);
 
 		ValueType GetType(const Symbol* symbol);
 
@@ -71,14 +110,20 @@ namespace Compile
 			compiler->comment(buf);
 		}
 
+		template<typename ...Args>
+		inline void Comment(std::string str, Args... args)
+		{
+			return Comment(str.c_str(), args...);
+		}
+
 	protected:
 		static const bool executable = true;
 		virtual void CompileBinaryImpl(Symbol * target, OpType opType,
 			ValueType leftType, Symbol * leftSymbol,
 			ValueType rightType, Symbol * rightSymbol) override;
-		virtual void CompileUnaryImpl(Symbol * target, OpType op_type,
+		virtual void CompileUnaryImpl(Symbol * target, OpType opType,
 			ValueType type, Symbol* source) override;
-		virtual void CompileSingleImpl(Symbol * target, BytecodeEnum bytecode_name,
-			ValueType source_type) override;
+		virtual void CompileSingleImpl(Symbol * target, BytecodeEnum bytecodeName,
+			ValueType sourceType) override;
 	};
 }

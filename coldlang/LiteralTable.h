@@ -9,18 +9,16 @@ namespace IR
 	{
 	private:
 		vector<Literal*> literals_;
-		vector<Constant*> constants_;
-		Constant * true_constant_;
-		Constant * false_constant_;
-		Constant * none_constant_;
+		Literal * true_constant_;
+		Literal * false_constant_;
+		Literal * none_constant_;
 	public:
 		LiteralTable();
-		Constant * add_native_constant(const wchar_t * name, CldRuntime::RuntimeValue *);
+		Literal * add_native_constant(const wchar_t * name, CldRuntime::RuntimeValue *);
 		size_t add(Literal* literal);
-		size_t add(Constant* constant);
-		Constant * get_true_constant();
-		Constant * get_false_constant();
-		Constant * get_none_constant();
+		Literal * get_true_constant();
+		Literal * get_false_constant();
+		Literal * get_none_constant();
 		~LiteralTable();
 	};
 }

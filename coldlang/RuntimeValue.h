@@ -1,5 +1,8 @@
 #pragma once
 #include <cstdint>
+#include "log.h"
+
+#define TYPE_SIGNATURE(sig) enum { Signature = sig };
 
 namespace CldRuntime
 {
@@ -40,6 +43,7 @@ namespace CldRuntime
 
 	struct RuntimeValue
 	{
+		TYPE_SIGNATURE(AnyVal)
 		ValueType type;
 		RuntimeValue() : type(NoneVal)
 		{
@@ -51,6 +55,7 @@ namespace CldRuntime
 
 	struct IntegerValue : RuntimeValue
 	{
+		TYPE_SIGNATURE(IntegerVal)
 		int64_t value = 0;
 		IntegerValue()
 		{
@@ -62,6 +67,7 @@ namespace CldRuntime
 
 	struct FloatValue : RuntimeValue
 	{
+		TYPE_SIGNATURE(FloatVal)
 		double value = .0;
 		FloatValue()
 		{
@@ -73,6 +79,7 @@ namespace CldRuntime
 
 	struct BooleanValue : RuntimeValue
 	{
+		TYPE_SIGNATURE(BooleanVal)
 		bool value = false;
 		BooleanValue()
 		{
@@ -84,15 +91,24 @@ namespace CldRuntime
 
 	struct NoneValue : RuntimeValue
 	{
+		TYPE_SIGNATURE(NoneVal)
 		NoneValue() : RuntimeValue(NoneVal)
 		{
+			CLD_DEBUG << LOG_EXPR(this) << std::endl;
+			CLD_DEBUG << "NoneValue Initializer called" << std::endl;
 		}
 	};
 
 	struct RuntimeObject;
 	struct PointerValue : RuntimeValue
 	{
-		// TODO : fix this
+		TYPE_SIGNATURE(StringPointerVal)
 		RuntimeObject * value;
+		PointerValue(RuntimeObject * value)
+			: RuntimeValue(StringPointerVal), value(value)
+		{
+		}
 	};
 }
+
+#include "RuntimeValueUtils.h"

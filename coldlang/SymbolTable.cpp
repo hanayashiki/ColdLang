@@ -1,17 +1,22 @@
 #include "stdafx.h"
 #include "NativeSymbol.h"
+#include "Code.h"
+#include "log.h"
 
 namespace IR{
 	size_t SymbolTable::symbol_id = 0;
 
 	SymbolTable::SymbolTable(SymbolTable * parent) : parent_(parent), var_id(0)
 	{
-		if (parent == nullptr) {
+		if (parent == nullptr) 
+		{
 			nest_level_ = 0;
 		}
-		else {
+		else 
+		{
 			nest_level_ = parent->nest_level_ + 1;
 		}
+		init_native_symbols();
 	}
 
 	void SymbolTable::add(OperandType::Variable * variable)
@@ -100,6 +105,9 @@ namespace IR{
 		{
 			for (int i = 0; i < 4 * space_offset; i++) ret += L" ";
 			ret += pair.first;
+			if (auto var = dynamic_cast<Variable*>(pair.second)) {
+				ret += L"[" + to_wstring(var->get_var_id()) + L"]";
+			}
 			ret += L"\n";
 		}
 		for (auto symbol_table : sub_symbol_tables_)
@@ -113,13 +121,25 @@ namespace IR{
 	{
 		for (auto pair : name_to_symbol_)
 		{
-			// wcout << "~SymbolTable token use count: " << pair.second->get_token().use_count() << endl;
-			delete pair.second;
+			Symbol * symbol = pair.second;
+			if (!symbol->is_static()) {
+				CLD_DEBUG << "delete " << to_string(symbol) << std::endl;
+				delete pair.second;
+			}
 		}
 		for (auto symbol_table : sub_symbol_tables_)
 		{
 			delete symbol_table;
 		}
+	}
+
+	void SymbolTable::init_native_symbols()
+	{
+		add(dynamic_cast<Variable*>(Symbol::Acc));
+		add(&Compile::Code::RuntimeStackPtr);
+		add(&Compile::Code::BlockResultPtr);
+		add(&Compile::Code::NContexts);
+		add(&Compile::Code::ContextsPtr);
 	}
 
 }

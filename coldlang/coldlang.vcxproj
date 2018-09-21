@@ -227,6 +227,7 @@
     <ClInclude Include="CldMem.h" />
     <ClInclude Include="Code.h" />
     <ClInclude Include="ColdLang.h" />
+    <ClInclude Include="ExecStack.h" />
     <ClInclude Include="Intepreter.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerFactory.h" />
@@ -238,9 +239,11 @@
     <ClInclude Include="ExecOperands.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="MiscellaneousBytecodeInfoGetters.h" />
+    <ClInclude Include="porting.h" />
     <ClInclude Include="RuntimeFunction.h" />
     <ClInclude Include="RuntimeStack.h" />
     <ClInclude Include="RuntimeValue.h" />
+    <ClInclude Include="RuntimeValueUtils.h" />
     <ClInclude Include="TypedBlockCompilerCaller.h" />
     <ClInclude Include="BytecodeByteDump.h" />
     <ClInclude Include="BytecodeClass.h" />
@@ -249,20 +252,16 @@
     <ClInclude Include="BytecodeReader.h" />
     <ClInclude Include="BytecodeVectorReader.h" />
     <ClInclude Include="BytecodeVectorWriter.h" />
-    <ClInclude Include="BytecodeOperandTypes.h" />
     <ClInclude Include="BytecodeWriter.h" />
     <ClInclude Include="CLObject.h" />
     <ClInclude Include="ColdLangBackend.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="Constant.h" />
-    <ClInclude Include="ConstantTable.h" />
     <ClInclude Include="Float.h" />
     <ClInclude Include="ColdLangFrontEnv.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="FunctionTable.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="IRGenerator.h" />
-    <ClInclude Include="Jit.h" />
     <ClInclude Include="KeywordTrie.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Lexer.h" />
@@ -273,7 +272,7 @@
     <ClInclude Include="Delimiter.h" />
     <ClInclude Include="NativeFunction.h" />
     <ClInclude Include="NativeSymbol.h" />
-    <ClInclude Include="NativeFunctions.h" />
+    <ClInclude Include="NativeFunctionsDefs.h" />
     <ClInclude Include="ResizableBuffer.h" />
     <ClInclude Include="RuntimeObject.h" />
     <ClInclude Include="stdafx.h" />
@@ -314,6 +313,7 @@
     <ClCompile Include="ExecIntegerEmitter.cpp" />
     <ClCompile Include="ExecDebug.cpp" />
     <ClCompile Include="ExecOperands.cpp" />
+    <ClCompile Include="ExecStack.cpp" />
     <ClCompile Include="Intepreter.cpp" />
     <ClCompile Include="RuntimeFunction.cpp" />
     <ClCompile Include="TypedBlockCompilerCaller.cpp" />
@@ -325,7 +325,6 @@
     <ClCompile Include="ColdLangBackend.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ColdLangFrontEnv.cpp" />
-    <ClCompile Include="ConstantTable.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="FunctionTable.cpp" />
     <ClCompile Include="IRBinaryGenerator.cpp" />
@@ -334,10 +333,9 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <ClCompile Include="IRStatementGenerator.cpp" />
-    <ClCompile Include="Jit.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LiteralTable.cpp" />
-    <ClCompile Include="NativeFunctions.cpp">
+    <ClCompile Include="NativeFunctionsDefs.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">All</AssemblerOutput>
     </ClCompile>
     <ClCompile Include="Symbol.cpp" />

@@ -1056,7 +1056,7 @@ static ASMJIT_INLINE X86Mem ptr(uint64_t base, const X86Vec& index, uint32_t shi
   }                                                                                   \
   /*! Create a `[base + offset]` memory operand. */                                   \
   static ASMJIT_INLINE X86Mem FUNC##_abs(uint64_t base) noexcept {                    \
-    return X86Mem(base, SIZE);                                                        \
+    return X86Mem(base, SIZE, Mem::kSignatureMemAbs);                                                        \
   }                                                                                   \
   /*! Create a `[base + (index << shift) + offset]` memory operand. */                \
   static ASMJIT_INLINE X86Mem FUNC##_abs(uint64_t base, const X86Gp& index, uint32_t shift = 0) noexcept { \

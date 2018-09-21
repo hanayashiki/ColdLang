@@ -2,9 +2,10 @@
 //
 #include "stdafx.h"
 
-// #define DO_COMPILE
+//#define DO_COMPILE
 
 #ifdef DO_COMPILE
+
 #include "../coldlang/stdafx.h"
 #include "../coldlang/ByteCodeClass.h"
 #include "../coldlang/Module.h"
@@ -20,7 +21,7 @@
 #include <typeinfo>
 
 #define CRTDBG_MAP_ALLOC  
-#include <stdlib.h>
+#include <cstdlib>
 #include <crtdbg.h>
 #include "../coldlang/ColdLangBackend.h"
 #include <codecvt>
@@ -178,8 +179,9 @@ void test_simple_eval_calc_run()
 	IR::Module* module;
 
 	code = LR"LINES(
-		a = 1 - 1
-		retv a
+		native_puts('Fuck you leather man!\n')
+		native_puts('Son of a bitch!\n')
+		retv 1
 	)LINES";
 	env = new ColdLangFrontEnv(&code);
 	CLD_DEBUG << "parse started" << std::endl;
@@ -197,8 +199,11 @@ void test_simple_eval_calc_run()
 
 	CldRuntime::RuntimeFunction rf(&blocks->get_blocks(), module->get_main());
 
+	CLD_DEBUG << LOG_EXPR(backend->symbol_table->dump_to_string()) << std::endl;
 	CLD_DEBUG << "rf run" << std::endl;
 	rf.Run({});
+
+	CLD_DEBUG << backend->symbol_table->dump_to_string() << std::endl;
 
 	delete tree;
 	delete env;

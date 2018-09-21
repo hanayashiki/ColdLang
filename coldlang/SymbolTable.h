@@ -30,15 +30,6 @@ namespace IR
 	};
 	class SymbolTable
 	{
-	private:
-		static size_t symbol_id;
-		size_t var_id;
-
-		SymbolTable * parent_;
-		uint32_t nest_level_;
-		vector<SymbolTable*> sub_symbol_tables_;
-		unordered_map<const wchar_t*, OperandType::Symbol*, SymbolHashFunc, SymbolEqual<const wchar_t*>> name_to_symbol_;
-		unordered_map<size_t, OperandType::Symbol*> id_to_symbol_;
 	public:
 		explicit SymbolTable(SymbolTable * parent = nullptr);
 		void add(OperandType::Variable* symbol);
@@ -58,5 +49,16 @@ namespace IR
 		size_t get_variable_count() const { return var_id; }
 
 		~SymbolTable();
+	private:
+		static size_t symbol_id;
+		size_t var_id;
+
+		SymbolTable * parent_;
+		uint32_t nest_level_;
+		vector<SymbolTable*> sub_symbol_tables_;
+		unordered_map<const wchar_t*, OperandType::Symbol*, SymbolHashFunc, SymbolEqual<const wchar_t*>> name_to_symbol_;
+		unordered_map<size_t, OperandType::Symbol*> id_to_symbol_;
+
+		inline void init_native_symbols();
 	};
 }

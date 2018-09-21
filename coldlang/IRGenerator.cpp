@@ -2,10 +2,12 @@
 #include "IRGenerator.h"
 #include "BytecodeClass.h"
 #include "RuntimeObject.h"
-#include "NativeFunctions.h"
+#include "NativeFunctionsDefs.h"
 #include "NativeSymbol.h"
 #include "NativeFunction.h"
 
+#include "log.h"
+#include "utils.h"
 
 /* IR Generation Convention
 *
@@ -60,11 +62,9 @@ namespace IR {
 	IRGenerator::IRGenerator(SymbolTable * symbol_table,
 		FunctionTable * function_table,
 		LiteralTable * literal_table,
-		ConstantTable * constant_table,
 		BytecodeWriter * bytecode_writer)
 		: symbol_table_(symbol_table), 
 		function_table_(function_table),
-		constant_table_(constant_table),
 		literal_table_(literal_table),
 		temp_table_(new TempTable(symbol_table_)),
 		bytecode_writer_(bytecode_writer)
@@ -74,23 +74,18 @@ namespace IR {
 
 	void IRGenerator::initialize_native_symbols()
 	{
-		vector<tuple<const wchar_t*, void*>> native_functions;
-		decltype(native_functions)::value_type a;
-		CldRuntime::add_native_functions(native_functions);
-
-		for (auto t : native_functions)
-		{
-			NativeSymbol * native = new NativeFunction(std::get<0>(t), std::get<1>(t));
-			symbol_table_->add(native);
+		auto & native_functions = CldRuntime::NativeFunctionsDefs::get_native_functions();
+		for (auto & nf : native_functions) {
+			symbol_table_->add(&nf);
 		}
-		
 	}
 
 	Symbol * IRGenerator::look_up_name(Token * token)
 	{
+		CLD_DEBUG << LOG_EXPR(static_cast<Word*>(token)->get_word()) << std::endl;
 		return static_cast<Symbol*>(
 			symbol_table_->get_by_name(static_cast<Word*>(token)->get_word())
-			);
+		);
 	}
 
 	Symbol * IRGenerator::self_or_store(Symbol * symbol)
@@ -129,7 +124,8 @@ namespace IR {
 			{
 				auto symbol = look_up_name(tn->get_terminal(0).get());
 				if (symbol == nullptr)
-				{
+				{	
+					CLD_ERROR << "Symbol not found :" << tn->get_terminal(0)->to_string() << std::endl;
 					throw SymbolException("Symbol not found: ", tn->get_terminal(0));
 				}
 				return symbol;
@@ -155,10 +151,10 @@ namespace IR {
 		{
 			auto integer_token = std::static_pointer_cast<Integer>(tn->get_terminal(0));
 			auto rto = new CldRuntime::IntegerValue(integer_token->get_value());
-			Constant * constant = new Constant(tn->get_terminal(0), rto);
+			Literal * literal = new Literal(tn->get_terminal(0), rto);
 			// wcout << "Constant*: " << constant << endl;
-			literal_table_->add(constant);
-			return constant;
+			literal_table_->add(literal);
+			return literal;
 		}
 		if (tn->get_builder_name() == "atom_general_string")
 		{
@@ -171,7 +167,6 @@ namespace IR {
 			wchar_t * copied = new wchar_t[rto->length + 1];
 			wcscpy_s(copied, rto->length + 1, string->get_value());
 			rto->content = copied;
-			constant_table_->add(rto);
 
 			return add_literal<String>(tn->get_terminal(0), rto);
 		}
@@ -253,8 +248,13 @@ namespace IR {
 	{
 		shared_ptr<RealTokenType> integer = 
 			dynamic_pointer_cast<RealTokenType>(token);
-		Literal * constant_literal = new Literal(token, rto);
+		Literal * constant_literal = new Literal(token, make_pointer(rto));
 		literal_table_->add(constant_literal);
+		CLD_DEBUG << LOG_EXPR(constant_literal->get_value()) << std::endl;
+		CldRuntime::PointerValue * value = (CldRuntime::PointerValue*)constant_literal->get_value();
+		CldRuntime::StringObject * obj = (CldRuntime::StringObject*)value->value;
+		CLD_DEBUG << LOG_EXPR(obj) << std::endl;
+		CLD_DEBUG << LOG_EXPR(obj->content) << std::endl;
 		return constant_literal;
 	}
 

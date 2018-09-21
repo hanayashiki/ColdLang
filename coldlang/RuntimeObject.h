@@ -33,4 +33,16 @@ namespace CldRuntime
 		IR::Function * meta;
 		VARIADIC(RuntimeStack, contexts)
 	};
+
+	inline PointerValue * make_pointer(RuntimeObject * object)
+	{
+		switch (object->type)
+		{
+		case StringObj:
+			return new PointerValue(object);
+			break;
+		default:
+			assert(false); // This is TEMPORARY
+		}
+	}
 }

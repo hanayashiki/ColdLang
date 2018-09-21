@@ -12,6 +12,10 @@ namespace Compile
 	class ExecDebug
 	{
 	private:
+		typedef asmjit::Operand Operand;
+		typedef asmjit::X86Gp X86Gp;
+		typedef asmjit::X86Mem X86Mem;
+
 		ExecCompiler * exec_compiler;
 		static void Print(const wchar_t * info, int64_t);
 	public:

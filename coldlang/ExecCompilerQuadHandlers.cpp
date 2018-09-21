@@ -11,6 +11,7 @@ using CldRuntime::BlockEnv;
 	QuadHandler([](ExecCompiler* ##_this##, Symbol* ##target##, Symbol* ##left##, Symbol* ##right##)
 
 #define INTEGER_QUAD_EMIT(_this, exprOperands, opType) \
+	if (exprOperands[0].isReg()) _this->Def(exprOperands[0].as<X86Gp>()); \
 	_this->integerEmitter->Emit(exprOperands[0], opType, \
 		exprOperands[1], exprOperands[2]);
 

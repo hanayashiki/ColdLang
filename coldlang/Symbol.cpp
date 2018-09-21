@@ -4,8 +4,10 @@ namespace IR {
 
 	Symbol* Symbol::Acc = &Variable::AccVal;
 
-	OperandType::Symbol::Symbol(shared_ptr<Token> && token, LRValueType vt)
-		: token_(token), value_type_(vt), is_temp_(false), nest_level_(0), offset_(0)
+	OperandType::Symbol::Symbol(shared_ptr<Token> && token, bool is_static, LRValueType vt)
+		: token_(token), value_type_(vt),
+		is_temp_(false), nest_level_(0), offset_(0),
+		is_static_(is_static)
 	{
 	}
 
@@ -44,6 +46,10 @@ namespace IR {
 	bool OperandType::Symbol::is_temp()
 	{
 		return is_temp_;
+	}
+	bool OperandType::Symbol::is_static()
+	{
+		return is_static_;
 	}
 	void OperandType::Symbol::set_nest_level(uint32_t nest_level)
 	{

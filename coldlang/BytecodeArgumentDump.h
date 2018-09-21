@@ -70,15 +70,6 @@ namespace IR
 			}
 		)
 
-		ARG_INFO(Constant*, sizeof(Constant*),
-			{
-				memcpy(buf, &src, sizeof(src));
-			},
-			{
-				return reinterpret_cast<Constant*>(*(size_t*)buf);
-			}
-		)
-
 		ARG_INFO(OperandType::Label*, sizeof(uint32_t),
 			{
 				memcpy(buf, &src->get_id(), sizeof(uint32_t));

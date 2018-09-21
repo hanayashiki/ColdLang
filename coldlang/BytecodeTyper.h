@@ -42,6 +42,7 @@ namespace IR
 		ValueType result_type;
 		ValueType origin_type;
 		Symbol * target;
+		bool write_acc;
 	};
 
 	typedef JumpInfo LabelInfo;
@@ -52,6 +53,10 @@ namespace IR
 	class BytecodeTyper
 	{
 	private:
+		static Symbol * retrieve_on_type(
+			BytecodeEnum this_enum, 
+			BytecodeEnum enum_var, 
+			BytecodeEnum enum_literal, const unsigned char buf[]);
 		static UnaryTypeInfo get_unary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[]);
 		static BinaryTypeInfo get_binary_info(function<ValueType(Symbol*)> get_type_of, unsigned char buf[]);
 		static JumpInfo get_jump_info(const unsigned char buf[]);

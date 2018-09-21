@@ -32,5 +32,6 @@ namespace IR
 		BytecodeWriter * get_bytecode_writer();
 
 		const SymbolTable * get_symbol_table();
+
 	};
 };

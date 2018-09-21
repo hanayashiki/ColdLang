@@ -50,5 +50,56 @@ namespace unittest
 			)X");
 			Assert::AreEqual((UInt64)val->value, (UInt64)15);
 		}
+		TEST_METHOD(FuncCall1)
+		{
+			auto val = Interpreter::RunCode<IntegerValue>(LR"X(
+				c = 1
+				d = 2
+				e = c + d
+				native_puts('Fuck you leather man!\n')
+				native_puts('Son of a bitch!\n')
+				retv e
+				
+			)X");
+			Assert::AreEqual((UInt64)val->value, (UInt64)3);
+		}
+
+		TEST_METHOD(FuncCall2)
+		{
+			auto val = Interpreter::RunCode<IntegerValue>(LR"X(
+				c = 1
+				d = 2
+				native_puts('eat my ass')
+				e = c + d
+				native_puts('Fuck you leather man!\n')
+				native_puts('Son of a bitch!\n')
+				e = e + 1
+				retv e
+				
+			)X");
+			Assert::AreEqual((UInt64)val->value, (UInt64)4);
+		}
+
+		TEST_METHOD(FuncCall3)
+		{
+			auto val = Interpreter::RunCode<IntegerValue>(LR"X(
+				retv native_test_3_args(
+					1, 1, 1
+				)
+				
+			)X");
+			Assert::AreEqual((UInt64)val->value, (UInt64)3);
+		}
+
+		TEST_METHOD(FuncCall4)
+		{
+			auto val = Interpreter::RunCode<IntegerValue>(LR"X(
+				retv native_test_7_args(
+					1, 1, 1, 1, 1, 1, 1
+				)
+				
+			)X");
+			Assert::AreEqual((UInt64)val->value, (UInt64)7);
+		}
 	};
 }

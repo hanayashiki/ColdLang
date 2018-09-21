@@ -6,6 +6,8 @@
 
 #define MAKE_EMITTER(block) [=](std::shared_ptr<X86Compiler>& cc){block}
 
+using namespace asmjit;
+
 namespace Compile {
 	ExecIntegerEmitter::ExecIntegerEmitter(std::shared_ptr<X86Compiler>& compiler)
 		: compiler(compiler)
