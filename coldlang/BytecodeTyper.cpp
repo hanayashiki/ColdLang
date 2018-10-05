@@ -110,6 +110,7 @@ namespace IR
 		}
 		else {
 			assert(false);
+			return nullptr;
 		}
 
 	}

@@ -8,6 +8,7 @@
 #include "BlockEnv.h"
 
 #include "BytecodeTyper.h"
+#include "utils.h"
 
 namespace CldRuntime {
 	RuntimeFunction::RuntimeFunction(vector<IR::BasicBlock>* basic_blocks, IR::Function * function)
@@ -16,7 +17,7 @@ namespace CldRuntime {
 		
 	}
 
-	void RuntimeFunction::Run(const vector<RuntimeStack*> & contexts)
+	volatile void RuntimeFunction::Run(const vector<RuntimeStack*> & contexts)
 	{
 		using IR::SymbolToType;
 
@@ -34,10 +35,11 @@ namespace CldRuntime {
 			compilerCaller.NextBlock(symbol_to_type);
 			Compile::Code code = compiler->GetCode();
 
-			CLD_DEBUG << "code started" << std::endl;
-
 			code(env);
+
 			lastRetVal = env.block_result->GetPtrToResult();
+
+			std::wcerr << CldUtils::MemToString((unsigned char *)this, sizeof(*this)).c_str() << std::endl;
 
 			CLD_DEBUG << "type: " << ValueTypeName[GetLastRetVal<IntegerValue>()->type] << std::endl;
 			CLD_DEBUG << "val: " << int(GetLastRetVal<IntegerValue>()->value) << std::endl;
@@ -46,12 +48,17 @@ namespace CldRuntime {
 		}
 	}
 
+	RuntimeFunction::~RuntimeFunction()
+	{
+		CLD_DEBUG << "~RuntimeFunction() called" << std::endl;
+	}
+
 	BlockEnv RuntimeFunction::make_block_env(const vector<RuntimeStack*> & contexts)
 	{
 		BlockEnv env;
 		env.runtime_stack = make_runtime_stack(function_);
 		CLD_DEBUG << "env.runtime_stack = " << env.runtime_stack << std::endl;
-		env.block_result = new BlockResult();
+		env.block_result = CldMem::Calloc<BlockResult>(sizeof(BlockResult));
 		CLD_DEBUG << "env.block_result = " << env.block_result << std::endl;
 		env.n_contexts = contexts.size();
 		CLD_DEBUG << "env.n_contexts = " << env.n_contexts << std::endl;
@@ -65,7 +72,7 @@ namespace CldRuntime {
 		const auto symbol_table = function->get_symbol_table();
 		CldMem::New<vector<int>>();
 		CLD_DEBUG << LOG_EXPR(sizeof(RuntimeStackSlot) * symbol_table->get_variable_count()) << std::endl;
-		return CldMem::Malloc<RuntimeStack>(sizeof(RuntimeStackSlot) *
+		return CldMem::Calloc<RuntimeStack>(sizeof(RuntimeStackSlot) *
 			symbol_table->get_variable_count());
 	}
 }

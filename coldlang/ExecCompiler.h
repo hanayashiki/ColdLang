@@ -84,7 +84,7 @@ namespace Compile
 		void MoveRegToMem(X86Mem base, X86Gp reg, ValueType valueType);
 		void MemSync(const Variable * var);
 		/* Uses rcx, rdi, rsi*/
-		void MemMovD(X86Mem dst, X86Mem src, uint32_t sizeDword);
+		void TaskMemMovD(X86Mem dst, X86Mem src, uint32_t sizeDword);
 
 		void Ret(Symbol * target, ValueType sourceType);
 		void CallNative(Symbol * target, ValueType sourceType);

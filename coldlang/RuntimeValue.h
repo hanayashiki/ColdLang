@@ -95,7 +95,6 @@ namespace CldRuntime
 		NoneValue() : RuntimeValue(NoneVal)
 		{
 			CLD_DEBUG << LOG_EXPR(this) << std::endl;
-			CLD_DEBUG << "NoneValue Initializer called" << std::endl;
 		}
 	};
 

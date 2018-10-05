@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "BytecodeByteDump.h"
 
+#include "utils.h"
+
 namespace IR
 {
 	class BytecodeVectorWriter : public BytecodeWriter
@@ -31,13 +33,14 @@ namespace IR
 			}
 			if (len > 0)
 			{
-				wcout << "[" << BytecodeClass::mem_to_string(buf, len).c_str() << "]" << endl;
+				wcout << "[" << CldUtils::MemToString(buf, len).c_str() << "]" << endl;
 			}
 			if (next_writer_)
 			{
 				next_writer_->emit(bytecode);
 			}
 		}
+
 		void bind(OperandType::Label & label) override
 		{
 			BytecodeClass::Label label_place_holder(&label);

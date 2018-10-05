@@ -10,6 +10,7 @@
 #include "BlockResult.h"
 
 #include "log.h"
+#include "utils.h"
 
 #include <stddef.h>
 
@@ -237,7 +238,7 @@ namespace Compile
 		}
 	}
 
-	void ExecCompiler::MemMovD(X86Mem dst, X86Mem src, uint32_t sizeDword)
+	void ExecCompiler::TaskMemMovD(X86Mem dst, X86Mem src, uint32_t sizeDword)
 	{
 		Comment("MemMovD");
 
@@ -349,9 +350,13 @@ namespace Compile
 					Shelter(x86::rcx);
 					Shelter(x86::rdi);
 					Shelter(x86::rsi);
+
+					Def(x86::rdi);
+					Def(x86::rsi);
+
 					taskMakeTemp = DEF_INSERT_TASK(rbpBased, rspBased) {
 						Comment("Alloc Variable Val %ls", symbol->to_string().c_str());
-						MemMovD(rbpBased, operands.GenerateMem(var), 4);
+						TaskMemMovD(rbpBased, operands.GenerateMem(var), 4);
 						ptrLoader(rbpBased);
 						static_assert(sizeof(RuntimeStackSlot) == 16, "Should implement for other sizes of slot. ");
 					};
@@ -375,9 +380,11 @@ namespace Compile
 					Shelter(x86::rcx);
 					Shelter(x86::rdi);
 					Shelter(x86::rsi);
+					Def(x86::rdi);
+					Def(x86::rsi);
 
 					taskMakeTemp = DEF_INSERT_TASK(rbpBased, rspBased) {
-						MemMovD(rbpBased, literalMem, 4);
+						TaskMemMovD(rbpBased, literalMem, 4);
 						Comment("Alloc Literal %ls", symbol->to_string().c_str());
 						Comment(ToString(literal->get_value()));
 						ptrLoader(rbpBased);
@@ -408,7 +415,7 @@ namespace Compile
 	{
 		return PushParam(arg, tempMemOffset, [=](X86Mem mem) { 
 			Comment("PushParamToReg");
-			compiler->lea(gp, mem); 
+			compiler->lea(Def(gp), mem);
 		});
 	}
 
@@ -416,7 +423,7 @@ namespace Compile
 	{
 		return PushParam(arg, tempMemOffset, [=](X86Mem tempMem) {
 			Comment("PushParamToMem");
-			compiler->lea(x86::rax, tempMem);
+			compiler->lea(Def(x86::rax), tempMem);
 			compiler->mov(mem, x86::rax);
 		});
 	}
@@ -539,10 +546,16 @@ namespace Compile
 
 		epilogInsertingPoint = DummyNode();
 
-		std::vector<X86Gp> usedVolatiles = operands.GetUsedNonVolatileGps();
+		std::vector<X86Gp> usedNonVolatiles = operands.GetUsedNonVolatileGps();
+		std::vector<wstring> usedNonVolatilesStrings;
+		for (auto & x : usedNonVolatiles)
+		{
+			usedNonVolatilesStrings.push_back(ExecDebug::to_string(x));
+		}
+		CLD_DEBUG << LOG_EXPR(CldUtils::Set(usedNonVolatilesStrings)) << std::endl;
 
 		stackManager->Insert(prologInsertingPoint, epilogInsertingPoint,
-			usedVolatiles);
+			usedNonVolatiles);
 
 		compiler->endFunc();
 		CHECK compiler->finalize();

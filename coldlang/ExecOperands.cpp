@@ -118,6 +118,7 @@ namespace Compile {
 		}
 		// Should not reach here
 		assert(false);
+		return nullptr;
 	}
 
 	const ExecOperands::Variable * ExecOperands::FindVariableByGp(const X86Gp & gp)
@@ -168,6 +169,7 @@ namespace Compile {
 
 	const std::vector<X86Gp> ExecOperands::GetUsedNonVolatileGps()
 	{
+		CLD_DEBUG << LOG_EXPR(UsedNonVolatileGps.size()) << std::endl;
 		return std::vector<X86Gp>(
 			UsedNonVolatileGps.begin(),
 			UsedNonVolatileGps.end()
@@ -201,7 +203,9 @@ namespace Compile {
 	{
 		if (NonVolatileGps.find(gp) != NonVolatileGps.end())
 		{
+			CLD_DEBUG << "Recorded no volatile: " << ExecDebug::to_string(gp) << std::endl;
 			UsedNonVolatileGps.emplace(gp);
+			CLD_DEBUG << LOG_EXPR(UsedNonVolatileGps.size()) << std::endl;
 		}
 	}
 

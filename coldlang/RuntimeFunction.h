@@ -1,4 +1,6 @@
 #pragma once
+#include "log.h"
+
 #include "BasicBlock.h"
 #include "BlockCode.h"
 #include "BlockEnv.h"
@@ -9,8 +11,16 @@ namespace CldRuntime
 	{
 	public:
 		RuntimeFunction(vector<IR::BasicBlock> * basic_blocks, IR::Function * function);
-		void Run(const vector<RuntimeStack*> & contexts);
-		template<typename T> T * GetLastRetVal() { return reinterpret_cast<T*>(lastRetVal); }
+		volatile void Run(const vector<RuntimeStack*> & contexts);
+		template<typename T> T * GetLastRetVal() 
+		{
+			std::wcerr << LOG_EXPR(this) << std::endl;
+			std::wcerr << LOG_EXPR(this->lastRetVal) << std::endl;
+			CLD_DEBUG << LOG_EXPR(this->lastRetVal) << std::endl;
+			return reinterpret_cast<T*>(lastRetVal); 
+		}
+
+		~RuntimeFunction();
 	private:
 		vector<IR::BasicBlock> * basic_blocks_;
 		IR::Function * function_ = nullptr;

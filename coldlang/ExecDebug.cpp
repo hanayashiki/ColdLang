@@ -53,8 +53,14 @@ namespace Compile {
 
 	wstring ExecDebug::to_string(const X86Gp & gp)
 	{
+		static const wchar_t * gpNames[] =
+		{
+			L"rax", L"rbx", L"rcx", L"rdx", 
+			L"r8", L"r9", L"r10", L"r11", L"r12",
+			L"r13", L"r14", L"r15", L"rdi", L"rsi", L"rbx", L"rbp"
+		};
 		uint32_t id = gp.getId();
-		return L"Gp" + to_wstring(id);
+		return L"Gp" + to_wstring(id) + L":<" + gpNames[id] + L">";
 	}
 
 	ExecDebug::ErrorCollector ExecDebug::ErrorCollector::instance;

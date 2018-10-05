@@ -115,15 +115,15 @@ namespace Compile
 
 		/* Restore regs */
 
+		for (int i = pushedGps.size() - 1; i >= 0; i--)
+		{
+			compiler->pop(pushedGps[i]);
+		}
+
 		for (size_t i = 0; i < shadowedGps.size(); i++)
 		{
 			exec->Comment("Restore shadowed");
 			compiler->mov(shadowedGps[i], x86::ptr_64(x86::rsp, i * 8 + 8));
-		}
-
-		for (int i = pushedGps.size() - 1; i >= 0; i--)
-		{
-			compiler->pop(pushedGps[i]);
 		}
 
 		/* Finish the tasks */

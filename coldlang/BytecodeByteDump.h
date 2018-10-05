@@ -8,26 +8,6 @@ namespace IR
 	{
 		enum BytecodeEnum;
 
-		static string mem_to_string(unsigned char * start, size_t len)
-		{
-			string str;
-			for (size_t i = 0; i < len; i++)
-			{
-				char wbuf[32];
-				sprintf_s<sizeof(wbuf)>(wbuf, "%02x ", start[i] & 0xff);
-				str += wbuf;
-				if ((i + 1) % 4 == 0)
-				{
-					str += "   ";
-				}
-				else if ((i + 1) % 16 == 0)
-				{
-					str += "\n";
-				}
-			}
-			return str;
-		}
-
 		static size_t dump_args(unsigned char* buf)
 		{
 			return 0;

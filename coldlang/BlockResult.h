@@ -1,4 +1,6 @@
 #pragma once
+#include "log.h"
+
 #include "RuntimeStack.h"
 
 namespace CldRuntime 
@@ -10,8 +12,6 @@ namespace CldRuntime
 		{
 		}
 
-		inline RuntimeValue * GetPtrToResult(){ 
-			return &(return_value.value.base_value);  
-		}
+		RuntimeValue * GetPtrToResult();
 	};
 }

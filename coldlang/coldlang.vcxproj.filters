@@ -494,6 +494,9 @@
     <ClCompile Include="ExecStack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BlockResult.cpp">
+      <Filter>源文件\runtime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="module.json">

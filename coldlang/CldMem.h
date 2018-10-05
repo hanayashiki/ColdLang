@@ -9,6 +9,13 @@ namespace CldRuntime {
 			return reinterpret_cast<T*>(new uint8_t[size]);
 		}
 
+		template<typename T>
+		inline static T* Calloc(size_t size) {
+			auto ptr = Malloc<T>(size);
+			memset(ptr, 0, size);
+			return ptr;
+		}
+
 		template<typename T, typename... Args>
 		inline static T* New(Args&&... args) {
 			return new (Malloc<T>(sizeof(T))) T(std::forward<Args>(args)...);
